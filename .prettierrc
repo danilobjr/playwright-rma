@@ -1,0 +1,30 @@
+{
+  "editorconfig": true,
+  "semi": false,
+  "singleQuote": true,
+
+  "importOrderTypeScriptVersion": "6.0.2",
+  "importOrder": [
+    "<BUILTIN_MODULES>",
+    "^(react/(.*)$)|^(react$)",
+    "<THIRD_PARTY_MODULES>",
+    "",
+    "^@/assets/(.*)$",
+    "^@/styles/(.*)$",
+    "",
+    "^@/components/(.*)$",
+    "^@/utils/(.*)$",
+    "",
+    "^[./]"
+  ],
+
+  "tailwindStylesheet": "./src/styles/index.css",
+  "tailwindPreserveWhitespace": true,
+  "tailwindFunctions": ["cva", "tw"],
+
+  "plugins": [
+    "@ianvs/prettier-plugin-sort-imports",
+    "prettier-plugin-tailwindcss"
+  ]
+}
+
