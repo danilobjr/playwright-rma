@@ -53,3 +53,17 @@ This project is indexed by GitNexus as **playwright-rma** (18 symbols, 9 relatio
 
 - NEVER commit without confirmation.
 - NEVER create a PR on GitHub without confirmation.
+
+## Agent skills
+
+### Issue tracker
+
+Issues and PRDs are tracked in GitHub Issues for `danilobjr/playwright-rma`. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Triage labels use the canonical mattpocock/skills vocabulary. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Domain docs use a single-context layout. See `docs/agents/domain.md`.
