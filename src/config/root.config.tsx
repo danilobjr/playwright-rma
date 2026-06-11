@@ -1,5 +1,13 @@
-import reactLogo from '@/assets/react.svg'
+import { StrictMode } from 'react'
 
-export function Root() {
-  return <img src={reactLogo} alt="React logo" />
+import { RouterConfig } from './router.config'
+
+// TODO providers and friends on this file
+
+export function RootConfig() {
+  return (
+    <StrictMode>
+      <RouterConfig />
+    </StrictMode>
+  )
 }
