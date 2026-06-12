@@ -54,6 +54,13 @@ This project is indexed by GitNexus as **playwright-rma** (18 symbols, 9 relatio
 - NEVER commit without confirmation.
 - NEVER create a PR on GitHub without confirmation.
 
+## Handoff File Rules
+
+Use rules below when user use handoff skill: `./.agents/skills/handoff/SKILL.md`.
+
+- Use file name format `YYYY-MM-DD_HH-MM-SS_[SESSION_NAME].md`, where `SESSION_NAME` is lowercase, dash-separated, and has no punctuation.
+- After creating the temporary handoff, move it to `docs/handoffs/`.
+
 ## Agent skills
 
 ### Issue tracker
