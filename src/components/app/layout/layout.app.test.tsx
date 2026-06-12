@@ -6,13 +6,16 @@ import { useLayout } from './use-layout.hook'
 import { Layout } from './layout.app'
 
 function TestPage() {
-  useLayout({
-    breadcrumbs: ['Operations', 'RMA'],
-    title: 'RMA Requests',
-    description:
-      'Track return merchandise authorizations, filter by status and date, and start new requests.',
-    topRightAction: <button type="button">New RMA</button>,
-  })
+  useLayout(
+    {
+      breadcrumbs: ['Operations', 'RMA'],
+      title: 'RMA Requests',
+      description:
+        'Track return merchandise authorizations, filter by status and date, and start new requests.',
+      topRightAction: <button type="button">New RMA</button>,
+    },
+    [],
+  )
 
   return <p>Page content</p>
 }

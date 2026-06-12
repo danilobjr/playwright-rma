@@ -7,19 +7,22 @@ import { useLayout } from '@/components/app/layout/use-layout.hook'
 import { RmaCreatePage } from './rma-create.page'
 
 function RmaCreateContainer() {
-  useLayout({
-    breadcrumbs: ['RMA', 'New request'],
-    title: 'Create RMA Request',
-    description: 'Use a compact FieldGroup form layout that matches shadcn form composition.',
-    topRightAction: (
-      <Button asChild variant="outline">
-        <Link to="/rma">
-          <ArrowLeft aria-hidden="true" />
-          Back to list
-        </Link>
-      </Button>
-    ),
-  })
+  useLayout(
+    {
+      breadcrumbs: ['RMA', 'New request'],
+      title: 'Create RMA Request',
+      description: 'Use a compact FieldGroup form layout that matches shadcn form composition.',
+      topRightAction: (
+        <Button asChild variant="outline">
+          <Link to="/rma">
+            <ArrowLeft aria-hidden="true" />
+            Back to list
+          </Link>
+        </Button>
+      ),
+    },
+    [],
+  )
 
   return (
     <RmaCreatePage

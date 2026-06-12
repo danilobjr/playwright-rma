@@ -1,4 +1,4 @@
-import { useEffect, useSyncExternalStore } from 'react'
+import { useEffect, useSyncExternalStore, type DependencyList } from 'react'
 
 import type { LayoutConfig } from './layout.model'
 
@@ -42,12 +42,12 @@ function setLayoutConfig(config: LayoutConfig) {
   listeners.forEach((listener) => listener())
 }
 
-function useLayout(config: LayoutConfig) {
-  const breadcrumbKey = config.breadcrumbs.join('\u001f')
-
+function useLayout(config: LayoutConfig, deps: DependencyList) {
   useEffect(() => {
     setLayoutConfig(config)
-  }, [breadcrumbKey, config])
+    // Callers pass effect-style deps to control layout sync.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, deps)
 
   useEffect(() => {
     return () => {

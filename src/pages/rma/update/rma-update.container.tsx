@@ -11,19 +11,22 @@ type RmaUpdateContainerProps = {
 }
 
 function RmaUpdateContainer({ rmaId }: RmaUpdateContainerProps) {
-  useLayout({
-    breadcrumbs: ['RMA', rmaId],
-    title: 'Update RMA Status',
-    description: 'Review the request and choose the next workflow status.',
-    topRightAction: (
-      <Button asChild variant="outline">
-        <Link to="/rma">
-          <ArrowLeft aria-hidden="true" />
-          Back to requests
-        </Link>
-      </Button>
-    ),
-  })
+  useLayout(
+    {
+      breadcrumbs: ['RMA', rmaId],
+      title: 'Update RMA Status',
+      description: 'Review the request and choose the next workflow status.',
+      topRightAction: (
+        <Button asChild variant="outline">
+          <Link to="/rma">
+            <ArrowLeft aria-hidden="true" />
+            Back to requests
+          </Link>
+        </Button>
+      ),
+    },
+    [rmaId],
+  )
 
   return <RmaUpdatePage rmaId={rmaId} />
 }
