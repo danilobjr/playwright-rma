@@ -61,6 +61,13 @@ Use rules below when user use handoff skill: `./.agents/skills/handoff/SKILL.md`
 - Use file name format `YYYY-MM-DD_HH-MM-SS_[SESSION_NAME].md`, where `SESSION_NAME` is lowercase, dash-separated, and has no punctuation.
 - After creating the temporary handoff, move it to `./docs/handoffs/`.
 
+## Design Text Rules
+
+- All user-facing static text must match the approved design exactly.
+- Do not invent titles, descriptions, labels, helper text, empty states, or button copy when a design exists.
+- Dynamic data text may interpolate runtime values into the design copy pattern.
+- If design text is missing or ambiguous, inspect the design artifact first; ask the user before adding new copy.
+
 ## Agent skills
 
 ### Issue tracker
