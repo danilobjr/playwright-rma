@@ -43,12 +43,6 @@
       "skillPath": "skills/shadcn/SKILL.md",
       "computedHash": "ac9d0d69caac7de1d1e5647f3db3bcd2f13af355d6b3a78780fbf7fc80e8dca0"
     },
-    "sqlite-expert": {
-      "source": "rightnow-ai/openfang",
-      "sourceType": "github",
-      "skillPath": "crates/openfang-skills/bundled/sqlite-expert/SKILL.md",
-      "computedHash": "f63004999d019b0a150309ea1a20661ab3aa33267e48e26f0dfafa6f800cc122"
-    },
     "tanstack-query": {
       "source": "tanstack-skills/tanstack-skills",
       "sourceType": "github",
