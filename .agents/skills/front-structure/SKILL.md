@@ -50,6 +50,25 @@ export { convertToHex }
 
 If a file exports a React component, it should export only that component. Do not export helpers, constants, types, or re-exports from the same file as a component; extract them to a `.util.ts`, `.constant.ts`, `.model.ts`, `.hook.ts`, or adjacent local file.
 
+## Page Composition
+
+Routes must render page containers, not page components directly.
+
+Example flow:
+
+```txt
+src/config/router.config.tsx
+-> src/pages/rma/create/rma-create.container.tsx
+-> src/pages/rma/create/rma-create.page.tsx
+```
+
+Page containers own route params, navigation, app hooks, services, loading/error/mutation orchestration, and layout configuration.
+Page components render prepared props only. They must not call router hooks, data services, or mutation hooks.
+
+Shared app layout belongs in `src/components/app/layout.app.tsx`.
+Pages configure shared layout through `useLayout`.
+Layout supports breadcrumbs, page title, description, `topRightAction`, and page content.
+
 ## Responsibility Boundaries
 
 - `src/components/ui`: reusable presentation components; no API calls or app-specific fetching.

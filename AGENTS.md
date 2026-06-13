@@ -56,10 +56,19 @@ This project is indexed by GitNexus as **playwright-rma** (18 symbols, 9 relatio
 
 ## Handoff File Rules
 
-Use rules below when user use handoff skill: `./.agents/skills/handoff/SKILL.md`.
+When using handoff skill: `./.agents/skills/handoff/SKILL.md`.
 
-- Use file name format `YYYY-MM-DD_HH-MM-SS_[SESSION_NAME].md`, where `SESSION_NAME` is lowercase, dash-separated, and has no punctuation.
-- After creating the temporary handoff, move it to `docs/handoffs/`.
+1. Create the handoff file first in the OS temporary directory.
+2. Then move that file into `./docs/handoffs/` before finishing.
+3. Final response must report the final workspace path, not the temporary path.
+4. Use file name format `YYYY-MM-DD_HH-MM-SS_[SESSION_NAME].md`, where `SESSION_NAME` is lowercase, dash-separated, and has no punctuation.
+
+## Design Text Rules
+
+- All user-facing static text must match the approved design exactly.
+- Do not invent titles, descriptions, labels, helper text, empty states, or button copy when a design exists.
+- Dynamic data text may interpolate runtime values into the design copy pattern.
+- If design text is missing or ambiguous, inspect the design artifact first; ask the user before adding new copy.
 
 ## Agent skills
 
