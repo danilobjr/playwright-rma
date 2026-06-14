@@ -49,7 +49,8 @@ export { convertToHex }
 
 ## React Components
 
-If a file exports a React component, it should export only that component. Do not export helpers, constants, types, or re-exports from the same file as a component; extract them to a `.util.ts`, `.constant.ts`, `.model.ts`, `.hook.ts`, or adjacent local file.
+If a file exports a React component, it may export only that component and its props type. Do not export helpers, constants, unrelated types, or re-exports from the same file as a component; extract them to a `.util.ts`, `.constant.ts`, `.model.ts`, `.hook.ts`, or adjacent local file.
+Components with props must define a named `ComponentNameProps` type and use it in the component signature. Components with no props do not need a props type. Inline props type annotations are not allowed. Export the props type before the runtime component export.
 Import React APIs directly by name. Prefer `import { useEffect, type ComponentProps } from 'react'` over `import * as React from 'react'`. Keep type imports marked with `type`. Use `React.*` namespace access only when namespace behavior is explicitly needed.
 
 Example:
@@ -57,13 +58,19 @@ Example:
 ```ts
 import { useEffect, type ComponentProps } from 'react'
 
-function Button(props: ComponentProps<'button'>) {
+type ButtonProps = ComponentProps<'button'>
+
+function Button(props: ButtonProps) {
   useEffect(() => {
     // ...
   }, [])
 
   return <button {...props} />
 }
+
+export type { ButtonProps }
+
+export { Button }
 ```
 
 ## UI Component Folders
