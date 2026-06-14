@@ -73,6 +73,23 @@ export type { ButtonProps }
 export { Button }
 ```
 
+## Component Props
+
+For every component kind, order destructured props as `children`, `className`, other `className*` props sorted alphabetically, `id`, other named props sorted alphabetically, then `...otherProps`. Set default values whenever safe. Do not default required props or props where `undefined` has semantic meaning.
+
+```tsx
+function ComponentName({
+  children = null,
+  className = '',
+  classNameD = '',
+  classNameJ = '',
+  id = '',
+  propK = Status.PENDING,
+  propV = false,
+  ...otherProps
+}: ComponentNameProps) {}
+```
+
 ## JSX Props
 
 Order JSX props as `className`, then other `className*` props sorted alphabetically, then `data-slot`, then remaining props. `className*` means any prop whose name starts with `className`, such as `classNameContainer`, `classNameIcon`, or `classNameText`. Native elements cannot receive custom `className*` props; use only `className` there. If `data-slot` exists and there are no `className` or `className*` props, `data-slot` comes first.
