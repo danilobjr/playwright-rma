@@ -13,17 +13,17 @@ function Button({
   variant = 'default',
   size = 'default',
   asChild = false,
-  ...props
+  ...otherProps
 }: ButtonProps) {
   const Comp = asChild ? Slot.Root : 'button'
 
   return (
     <Comp
+      className={cn(buttonVariants({ variant, size }), className)}
       data-slot="button"
       data-variant={variant}
       data-size={size}
-      className={cn(buttonVariants({ variant, size, className }))}
-      {...props}
+      {...otherProps}
     />
   )
 }
