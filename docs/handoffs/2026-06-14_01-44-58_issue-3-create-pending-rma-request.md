@@ -2,21 +2,23 @@
 
 ## Purpose
 
-Prepare a fresh agent to continue after implementing issue #3 locally.
+Prepare a fresh agent to continue after implementing, committing, and pushing issue #3 work.
 
 ## Current State
 
 - Branch: `3/create-pending-rma`.
+- User reported `3/create-pending-rma` has been pushed to the remote repository.
 - Base commit before current work: `d38f62b feat(rma): add shell route navigation (#8)`.
+- Latest local commit at update time: `f937f02 docs(handoffs): add create route pr handoff`.
 - Issue #3: https://github.com/danilobjr/playwright-rma/issues/3
 - PR #8 is merged: https://github.com/danilobjr/playwright-rma/pull/8
 - Caveman response mode is active until user says `stop caveman` or `normal mode`.
 - User approved temporary shadcn file suffix exception.
 - User wants future reminder to define UI component conventions, then update `front-structure`.
 
-## Work Completed In Working Tree
+## Work Completed
 
-Reference git diff for full details. Main changed areas:
+Reference git history and diff from `d38f62b` for full details. Main changed areas:
 
 - RMA service/model: `src/services/api/rma/`
 - Query hooks: `src/hooks/api/rma/`
@@ -28,6 +30,17 @@ Reference git diff for full details. Main changed areas:
 - shadcn UI files: `src/components/ui/`
 - E2E create flow: `e2e/rma-create.spec.ts`
 
+## Commits Created
+
+- `95028ff feat(ui): add shadcn form primitives`
+- `f29b1fa feat(rma): add browser-only request service`
+- `fce7fac feat(rma): wire request query state`
+- `27135d8 feat(rma): implement pending request form`
+- `4b42a3b feat(rma): show request list records`
+- `7b59d36 test(e2e): cover pending request creation`
+- `6311fe9 docs(handoffs): add issue 3 implementation handoff`
+- `f937f02 docs(handoffs): add create route pr handoff`
+
 ## Verification Completed
 
 - `pnpm test` passed.
@@ -38,18 +51,16 @@ Reference git diff for full details. Main changed areas:
 
 ## Current Worktree Notes
 
-- `.gitignore` is modified and pre-existing/unrelated except it may also now ignore generated artifacts.
-- `docs/handoffs/2026-06-12_23-29-10_create-route-pr-handoff.md` is untracked and pre-existing from earlier read/handoff context.
+- `.gitignore` is modified and pre-existing/unrelated.
 - `docs/initial-app-design-analysis.md` is untracked and pre-existing/unrelated.
+- `docs/handoffs/2026-06-14_01-44-58_issue-3-create-pending-rma-request_BACKUP_COPY.md` exists as a user-created backup. Do not touch it unless explicitly requested.
 - Do not commit unrelated files without explicit user confirmation.
-- No commit has been made for issue #3 yet.
 
 ## Important Follow-Up
 
 - User asked to remember this future task: define naming conventions/file structure for UI components, including `*.ui.tsx`, `*.styles.ts`, one component per folder, testing policy (`unit`, `e2e`, or both), extracted styles, and hook location. Then update `front-structure` skill.
 - shadcn generated files currently remain unsuffixed as an approved temporary exception.
-- If preparing commit/PR, inspect `git status`, `git diff`, `git log --oneline -10`; stage only intended issue #3 files.
-- Before committing, run GitNexus change detection again as required by repo rules.
+- If preparing a PR, inspect `git status`, `git diff`, `git log --oneline -10`, branch tracking, and the diff from the base branch.
 
 ## Suggested Skills
 
