@@ -1,12 +1,15 @@
 import { Link } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
 
-import { Button } from '@/components/ui/button'
 import { useLayout } from '@/components/app/layout/use-layout.hook'
+import { Button } from '@/components/ui/button'
+import { useRmaRequests } from '@/hooks/api/rma/use-rma-requests.hook'
 
 import { RmaListPage } from './rma-list.page'
 
 function RmaListContainer() {
+  const rmaRequestsQuery = useRmaRequests()
+
   useLayout(
     {
       breadcrumbs: ['Operations', 'RMA'],
@@ -25,7 +28,7 @@ function RmaListContainer() {
     [],
   )
 
-  return <RmaListPage />
+  return <RmaListPage requests={rmaRequestsQuery.data ?? []} />
 }
 
 export { RmaListContainer }
