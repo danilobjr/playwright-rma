@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { type ComponentProps } from 'react'
 import { Slot } from 'radix-ui'
 
 import { cn } from '@/utils/styles/cn.util'
@@ -11,7 +11,7 @@ function Button({
   size = 'default',
   asChild = false,
   ...props
-}: React.ComponentProps<'button'> &
+}: ComponentProps<'button'> &
   ButtonVariants & {
     asChild?: boolean
   }) {
