@@ -6,13 +6,15 @@ import { cn } from '@/utils/styles/cn.util'
 
 import { buttonVariants, type ButtonVariants } from './button.styles'
 
+type ButtonProps = ComponentProps<'button'> & ButtonVariants & AsChildProp
+
 function Button({
   className,
   variant = 'default',
   size = 'default',
   asChild = false,
   ...props
-}: ComponentProps<'button'> & ButtonVariants & AsChildProp) {
+}: ButtonProps) {
   const Comp = asChild ? Slot.Root : 'button'
 
   return (
@@ -25,5 +27,7 @@ function Button({
     />
   )
 }
+
+export type { ButtonProps }
 
 export { Button }
