@@ -25,6 +25,7 @@ Use `kebab-case` for file names, `camelCase` for variables/functions, `PascalCas
 - Constant file: `name.constant.ts`
 - Hook file: `use-name.hook.ts`
 - Model/type file: `name.model.ts`
+- Type-only file: `name.type.ts`
 - Service file: `name.service.ts`
 - Utility file: `name.util.ts`
   For local one-off support components inside a page folder, prefer the closest meaningful suffix. `index.ts` is allowed only as a folder public API. Do not invent new suffixes unless the project already has one.
@@ -106,6 +107,10 @@ If shadcn generates a flat file, normalize any touched component to this folder 
 
 Component-private hooks live beside the owning component as `use-name.hook.ts`. Cross-UI-component hooks live in `src/components/ui/shared/hooks`. Cross-entire-app hooks live in `src/hooks/<context>`. API hooks live in `src/hooks/api/<context-folder>` and call API services.
 
+## Shared Component Types
+
+Shared prop types used across UI, app, or page components live in `src/components/shared/types`. `src/components/shared/types/as-child-prop.type.ts` is required and owns the canonical `AsChildProp` type for components that expose `asChild`. Do not redefine `asChild?: boolean` inline in each component.
+
 ## Page Composition
 
 Routes must render page containers, not page components directly.
@@ -128,6 +133,7 @@ Layout supports breadcrumbs, page title, description, `topRightAction`, and page
 ## Responsibility Boundaries
 
 - `src/components/ui`: reusable presentation components; no router hooks, app hooks, query hooks, service imports, API calls, app-specific fetching, or page/domain orchestration.
+- `src/components/shared/types`: reusable type-only helpers for UI, app, or page components.
 - `src/components/app`: project-specific composed components; may use app hooks but should not become page containers.
 - `src/pages/<domain>/<action>`: route/page-specific page, container, and local support code.
 - Page components: define macro layout, receive data/callbacks through props, do not fetch data, and do not own navigation.
@@ -155,6 +161,9 @@ root
    ├── assets
    ├── components
    │   ├── app
+   │   ├── shared
+   │   │   └── types
+   │   │       └── as-child-prop.type.ts   Required
    │   └── ui
    │       ├── shared
    │       │   └── hooks
