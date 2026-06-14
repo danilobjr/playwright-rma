@@ -1,10 +1,9 @@
 import * as React from 'react'
-import type { VariantProps } from 'cva'
 import { Slot } from 'radix-ui'
 
 import { cn } from '@/utils/styles/cn.util'
 
-import { buttonVariants } from './button.styles'
+import { buttonVariants, type ButtonVariants } from './button.styles'
 
 function Button({
   className,
@@ -13,7 +12,7 @@ function Button({
   asChild = false,
   ...props
 }: React.ComponentProps<'button'> &
-  VariantProps<typeof buttonVariants> & {
+  ButtonVariants & {
     asChild?: boolean
   }) {
   const Comp = asChild ? Slot.Root : 'button'
