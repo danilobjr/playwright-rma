@@ -1,6 +1,7 @@
 import { type ComponentProps } from 'react'
 import { Slot } from 'radix-ui'
 
+import type { AsChildProp } from '@/components/shared/types/as-child-prop.type'
 import { cn } from '@/utils/styles/cn.util'
 
 import { buttonVariants, type ButtonVariants } from './button.styles'
@@ -11,10 +12,7 @@ function Button({
   size = 'default',
   asChild = false,
   ...props
-}: ComponentProps<'button'> &
-  ButtonVariants & {
-    asChild?: boolean
-  }) {
+}: ComponentProps<'button'> & ButtonVariants & AsChildProp) {
   const Comp = asChild ? Slot.Root : 'button'
 
   return (
