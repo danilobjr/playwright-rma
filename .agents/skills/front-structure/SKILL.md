@@ -73,6 +73,30 @@ export type { ButtonProps }
 export { Button }
 ```
 
+## JSX Props
+
+Order JSX props as `className`, then other `className*` props sorted alphabetically, then `data-slot`, then remaining props. `className*` means any prop whose name starts with `className`, such as `classNameContainer`, `classNameIcon`, or `classNameText`. Native elements cannot receive custom `className*` props; use only `className` there. If `data-slot` exists and there are no `className` or `className*` props, `data-slot` comes first.
+
+Never pass `className` into `cva` variant functions. Pass generated classes and external `className` separately to `cn`.
+
+```tsx
+className={cn(componentVariants({ size, variant }), className)}
+```
+
+When destructuring component props with a rest spread, name the rest value `otherProps`. Use `props` only for a non-destructured props object.
+
+```tsx
+function ComponentName({ asChild = false, ...otherProps }: ComponentNameProps) {
+  const Comp = asChild ? Slot.Root : 'div'
+
+  return <Comp {...otherProps} />
+}
+
+function ComponentName(props: ComponentNameProps) {
+  return <div {...props} />
+}
+```
+
 ## UI Component Folders
 
 Reusable UI components in `src/components/ui` use one folder per component. New or touched UI components must follow this shape:
