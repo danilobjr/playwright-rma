@@ -67,7 +67,9 @@ Folder `index.ts` is the public import surface and should contain named re-expor
 
 If shadcn generates a flat file, normalize any touched component to this folder convention after generation. If the user asks to migrate existing UI components, update the requested components to this shape; otherwise do not migrate unrelated components during focused work.
 
-Component tests, when needed, live beside the component as `component-name.ui.test.tsx`. Test reusable UI behavior and accessibility states here. Route flows stay in `e2e` or page-level tests.
+## Hook Placement
+
+Component-private hooks live beside the owning component as `use-name.hook.ts`. Cross-UI-component hooks live in `src/components/ui/shared/hooks`. Cross-entire-app hooks live in `src/hooks/<context>`. API hooks live in `src/hooks/api/<context-folder>` and call API services.
 
 ## Page Composition
 
@@ -90,13 +92,15 @@ Layout supports breadcrumbs, page title, description, `topRightAction`, and page
 
 ## Responsibility Boundaries
 
-- `src/components/ui`: reusable presentation components; no API calls or app-specific fetching.
+- `src/components/ui`: reusable presentation components; no router hooks, app hooks, query hooks, service imports, API calls, app-specific fetching, or page/domain orchestration.
 - `src/components/app`: project-specific composed components; may use app hooks but should not become page containers.
 - `src/pages/<domain>/<action>`: route/page-specific page, container, and local support code.
 - Page components: define macro layout, receive data/callbacks through props, do not fetch data, and do not own navigation.
 - Page containers: call hooks/services, own loading/error/mutation/navigation orchestration, and pass prepared data/handlers to one page component.
-- `src/hooks/api`: TanStack Query hooks that call API services.
-- Other hooks: state/lifecycle hooks belong in hook subfolders; page-only hooks can live beside the owning page.
+- `src/components/ui/shared/hooks`: hooks shared across multiple UI components only.
+- `src/hooks/api/<context-folder>`: TanStack Query hooks that call API services.
+- `src/hooks/<context>`: hooks shared across the entire app.
+- Page-only hooks can live beside the owning page.
 - `src/services/api/<domain>`: API service functions; do not import React components.
 - `src/config`: app providers, TanStack Router setup, route trees, query clients, and app-level configuration.
 - `src/constants`: context-specific constants.
@@ -117,16 +121,19 @@ root
    ├── components
    │   ├── app
    │   └── ui
+   │       ├── shared
+   │       │   └── hooks
    │       └── component-name   Example
    │           ├── component-name.ui.tsx
+   │           ├── use-name.hook.ts       Example
    │           ├── component-name.styles.ts
    │           └── index.ts
    ├── config
    ├── constants
    ├── hooks
    │   ├── api
-   │   ├── state-management
-   │   └── life-cycle
+   │   │   └── context-folder
+   │   └── context          Example
    ├── pages
    │   └── domain
    │       ├── list
