@@ -61,7 +61,27 @@ src/components/ui/component-name
 └── index.ts
 ```
 
-Use `component-name.ui.tsx` for the component. Use `component-name.styles.ts` for `cva`, variant maps, long Tailwind class strings, slot styling, or reusable style constants. Keep tiny static class names inline. Style files must not export React components, hooks, services, or app logic.
+Use `component-name.ui.tsx` for the component. Use `component-name.styles.ts` for `cva`, variant maps, long Tailwind class strings, slot styling, reusable style constants, and style-derived types. Keep tiny static class names inline. Style files may export style builders/constants and related types only. They must not export React components, hooks, services, or app logic.
+
+Example:
+
+```ts
+import { cva, type VariantProps } from 'cva'
+
+const buttonVariants = cva('...', {
+  variants: {
+    variant: {
+      default: '...',
+    },
+  },
+})
+
+type ButtonVariants = VariantProps<typeof buttonVariants>
+
+export type { ButtonVariants }
+
+export { buttonVariants }
+```
 
 Folder `index.ts` is the public import surface and should contain named re-exports only. Consumers import from the folder path, e.g. `@/components/ui/component-name`. Internal files import relatively, e.g. `./component-name.styles`.
 
