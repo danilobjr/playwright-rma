@@ -49,6 +49,21 @@ export { convertToHex }
 ## React Components
 
 If a file exports a React component, it should export only that component. Do not export helpers, constants, types, or re-exports from the same file as a component; extract them to a `.util.ts`, `.constant.ts`, `.model.ts`, `.hook.ts`, or adjacent local file.
+Import React APIs directly by name. Prefer `import { useEffect, type ComponentProps } from 'react'` over `import * as React from 'react'`. Keep type imports marked with `type`. Use `React.*` namespace access only when namespace behavior is explicitly needed.
+
+Example:
+
+```ts
+import { useEffect, type ComponentProps } from 'react'
+
+function Button(props: ComponentProps<'button'>) {
+  useEffect(() => {
+    // ...
+  }, [])
+
+  return <button {...props} />
+}
+```
 
 ## UI Component Folders
 
