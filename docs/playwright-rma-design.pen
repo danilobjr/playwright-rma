@@ -2804,7 +2804,7 @@
                       "fill": "#71717A",
                       "textGrowth": "fixed-width",
                       "width": "fill_container",
-                      "content": "RMA ID is generated automatically. Status starts as Pending.",
+                      "content": "RMA ID is generated automatically",
                       "fontFamily": "Geist",
                       "fontSize": 14
                     }
@@ -2910,66 +2910,6 @@
                                       "content": "RMA-2026-1049",
                                       "fontFamily": "Geist",
                                       "fontSize": 14
-                                    }
-                                  ]
-                                }
-                              ]
-                            },
-                            {
-                              "type": "frame",
-                              "id": "c0LjV",
-                              "name": "Status Field",
-                              "width": 220,
-                              "layout": "vertical",
-                              "gap": 8,
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "qLK2T",
-                                  "name": "Status FieldLabel",
-                                  "fill": "#18181B",
-                                  "content": "Status",
-                                  "fontFamily": "Geist",
-                                  "fontSize": 13,
-                                  "fontWeight": "500"
-                                },
-                                {
-                                  "type": "frame",
-                                  "id": "tcjz3",
-                                  "name": "Status SelectTrigger",
-                                  "width": "fill_container",
-                                  "height": 40,
-                                  "fill": "#FFFFFF",
-                                  "cornerRadius": 8,
-                                  "stroke": "#D4D4D8",
-                                  "strokeWidth": 1,
-                                  "strokeAlignment": "inner",
-                                  "gap": 8,
-                                  "padding": [
-                                    0,
-                                    12
-                                  ],
-                                  "justifyContent": "space_between",
-                                  "alignItems": "center",
-                                  "children": [
-                                    {
-                                      "type": "text",
-                                      "id": "fnU1w",
-                                      "name": "Status SelectValue",
-                                      "fill": "#18181B",
-                                      "content": "Pending",
-                                      "fontFamily": "Geist",
-                                      "fontSize": 14
-                                    },
-                                    {
-                                      "type": "icon",
-                                      "id": "NSYFT",
-                                      "name": "Status SelectIcon",
-                                      "width": 16,
-                                      "height": 16,
-                                      "icon": "chevron-down",
-                                      "library": "lucide",
-                                      "fill": "#71717A"
                                     }
                                   ]
                                 }
