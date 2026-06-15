@@ -1,5 +1,4 @@
 {
-  "editorconfig": true,
   "semi": false,
   "singleQuote": true,
 
@@ -33,4 +32,3 @@
     "prettier-plugin-tailwindcss"
   ]
 }
-
