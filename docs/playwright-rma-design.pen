@@ -2278,7 +2278,30 @@
                           "content": "Status"
                         },
                         "fFwZ0": {
-                          "content": "Approved"
+                          "type": "frame",
+                          "name": "Status select value",
+                          "gap": 8,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon",
+                              "name": "Status select value icon",
+                              "width": 16,
+                              "height": 16,
+                              "icon": "check",
+                              "library": "lucide",
+                              "fill": "#52525B"
+                            },
+                            {
+                              "type": "text",
+                              "name": "Status select value label",
+                              "fill": "#111827",
+                              "content": "Approved",
+                              "fontFamily": "Inter",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            }
+                          ]
                         }
                       }
                     },
