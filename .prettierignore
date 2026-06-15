@@ -1,5 +1,17 @@
+.agents
+.claude
+.gitnexus
+
+dist
 node_modules
+public
+test-results
+tmp
+
 package-lock.json
 pnpm-lock.yaml
-public
+skills-lock.json
 
+AGENTS.md
+CLAUDE.md
+CONTEXT.md
