@@ -1,9 +1,15 @@
 import type { ReactNode } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Check } from 'lucide-react'
+import { Link } from '@tanstack/react-router'
+import { Check, CircleAlertIcon } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import {
+  Alert,
+  AlertAction,
+  AlertDescription,
+  AlertTitle,
+} from '@/components/ui/alert'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -23,6 +29,7 @@ import {
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import type { RmaStatus } from '@/services/api/rma/rma-request.model'
 
 import {
   PRODUCT_ID_PREFIX,
@@ -35,19 +42,28 @@ import {
 
 const PENDING_STATUS = 'Pending'
 
+type DuplicateAlert = {
+  matchingRmaId: string
+  matchingStatus: RmaStatus
+}
+
 type RmaCreatePageProps = {
   cancelAction: ReactNode
+  duplicateAlert?: DuplicateAlert
   isSubmitting: boolean
   nextRmaId: string
   submitError?: string
+  onDuplicateFieldsChange: () => void
   onSubmit: (values: RmaCreateFormValues) => void
 }
 
 function RmaCreatePage({
   cancelAction,
+  duplicateAlert,
   isSubmitting,
   nextRmaId,
   submitError,
+  onDuplicateFieldsChange,
   onSubmit,
 }: RmaCreatePageProps) {
   const {
@@ -58,7 +74,14 @@ function RmaCreatePage({
     resolver: zodResolver(rmaCreateFormSchema),
     defaultValues: rmaCreateFormDefaultValues,
   })
+  const customerNameRegistration = register('customerName')
   const productIdRegistration = register('productId')
+  const reasonRegistration = register('reason')
+  const duplicateAlertMessage = duplicateAlert
+    ? duplicateAlert.matchingStatus === PENDING_STATUS
+      ? 'A matching Pending RMA Request already exists.'
+      : `A matching ${duplicateAlert.matchingStatus} RMA Request already exists today.`
+    : undefined
 
   return (
     <section className="flex justify-center">
@@ -103,7 +126,11 @@ function RmaCreatePage({
                       errors.customerName ? 'customer-name-error' : undefined
                     }
                     aria-invalid={Boolean(errors.customerName)}
-                    {...register('customerName')}
+                    {...customerNameRegistration}
+                    onChange={(event) => {
+                      onDuplicateFieldsChange()
+                      void customerNameRegistration.onChange(event)
+                    }}
                   />
                   <FieldError
                     id="customer-name-error"
@@ -127,6 +154,7 @@ function RmaCreatePage({
                       maxLength={4}
                       {...productIdRegistration}
                       onChange={(event) => {
+                        onDuplicateFieldsChange()
                         event.currentTarget.value = sanitizeProductIdSuffix(
                           event.currentTarget.value,
                         )
@@ -151,7 +179,11 @@ function RmaCreatePage({
                   }
                   aria-invalid={Boolean(errors.reason)}
                   className="min-h-32"
-                  {...register('reason')}
+                  {...reasonRegistration}
+                  onChange={(event) => {
+                    onDuplicateFieldsChange()
+                    void reasonRegistration.onChange(event)
+                  }}
                 />
                 <FieldDescription id="reason-description">
                   Include condition, defect details, and customer-provided
@@ -160,7 +192,29 @@ function RmaCreatePage({
                 <FieldError id="reason-error" errors={[errors.reason]} />
               </Field>
 
-              {submitError ? (
+              {duplicateAlert && duplicateAlertMessage ? (
+                <Alert className="animate-in duration-200 fade-in slide-in-from-top-1">
+                  <CircleAlertIcon aria-hidden="true" />
+                  <AlertTitle>Couldn't create</AlertTitle>
+                  <AlertDescription>
+                    <p>{duplicateAlertMessage}</p>
+                    <p>
+                      Matching RMA ID: {duplicateAlert.matchingRmaId}. Status:{' '}
+                      {duplicateAlert.matchingStatus}.
+                    </p>
+                  </AlertDescription>
+                  <AlertAction>
+                    <Button asChild size="sm" variant="outline">
+                      <Link
+                        params={{ rmaId: duplicateAlert.matchingRmaId }}
+                        to="/rma/$rmaId"
+                      >
+                        View matching request
+                      </Link>
+                    </Button>
+                  </AlertAction>
+                </Alert>
+              ) : submitError ? (
                 <Alert variant="destructive">
                   <AlertDescription>{submitError}</AlertDescription>
                 </Alert>

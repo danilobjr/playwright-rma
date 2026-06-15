@@ -76,4 +76,71 @@ describe('RMA request service', () => {
       }),
     ).rejects.toThrow('Reason must be at most 255 characters')
   })
+
+  it('blocks a matching Pending RMA Request regardless of date', async () => {
+    vi.setSystemTime(new Date('2027-06-01T10:30:00.000Z'))
+
+    await expect(
+      createRmaRequest({
+        customerName: 'avery stone',
+        productId: 'prd-7f2a',
+        reason: 'display panel intermittently turns black during use.',
+      }),
+    ).rejects.toMatchObject({
+      matchingRmaId: 'RMA-2026-1001',
+      matchingStatus: 'Pending',
+    })
+  })
+
+  it('normalizes text before duplicate comparison without changing stored text', async () => {
+    await expect(
+      createRmaRequest({
+        customerName: '  AVERY   STONE  ',
+        productId: 'prd-7f2a',
+        reason: 'Display   panel intermittently turns BLACK during use.',
+      }),
+    ).rejects.toMatchObject({
+      matchingRmaId: 'RMA-2026-1001',
+      matchingStatus: 'Pending',
+    })
+
+    await expect(listRmaRequests()).resolves.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          rmaId: 'RMA-2026-1001',
+          customerName: 'Avery Stone',
+          reason: 'Display panel intermittently turns black during use.',
+        }),
+      ]),
+    )
+  })
+
+  it('blocks matching non-Pending RMA Requests only on the same local calendar day', async () => {
+    vi.setSystemTime(new Date('2026-02-08T20:30:00.000Z'))
+
+    await expect(
+      createRmaRequest({
+        customerName: 'Mina Patel',
+        productId: 'PRD-9C4D',
+        reason: 'Battery does not hold charge longer than thirty minutes.',
+      }),
+    ).rejects.toMatchObject({
+      matchingRmaId: 'RMA-2026-1002',
+      matchingStatus: 'Approved',
+    })
+
+    vi.setSystemTime(new Date('2026-02-09T10:30:00.000Z'))
+
+    await expect(
+      createRmaRequest({
+        customerName: 'Mina Patel',
+        productId: 'PRD-9C4D',
+        reason: 'Battery does not hold charge longer than thirty minutes.',
+      }),
+    ).resolves.toMatchObject({
+      status: 'Pending',
+      customerName: 'Mina Patel',
+      productId: 'PRD-9C4D',
+    })
+  })
 })
