@@ -6,5 +6,14 @@
       "command": ["pnpm", "exec", "playwright-mcp"],
       "enabled": true
     }
+  },
+  "permission": {
+    "bash": {
+      "*": "ask",
+      "git *": "allow",
+      "git commit *": "ask",
+      "grep *": "allow",
+      "rm *": "deny"
+    }
   }
 }
