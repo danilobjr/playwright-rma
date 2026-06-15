@@ -43,6 +43,20 @@ function normalizeProductId(value: string) {
   return productId
 }
 
+function normalizeReason(value: string) {
+  const reason = normalizeRequiredText(value, 'Reason')
+
+  if (reason.length < 10) {
+    throw new Error('Reason must be at least 10 characters')
+  }
+
+  if (reason.length > 255) {
+    throw new Error('Reason must be at most 255 characters')
+  }
+
+  return reason
+}
+
 function readStoredRmaRequests() {
   const stored = localStorage.getItem(RMA_STORAGE_KEY)
 
@@ -97,7 +111,7 @@ async function createRmaRequest(input: CreateRmaRequestInput) {
     status: PENDING_STATUS,
     customerName: normalizeRequiredText(input.customerName, 'Customer Name'),
     productId: normalizeProductId(input.productId),
-    reason: normalizeRequiredText(input.reason, 'Reason'),
+    reason: normalizeReason(input.reason),
     createdAt: new Date().toISOString(),
   }
 
