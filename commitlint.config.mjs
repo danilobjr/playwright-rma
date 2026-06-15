@@ -128,12 +128,6 @@ export default {
             title: 'Performance improvements',
             description: 'A code change that improves performance',
           },
-          ci: {
-            emoji: '🔧',
-            title: 'CI/CD changes',
-            description:
-              'Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)',
-          },
           build: {
             emoji: '📦️',
             title: 'Build system',
