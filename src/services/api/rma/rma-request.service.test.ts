@@ -1,6 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { createRmaRequest, listRmaRequests, peekNextRmaId } from './rma-request.service'
+import {
+  createRmaRequest,
+  listRmaRequests,
+  peekNextRmaId,
+} from './rma-request.service'
 
 describe('RMA request service', () => {
   beforeEach(() => {
@@ -40,7 +44,9 @@ describe('RMA request service', () => {
       createdAt: '2026-03-04T10:30:00.000Z',
     })
 
-    await expect(listRmaRequests()).resolves.toEqual(expect.arrayContaining([request]))
+    await expect(listRmaRequests()).resolves.toEqual(
+      expect.arrayContaining([request]),
+    )
   })
 
   it('previews the next RMA ID without creating a request', async () => {

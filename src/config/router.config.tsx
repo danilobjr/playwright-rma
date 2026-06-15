@@ -53,7 +53,12 @@ const rmaUpdateRoute = createRoute({
   },
 })
 
-const routeTree = rootRoute.addChildren([indexRoute, rmaListRoute, rmaCreateRoute, rmaUpdateRoute])
+const routeTree = rootRoute.addChildren([
+  indexRoute,
+  rmaListRoute,
+  rmaCreateRoute,
+  rmaUpdateRoute,
+])
 
 const hashHistory = createHashHistory()
 

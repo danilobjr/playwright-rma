@@ -58,7 +58,10 @@ function CardTitle({ className = '', ...otherProps }: CardTitleProps) {
   )
 }
 
-function CardDescription({ className = '', ...otherProps }: CardDescriptionProps) {
+function CardDescription({
+  className = '',
+  ...otherProps
+}: CardDescriptionProps) {
   return (
     <div
       className={cn(cardDescriptionVariants(), className)}

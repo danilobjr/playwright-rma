@@ -1,5 +1,11 @@
 import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import type { RmaRequest } from '@/services/api/rma/rma-request.model'
 
 type RmaListPageProps = {
@@ -12,7 +18,9 @@ function RmaListPage({ requests }: RmaListPageProps) {
       <Card>
         <CardHeader>
           <CardTitle>No RMA Requests</CardTitle>
-          <CardDescription>Create an RMA Request to start tracking returns.</CardDescription>
+          <CardDescription>
+            Create an RMA Request to start tracking returns.
+          </CardDescription>
         </CardHeader>
       </Card>
     )

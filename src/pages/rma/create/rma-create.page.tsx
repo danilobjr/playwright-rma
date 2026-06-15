@@ -14,7 +14,13 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field'
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 
@@ -56,7 +62,9 @@ function RmaCreatePage({
       <Card className="w-full max-w-3xl">
         <CardHeader className="border-b">
           <CardTitle>
-            <h2 className="text-2xl font-semibold tracking-tight">Request details</h2>
+            <h2 className="text-2xl font-semibold tracking-tight">
+              Request details
+            </h2>
           </CardTitle>
           <CardDescription>
             RMA ID is generated automatically. Status starts as Pending.
@@ -75,7 +83,12 @@ function RmaCreatePage({
                   <div className="flex h-8 items-center rounded-lg border border-input bg-transparent px-2.5">
                     <Badge variant="secondary">{PENDING_STATUS}</Badge>
                   </div>
-                  <input id="status" readOnly type="hidden" value={PENDING_STATUS} />
+                  <input
+                    id="status"
+                    readOnly
+                    type="hidden"
+                    value={PENDING_STATUS}
+                  />
                 </Field>
               </div>
               <div className="flex flex-col gap-4 md:flex-row">
@@ -83,21 +96,31 @@ function RmaCreatePage({
                   <FieldLabel htmlFor="customer-name">Customer Name</FieldLabel>
                   <Input
                     id="customer-name"
-                    aria-describedby={errors.customerName ? 'customer-name-error' : undefined}
+                    aria-describedby={
+                      errors.customerName ? 'customer-name-error' : undefined
+                    }
                     aria-invalid={Boolean(errors.customerName)}
                     {...register('customerName')}
                   />
-                  <FieldError id="customer-name-error" errors={[errors.customerName]} />
+                  <FieldError
+                    id="customer-name-error"
+                    errors={[errors.customerName]}
+                  />
                 </Field>
                 <Field data-invalid={Boolean(errors.productId)}>
                   <FieldLabel htmlFor="product-id">Product ID</FieldLabel>
                   <Input
                     id="product-id"
-                    aria-describedby={errors.productId ? 'product-id-error' : undefined}
+                    aria-describedby={
+                      errors.productId ? 'product-id-error' : undefined
+                    }
                     aria-invalid={Boolean(errors.productId)}
                     {...register('productId')}
                   />
-                  <FieldError id="product-id-error" errors={[errors.productId]} />
+                  <FieldError
+                    id="product-id-error"
+                    errors={[errors.productId]}
+                  />
                 </Field>
               </div>
               <Field data-invalid={Boolean(errors.reason)}>
@@ -105,14 +128,17 @@ function RmaCreatePage({
                 <Textarea
                   id="reason"
                   aria-describedby={
-                    errors.reason ? 'reason-error reason-description' : 'reason-description'
+                    errors.reason
+                      ? 'reason-error reason-description'
+                      : 'reason-description'
                   }
                   aria-invalid={Boolean(errors.reason)}
                   className="min-h-32"
                   {...register('reason')}
                 />
                 <FieldDescription id="reason-description">
-                  Include condition, defect details, and customer-provided notes.
+                  Include condition, defect details, and customer-provided
+                  notes.
                 </FieldDescription>
                 <FieldError id="reason-error" errors={[errors.reason]} />
               </Field>
@@ -120,8 +146,8 @@ function RmaCreatePage({
                 <Info aria-hidden="true" />
                 <AlertDescription>
                   <p>
-                    Submitting this form creates a Pending RMA and returns the user to the request
-                    list.
+                    Submitting this form creates a Pending RMA and returns the
+                    user to the request list.
                   </p>
                 </AlertDescription>
               </Alert>

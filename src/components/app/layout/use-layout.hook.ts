@@ -28,7 +28,9 @@ function hasSameLayout(previous: LayoutConfig, next: LayoutConfig) {
     previous.title === next.title &&
     previous.description === next.description &&
     previous.breadcrumbs.length === next.breadcrumbs.length &&
-    previous.breadcrumbs.every((breadcrumb, index) => breadcrumb === next.breadcrumbs[index])
+    previous.breadcrumbs.every(
+      (breadcrumb, index) => breadcrumb === next.breadcrumbs[index],
+    )
   )
 }
 

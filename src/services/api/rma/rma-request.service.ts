@@ -76,7 +76,8 @@ function getNextRmaId(requests: RmaRequest[]) {
 
     return [Number(match[2])]
   })
-  const nextSequence = Math.max(RMA_ID_START_SEQUENCE - 1, ...currentYearSequences) + 1
+  const nextSequence =
+    Math.max(RMA_ID_START_SEQUENCE - 1, ...currentYearSequences) + 1
 
   return `RMA-${currentYear}-${nextSequence}`
 }

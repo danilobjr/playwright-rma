@@ -1,6 +1,9 @@
 import { queryOptions, useQuery } from '@tanstack/react-query'
 
-import { listRmaRequests, peekNextRmaId } from '@/services/api/rma/rma-request.service'
+import {
+  listRmaRequests,
+  peekNextRmaId,
+} from '@/services/api/rma/rma-request.service'
 
 const rmaRequestsQueryKey = ['rma-requests'] as const
 const nextRmaIdQueryKey = ['rma-requests', 'next-rma-id'] as const

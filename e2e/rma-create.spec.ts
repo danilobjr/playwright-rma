@@ -21,7 +21,9 @@ test('creates a Pending RMA Request end-to-end', async ({ page }) => {
   await expect(page.getByText('Screen flickers after startup.')).toBeVisible()
 })
 
-test('requires create form fields before successful creation', async ({ page }) => {
+test('requires create form fields before successful creation', async ({
+  page,
+}) => {
   await page.goto('/#/rma/create')
 
   await page.getByRole('button', { name: 'Submit' }).click()

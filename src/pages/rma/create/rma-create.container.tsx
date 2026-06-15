@@ -18,7 +18,8 @@ function RmaCreateContainer() {
     {
       breadcrumbs: ['RMA', 'New request'],
       title: 'Create RMA Request',
-      description: 'Use a compact FieldGroup form layout that matches shadcn form composition.',
+      description:
+        'Use a compact FieldGroup form layout that matches shadcn form composition.',
       topRightAction: (
         <Button asChild variant="outline">
           <Link to="/rma">

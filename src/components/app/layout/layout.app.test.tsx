@@ -1,9 +1,8 @@
 import { render, screen } from '@testing-library/react'
 import { expect, test } from 'vitest'
 
-import { useLayout } from './use-layout.hook'
-
 import { Layout } from './layout.app'
+import { useLayout } from './use-layout.hook'
 
 function TestPage() {
   useLayout(
@@ -29,7 +28,9 @@ test('renders page layout configured by useLayout', async () => {
 
   expect(await screen.findByText('Operations')).toBeInTheDocument()
   expect(screen.getByText('RMA')).toBeInTheDocument()
-  expect(screen.getByRole('heading', { name: 'RMA Requests' })).toBeInTheDocument()
+  expect(
+    screen.getByRole('heading', { name: 'RMA Requests' }),
+  ).toBeInTheDocument()
   expect(
     screen.getByText(
       'Track return merchandise authorizations, filter by status and date, and start new requests.',
