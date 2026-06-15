@@ -20,6 +20,7 @@ test('creates a Pending RMA Request end-to-end', async ({ page }) => {
   await expect(page.getByText('Jordan Lee')).toBeVisible()
   await expect(page.getByText('PRD-A1B2')).toBeVisible()
   await expect(page.getByText('Screen flickers after startup.')).toBeVisible()
+  await expect(page.getByText('RMA request created')).toBeVisible()
 })
 
 test('requires create form fields before successful creation', async ({
@@ -33,6 +34,7 @@ test('requires create form fields before successful creation', async ({
   await expect(page.getByText('Product ID is required')).toBeVisible()
   await expect(page.getByText('Reason is required')).toBeVisible()
   await expect(page).toHaveURL(/#\/rma\/create$/)
+  await expect(page.getByText('RMA request created')).not.toBeVisible()
 })
 
 test('shows inline validation errors and preserves entered values', async ({
@@ -53,4 +55,5 @@ test('shows inline validation errors and preserves entered values', async ({
   await expect(page.getByLabel('Product ID')).toHaveValue('A')
   await expect(page.getByLabel('Reason')).toHaveValue('Too short')
   await expect(page).toHaveURL(/#\/rma\/create$/)
+  await expect(page.getByText('RMA request created')).not.toBeVisible()
 })
