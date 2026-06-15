@@ -49,7 +49,7 @@ export { convertToHex }
 
 ## React Components
 
-If a file exports a React component, it may export only that component and its props type. Do not export helpers, constants, unrelated types, or re-exports from the same file as a component; extract them to a `.util.ts`, `.constant.ts`, `.model.ts`, `.hook.ts`, or adjacent local file.
+If a file exports a React component, it may export only one component plus its props type, or one tightly-coupled component family plus each component props type. Do not mix unrelated components. Do not export helpers, constants, unrelated types, or re-exports from the same file as a component; extract them to a `.util.ts`, `.constant.ts`, `.model.ts`, `.hook.ts`, or adjacent local file.
 Components with props must define a named `ComponentNameProps` type and use it in the component signature. Components with no props do not need a props type. Inline props type annotations are not allowed. Export the props type before the runtime component export.
 Import React APIs directly by name. Prefer `import { useEffect, type ComponentProps } from 'react'` over `import * as React from 'react'`. Keep type imports marked with `type`. Use `React.*` namespace access only when namespace behavior is explicitly needed.
 
@@ -116,7 +116,7 @@ function ComponentName(props: ComponentNameProps) {
 
 ## UI Component Folders
 
-Reusable UI components in `src/components/ui` use one folder per component. New or touched UI components must follow this shape:
+Reusable UI components in `src/components/ui` use one folder per component or component family. New or touched UI components must follow this shape:
 
 ```txt
 src/components/ui/component-name
@@ -125,7 +125,7 @@ src/components/ui/component-name
 └── index.ts
 ```
 
-Use `component-name.ui.tsx` for the component. Use `component-name.styles.ts` for `cva`, variant maps, long Tailwind class strings, slot styling, reusable style constants, and style-derived types. Format Tailwind values with multiple classes as multiline template literals with one class per line. Keep single-class values inline. Style files may export style builders/constants and related types only. They must not export React components, hooks, services, or app logic.
+Use `component-name.ui.tsx` for the component or component family. Use `component-name.styles.ts` for `cva`, variant maps, long Tailwind class strings, slot styling, reusable style constants, and style-derived types. Component families should define one variant builder per exported component or subcomponent, e.g. `cardVariants`, `cardHeaderVariants`, and `cardTitleVariants`. Format Tailwind values with multiple classes as multiline template literals with one class per line. Keep single-class values inline. Style files may export style builders/constants and related types only. They must not export React components, hooks, services, or app logic.
 
 Example:
 
