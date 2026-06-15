@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Check, Info } from 'lucide-react'
+import { Check } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 
 import { Alert, AlertDescription } from '@/components/ui/alert'
@@ -66,12 +66,10 @@ function RmaCreatePage({
               Request details
             </h2>
           </CardTitle>
-          <CardDescription>
-            RMA ID is generated automatically. Status starts as Pending.
-          </CardDescription>
+          <CardDescription>RMA ID is generated automatically</CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <CardContent>
+          <CardContent className="pb-4">
             <FieldGroup>
               <div className="flex flex-col gap-4 md:flex-row">
                 <Field>
@@ -142,15 +140,7 @@ function RmaCreatePage({
                 </FieldDescription>
                 <FieldError id="reason-error" errors={[errors.reason]} />
               </Field>
-              <Alert>
-                <Info aria-hidden="true" />
-                <AlertDescription>
-                  <p>
-                    Submitting this form creates a Pending RMA and returns the
-                    user to the request list.
-                  </p>
-                </AlertDescription>
-              </Alert>
+
               {submitError ? (
                 <Alert variant="destructive">
                   <AlertDescription>{submitError}</AlertDescription>
