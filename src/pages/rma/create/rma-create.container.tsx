@@ -1,5 +1,6 @@
 import { Link, useNavigate } from '@tanstack/react-router'
 import { ArrowLeft } from 'lucide-react'
+import { toast } from 'sonner'
 
 import { useLayout } from '@/components/app/layout/use-layout.hook'
 import { Button } from '@/components/ui/button'
@@ -34,6 +35,7 @@ function RmaCreateContainer() {
 
   async function handleSubmit(values: RmaCreateFormValues) {
     await createRmaRequestMutation.mutateAsync(values)
+    toast.success('RMA request created')
     await navigate({ to: '/rma' })
   }
 

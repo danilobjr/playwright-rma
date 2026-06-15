@@ -39,3 +39,35 @@ test('renders page layout configured by useLayout', async () => {
   expect(screen.getByRole('button', { name: 'New RMA' })).toBeInTheDocument()
   expect(screen.getByText('Page content')).toBeInTheDocument()
 })
+
+test('renders layout without page metadata', () => {
+  render(
+    <Layout>
+      <p>Page content</p>
+    </Layout>,
+  )
+
+  expect(screen.getByText('Page content')).toBeInTheDocument()
+  expect(
+    screen.queryByRole('navigation', { name: 'Breadcrumb' }),
+  ).not.toBeInTheDocument()
+  expect(screen.queryByRole('heading')).not.toBeInTheDocument()
+})
+
+test('keeps one toast notification system after rerender', () => {
+  const { rerender } = render(
+    <Layout>
+      <p>Page content</p>
+    </Layout>,
+  )
+
+  rerender(
+    <Layout>
+      <p>Updated page content</p>
+    </Layout>,
+  )
+
+  expect(
+    screen.getAllByRole('region', { name: /notifications/i }),
+  ).toHaveLength(1)
+})
