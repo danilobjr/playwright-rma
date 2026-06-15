@@ -125,7 +125,7 @@ src/components/ui/component-name
 └── index.ts
 ```
 
-Use `component-name.ui.tsx` for the component. Use `component-name.styles.ts` for `cva`, variant maps, long Tailwind class strings, slot styling, reusable style constants, and style-derived types. Keep tiny static class names inline. Style files may export style builders/constants and related types only. They must not export React components, hooks, services, or app logic.
+Use `component-name.ui.tsx` for the component. Use `component-name.styles.ts` for `cva`, variant maps, long Tailwind class strings, slot styling, reusable style constants, and style-derived types. Format Tailwind values with multiple classes as multiline template literals with one class per line. Keep single-class values inline. Style files may export style builders/constants and related types only. They must not export React components, hooks, services, or app logic.
 
 Example:
 
@@ -135,7 +135,12 @@ import { cva, type VariantProps } from 'cva'
 const buttonVariants = cva('...', {
   variants: {
     variant: {
-      default: '...',
+      default: `
+        bg-primary
+        text-primary-foreground
+        hover:bg-primary/80
+      `,
+      icon: `size-8`,
     },
   },
 })
