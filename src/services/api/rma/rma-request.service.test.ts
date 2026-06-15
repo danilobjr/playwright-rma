@@ -58,4 +58,22 @@ describe('RMA request service', () => {
       createRmaRequest({ customerName: '', productId: 'PRD-A1B2', reason: '' }),
     ).rejects.toThrow('Customer Name is required')
   })
+
+  it('rejects reasons outside the allowed length bounds', async () => {
+    await expect(
+      createRmaRequest({
+        customerName: 'Jordan Lee',
+        productId: 'PRD-A1B2',
+        reason: 'Too short',
+      }),
+    ).rejects.toThrow('Reason must be at least 10 characters')
+
+    await expect(
+      createRmaRequest({
+        customerName: 'Jordan Lee',
+        productId: 'PRD-A1B2',
+        reason: 'a'.repeat(256),
+      }),
+    ).rejects.toThrow('Reason must be at most 255 characters')
+  })
 })

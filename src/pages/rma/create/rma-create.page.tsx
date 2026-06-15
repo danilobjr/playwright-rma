@@ -25,8 +25,10 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 
 import {
+  PRODUCT_ID_PREFIX,
   rmaCreateFormDefaultValues,
   rmaCreateFormSchema,
+  sanitizeProductIdSuffix,
   type RmaCreateFormInput,
   type RmaCreateFormValues,
 } from './rma-create-form.model'
@@ -56,6 +58,7 @@ function RmaCreatePage({
     resolver: zodResolver(rmaCreateFormSchema),
     defaultValues: rmaCreateFormDefaultValues,
   })
+  const productIdRegistration = register('productId')
 
   return (
     <section className="flex justify-center">
@@ -66,7 +69,9 @@ function RmaCreatePage({
               Request details
             </h2>
           </CardTitle>
-          <CardDescription>RMA ID is generated automatically</CardDescription>
+          <CardDescription>
+            RMA ID is generated automatically. Status starts as Pending.
+          </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
           <CardContent className="pb-4">
@@ -107,14 +112,28 @@ function RmaCreatePage({
                 </Field>
                 <Field data-invalid={Boolean(errors.productId)}>
                   <FieldLabel htmlFor="product-id">Product ID</FieldLabel>
-                  <Input
-                    id="product-id"
-                    aria-describedby={
-                      errors.productId ? 'product-id-error' : undefined
-                    }
-                    aria-invalid={Boolean(errors.productId)}
-                    {...register('productId')}
-                  />
+                  <div className="flex h-8 rounded-lg border border-input bg-transparent transition-colors focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50 has-[input[aria-invalid=true]]:border-destructive has-[input[aria-invalid=true]]:ring-3 has-[input[aria-invalid=true]]:ring-destructive/20 dark:has-[input[aria-invalid=true]]:border-destructive/50 dark:has-[input[aria-invalid=true]]:ring-destructive/40">
+                    <span className="flex items-center border-r px-2.5 text-sm text-muted-foreground">
+                      {PRODUCT_ID_PREFIX}
+                    </span>
+                    <Input
+                      id="product-id"
+                      aria-describedby={
+                        errors.productId ? 'product-id-error' : undefined
+                      }
+                      aria-invalid={Boolean(errors.productId)}
+                      className="h-auto rounded-l-none border-0 focus-visible:ring-0"
+                      inputMode="text"
+                      maxLength={4}
+                      {...productIdRegistration}
+                      onChange={(event) => {
+                        event.currentTarget.value = sanitizeProductIdSuffix(
+                          event.currentTarget.value,
+                        )
+                        void productIdRegistration.onChange(event)
+                      }}
+                    />
+                  </div>
                   <FieldError
                     id="product-id-error"
                     errors={[errors.productId]}
