@@ -1,8 +1,24 @@
-import type { CreateRmaRequestInput, RmaRequest } from './rma-request.model'
+import type {
+  CreateRmaRequestInput,
+  RmaRequest,
+  RmaStatus,
+} from './rma-request.model'
 
 const RMA_STORAGE_KEY = 'playwright-rma:rma-requests:v1'
 const RMA_ID_START_SEQUENCE = 1001
 const PENDING_STATUS = 'Pending'
+
+class DuplicateRmaRequestError extends Error {
+  matchingRmaId: string
+  matchingStatus: RmaStatus
+
+  constructor(request: RmaRequest) {
+    super('Duplicate RMA Request')
+    this.name = 'DuplicateRmaRequestError'
+    this.matchingRmaId = request.rmaId
+    this.matchingStatus = request.status
+  }
+}
 
 const seedRmaRequests: RmaRequest[] = [
   {
@@ -57,6 +73,50 @@ function normalizeReason(value: string) {
   return reason
 }
 
+function normalizeDuplicateText(value: string) {
+  return value.trim().replace(/\s+/g, ' ').toLocaleLowerCase()
+}
+
+function hasSameLocalCalendarDay(left: Date, right: Date) {
+  return (
+    left.getFullYear() === right.getFullYear() &&
+    left.getMonth() === right.getMonth() &&
+    left.getDate() === right.getDate()
+  )
+}
+
+function hasSameDuplicateFields(
+  input: CreateRmaRequestInput,
+  request: RmaRequest,
+) {
+  return (
+    normalizeDuplicateText(input.customerName) ===
+      normalizeDuplicateText(request.customerName) &&
+    normalizeDuplicateText(input.productId) ===
+      normalizeDuplicateText(request.productId) &&
+    normalizeDuplicateText(input.reason) ===
+      normalizeDuplicateText(request.reason)
+  )
+}
+
+function findDuplicateRmaRequest(
+  input: CreateRmaRequestInput,
+  requests: RmaRequest[],
+  createdAt: Date,
+) {
+  return requests.find((request) => {
+    if (!hasSameDuplicateFields(input, request)) {
+      return false
+    }
+
+    if (request.status === PENDING_STATUS) {
+      return true
+    }
+
+    return hasSameLocalCalendarDay(new Date(request.createdAt), createdAt)
+  })
+}
+
 function readStoredRmaRequests() {
   const stored = localStorage.getItem(RMA_STORAGE_KEY)
 
@@ -106,13 +166,25 @@ async function peekNextRmaId() {
 
 async function createRmaRequest(input: CreateRmaRequestInput) {
   const storedRequests = readStoredRmaRequests()
+  const existingRequests = [...seedRmaRequests, ...storedRequests]
+  const createdAt = new Date()
+  const duplicateRequest = findDuplicateRmaRequest(
+    input,
+    existingRequests,
+    createdAt,
+  )
+
+  if (duplicateRequest) {
+    throw new DuplicateRmaRequestError(duplicateRequest)
+  }
+
   const request: RmaRequest = {
-    rmaId: getNextRmaId([...seedRmaRequests, ...storedRequests]),
+    rmaId: getNextRmaId(existingRequests),
     status: PENDING_STATUS,
     customerName: normalizeRequiredText(input.customerName, 'Customer Name'),
     productId: normalizeProductId(input.productId),
     reason: normalizeReason(input.reason),
-    createdAt: new Date().toISOString(),
+    createdAt: createdAt.toISOString(),
   }
 
   writeStoredRmaRequests([...storedRequests, request])
@@ -120,4 +192,9 @@ async function createRmaRequest(input: CreateRmaRequestInput) {
   return request
 }
 
-export { createRmaRequest, listRmaRequests, peekNextRmaId }
+export {
+  createRmaRequest,
+  DuplicateRmaRequestError,
+  listRmaRequests,
+  peekNextRmaId,
+}
