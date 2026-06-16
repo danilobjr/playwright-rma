@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from '@tanstack/react-router'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeftIcon } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { useLayout } from '@/components/app/layout/use-layout.hook'
@@ -34,7 +34,7 @@ function RmaCreateContainer() {
       topRightAction: (
         <Button asChild variant="outline">
           <Link to="/rma">
-            <ArrowLeft aria-hidden="true" />
+            <ArrowLeftIcon aria-hidden="true" />
             Back to list
           </Link>
         </Button>

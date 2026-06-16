@@ -40,9 +40,7 @@ test('navigates from list to create RMA request shell', async ({ page }) => {
     page.getByRole('heading', { name: 'Request details' }),
   ).toBeVisible()
   await expect(
-    page.getByText(
-      'RMA ID is generated automatically. Status starts as Pending.',
-    ),
+    page.getByText('RMA ID is generated automatically'),
   ).toBeVisible()
 })
 

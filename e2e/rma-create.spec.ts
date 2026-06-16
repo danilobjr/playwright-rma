@@ -1,4 +1,34 @@
-import { expect, test } from '@playwright/test'
+import { expect, test, type Locator } from '@playwright/test'
+
+async function getRequiredBox(locator: Locator) {
+  const box = await locator.boundingBox()
+
+  expect(box).not.toBeNull()
+
+  if (!box) {
+    throw new Error('Expected locator to have a bounding box')
+  }
+
+  return box
+}
+
+async function expectSameRow(firstLocator: Locator, secondLocator: Locator) {
+  const firstBox = await getRequiredBox(firstLocator)
+  const secondBox = await getRequiredBox(secondLocator)
+
+  expect(Math.abs(firstBox.y - secondBox.y)).toBeLessThanOrEqual(2)
+  expect(secondBox.x).toBeGreaterThan(firstBox.x)
+}
+
+async function expectStackedBelow(
+  firstLocator: Locator,
+  secondLocator: Locator,
+) {
+  const firstBox = await getRequiredBox(firstLocator)
+  const secondBox = await getRequiredBox(secondLocator)
+
+  expect(secondBox.y).toBeGreaterThan(firstBox.y + firstBox.height)
+}
 
 test('creates a Pending RMA Request end-to-end', async ({ page }) => {
   const currentYear = new Date().getFullYear()
@@ -21,6 +51,40 @@ test('creates a Pending RMA Request end-to-end', async ({ page }) => {
   await expect(page.getByText('PRD-A1B2')).toBeVisible()
   await expect(page.getByText('Screen flickers after startup.')).toBeVisible()
   await expect(page.getByText('RMA request created')).toBeVisible()
+})
+
+test('keeps create form responsive across desktop and mobile', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1024, height: 768 })
+  await page.goto('/#/rma/create')
+
+  await expectSameRow(
+    page.getByText('RMA ID', { exact: true }),
+    page.getByText('Status', { exact: true }),
+  )
+  await expectSameRow(
+    page.getByText('Customer Name', { exact: true }),
+    page.getByText('Product ID', { exact: true }),
+  )
+
+  await page.setViewportSize({ width: 375, height: 812 })
+  await page.goto('/#/rma/create')
+
+  await expectStackedBelow(
+    page.getByText('RMA ID', { exact: true }),
+    page.getByText('Status', { exact: true }),
+  )
+  await expectStackedBelow(
+    page.getByText('Customer Name', { exact: true }),
+    page.getByText('Product ID', { exact: true }),
+  )
+
+  await expect(
+    page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth,
+    ),
+  ).resolves.toBe(true)
 })
 
 test('requires create form fields before successful creation', async ({
