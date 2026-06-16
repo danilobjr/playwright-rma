@@ -14,9 +14,9 @@ function Layout({ children }: LayoutProps) {
 
   return (
     <>
-      <main className="min-h-screen bg-background p-8 text-foreground">
+      <main className="min-h-screen bg-background p-4 text-foreground sm:p-8">
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-7">
-          <header className="flex items-center justify-between gap-6">
+          <header className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
             <div className="flex max-w-3xl flex-col gap-2">
               {breadcrumbs.length > 0 ? (
                 <nav
@@ -49,7 +49,9 @@ function Layout({ children }: LayoutProps) {
               ) : null}
             </div>
             {topRightAction ? (
-              <div className="flex items-center gap-3">{topRightAction}</div>
+              <div className="flex w-full items-center gap-3 sm:w-auto">
+                {topRightAction}
+              </div>
             ) : null}
           </header>
           {children}
