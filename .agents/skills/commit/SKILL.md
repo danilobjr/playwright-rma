@@ -39,7 +39,6 @@ Messages must match repo commitlint rules from `commitlint.config.mjs`.
 
 Format:
 
-
 ```txt
 <emoji> <type>(optional-scope): <subject>
 ```
@@ -59,7 +58,7 @@ Emoji map:
 - `♻️ refactor` = code change that neither fixes bug nor adds feature
 - `🚧 chore` = other changes that do not modify src or test files
 - `✏️ docs` = docs-only changes
-- `💄 style` = code style/non-behavior changes
+- `💄 style` = code style only, not app UI/UX design
 - `🧪 test` = add or correct tests
 - `⚡️ perf` = performance improvement
 - `📦️ build` = build system or dependency changes
@@ -74,7 +73,7 @@ Present plan before staging or committing:
 
 ```md
 Commit plan:
-1. Commit: `💄 style(rma): polish create request layout`
+1. Commit: `🚧 chore(rma): polish create request layout`
    Files: `src/pages/rma/create/rma-create.page.tsx`, ...
    Reason: responsive UI polish.
 
