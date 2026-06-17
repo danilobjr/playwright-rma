@@ -337,7 +337,7 @@
       "id": "dxx3K",
       "x": 0,
       "y": 260,
-      "name": "Screen 1 - Dashboard / RMA List",
+      "name": "Screen 1 - RMA List",
       "clip": true,
       "width": 1280,
       "height": 900,
@@ -349,7 +349,7 @@
         {
           "type": "frame",
           "id": "a1Iaw8",
-          "name": "Dashboard Header",
+          "name": "RMA List Header",
           "width": "fill_container",
           "justifyContent": "space_between",
           "alignItems": "center",
@@ -357,7 +357,7 @@
             {
               "type": "frame",
               "id": "LwVB5",
-              "name": "Dashboard Heading",
+              "name": "RMA List Heading",
               "width": 620,
               "layout": "vertical",
               "gap": 8,
@@ -426,7 +426,7 @@
             {
               "type": "frame",
               "id": "EPLHs",
-              "name": "Dashboard header actions",
+              "name": "RMA List header actions",
               "gap": 12,
               "alignItems": "center",
               "children": [
