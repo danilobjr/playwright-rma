@@ -4,7 +4,12 @@ description: Compact the current conversation into a handoff document for anothe
 argument-hint: "What will the next session be used for?"
 ---
 
-Write a handoff document summarising the current conversation so a fresh agent can continue the work. Save to the temporary directory of the user's OS - not the current workspace.
+Write a handoff document summarising the current conversation so a fresh agent can continue the work.
+
+- Save to the `docs/handoffs/` directory of the current folder.
+- If the current folder is not a git folder, ask the user before creating the file.
+- Use file name format `YYYY-MM-DD_HH-MM-SS_[SESSION_NAME].md`.
+- `SESSION_NAME` is the current agent coding session name: lowercased, dash-separated, and without-punctuation text.
 
 Include a "suggested skills" section in the document, which suggests skills that the agent should invoke.
 

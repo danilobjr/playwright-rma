@@ -54,17 +54,6 @@ This project is indexed by GitNexus as **playwright-rma** (18 symbols, 9 relatio
 - NEVER commit without confirmation.
 - NEVER create a PR on GitHub without confirmation.
 
-## Handoff File Rules
-
-When using handoff skill: `./.agents/skills/handoff/SKILL.md`.
-
-The handoff skill does not replace these repo rules. Whenever the user invokes the handoff skill, follow the skill instructions and all handoff-specific rules in this section.
-
-1. Create the handoff file first in the OS temporary directory.
-2. Then move that file into `./docs/handoffs/` before finishing.
-3. Final response must report the final workspace path, not the temporary path.
-4. Use file name format `YYYY-MM-DD_HH-MM-SS_[SESSION_NAME].md`, where `SESSION_NAME` is lowercase, dash-separated, and has no punctuation.
-
 ## Design Text Rules
 
 - All user-facing static text must match the approved design exactly.
