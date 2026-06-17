@@ -1,5 +1,5 @@
-import { render, screen, within } from '@testing-library/react'
-import { expect, test } from 'vitest'
+import { fireEvent, render, screen, within } from '@testing-library/react'
+import { beforeAll, expect, test, vi } from 'vitest'
 
 import type { RmaRequest } from '@/services/api/rma/rma-request.model'
 
@@ -48,6 +48,16 @@ const requests: RmaRequest[] = [
   },
 ]
 
+beforeAll(() => {
+  Element.prototype.scrollIntoView = vi.fn()
+})
+
+function getRenderedRmaIds() {
+  return screen
+    .getAllByRole('article', { name: /^RMA-\d{4}-\d{4}/ })
+    .map((card) => within(card).getByRole('heading').textContent)
+}
+
 test('shows real RMA status summary counts', () => {
   render(<RmaListPage requests={requests} />)
 
@@ -92,4 +102,135 @@ test('does not use Dashboard terminology on the RMA List screen', () => {
   render(<RmaListPage requests={requests} />)
 
   expect(screen.queryByText(/dashboard/i)).not.toBeInTheDocument()
+})
+
+test('sorts RMA Requests by Submitted Date descending by default', () => {
+  render(<RmaListPage requests={requests} />)
+
+  expect(getRenderedRmaIds()).toEqual([
+    'RMA-2026-1002',
+    'RMA-2026-1005',
+    'RMA-2026-1004',
+    'RMA-2026-1003',
+    'RMA-2026-1001',
+  ])
+})
+
+test('applies Search only after Search is clicked', () => {
+  render(<RmaListPage requests={requests} />)
+
+  fireEvent.change(screen.getByRole('textbox', { name: 'Search' }), {
+    target: { value: '  screen   FLICKERS ' },
+  })
+
+  expect(screen.getByText('Avery Stone')).toBeInTheDocument()
+  expect(screen.getByText('Jordan Lee')).toBeInTheDocument()
+
+  fireEvent.click(screen.getByRole('button', { name: 'Search' }))
+
+  expect(screen.queryByText('Avery Stone')).not.toBeInTheDocument()
+  expect(screen.getByText('Jordan Lee')).toBeInTheDocument()
+})
+
+test('searches RMA ID, Customer Name, Product ID, and Reason', () => {
+  render(<RmaListPage requests={requests} />)
+
+  fireEvent.change(screen.getByRole('textbox', { name: 'Search' }), {
+    target: { value: 'prd-1a2b' },
+  })
+  fireEvent.click(screen.getByRole('button', { name: 'Search' }))
+  expect(getRenderedRmaIds()).toEqual(['RMA-2026-1004'])
+
+  fireEvent.change(screen.getByRole('textbox', { name: 'Search' }), {
+    target: { value: 'lena ortiz' },
+  })
+  fireEvent.click(screen.getByRole('button', { name: 'Search' }))
+  expect(getRenderedRmaIds()).toEqual(['RMA-2026-1005'])
+
+  fireEvent.change(screen.getByRole('textbox', { name: 'Search' }), {
+    target: { value: 'RMA-2026-1003' },
+  })
+  fireEvent.click(screen.getByRole('button', { name: 'Search' }))
+  expect(getRenderedRmaIds()).toEqual(['RMA-2026-1003'])
+
+  fireEvent.change(screen.getByRole('textbox', { name: 'Search' }), {
+    target: { value: 'outside warranty' },
+  })
+  fireEvent.click(screen.getByRole('button', { name: 'Search' }))
+  expect(getRenderedRmaIds()).toEqual(['RMA-2026-1004'])
+})
+
+test('filters by Status from the Status field', () => {
+  render(<RmaListPage requests={requests} />)
+
+  fireEvent.click(screen.getByRole('combobox', { name: 'Status' }))
+  expect(screen.getByRole('option', { name: /All/ })).toBeInTheDocument()
+  expect(screen.getByRole('option', { name: /Pending/ })).toBeInTheDocument()
+  expect(screen.getByRole('option', { name: /Approved/ })).toBeInTheDocument()
+  expect(screen.getByRole('option', { name: /Rejected/ })).toBeInTheDocument()
+  expect(screen.getByRole('option', { name: /Completed/ })).toBeInTheDocument()
+  fireEvent.click(screen.getByRole('option', { name: /Approved/ }))
+  fireEvent.click(screen.getByRole('button', { name: 'Search' }))
+
+  expect(getRenderedRmaIds()).toEqual(['RMA-2026-1003'])
+})
+
+test('filters by exact Submitted Date local calendar day', () => {
+  render(<RmaListPage requests={requests} />)
+
+  fireEvent.click(screen.getByRole('button', { name: 'Submitted Date' }))
+  fireEvent.click(
+    screen.getByRole('button', { name: 'Wednesday, March 4th, 2026' }),
+  )
+  fireEvent.click(screen.getByRole('button', { name: 'Search' }))
+
+  expect(getRenderedRmaIds()).toEqual(['RMA-2026-1002'])
+})
+
+test('Reset clears draft filters, applied filters, and selected summary card', () => {
+  render(<RmaListPage requests={requests} />)
+
+  fireEvent.change(screen.getByRole('textbox', { name: 'Search' }), {
+    target: { value: 'Jordan' },
+  })
+  fireEvent.click(screen.getByRole('button', { name: 'Search' }))
+  expect(getRenderedRmaIds()).toEqual(['RMA-2026-1002'])
+
+  fireEvent.click(screen.getByRole('button', { name: 'Reset' }))
+
+  expect(screen.getByRole('textbox', { name: 'Search' })).toHaveValue('')
+  expect(screen.getByRole('combobox', { name: 'Status' })).toHaveTextContent(
+    'All',
+  )
+  expect(getRenderedRmaIds()).toEqual([
+    'RMA-2026-1002',
+    'RMA-2026-1005',
+    'RMA-2026-1004',
+    'RMA-2026-1003',
+    'RMA-2026-1001',
+  ])
+})
+
+test('summary cards filter immediately and sync the Status field', () => {
+  render(<RmaListPage requests={requests} />)
+
+  fireEvent.click(screen.getByRole('button', { name: 'Pending summary' }))
+
+  expect(screen.getByRole('combobox', { name: 'Status' })).toHaveTextContent(
+    'Pending',
+  )
+  expect(getRenderedRmaIds()).toEqual(['RMA-2026-1002', 'RMA-2026-1001'])
+
+  fireEvent.click(screen.getByRole('button', { name: 'Total RMAs summary' }))
+
+  expect(screen.getByRole('combobox', { name: 'Status' })).toHaveTextContent(
+    'All',
+  )
+  expect(getRenderedRmaIds()).toEqual([
+    'RMA-2026-1002',
+    'RMA-2026-1005',
+    'RMA-2026-1004',
+    'RMA-2026-1003',
+    'RMA-2026-1001',
+  ])
 })
