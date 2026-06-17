@@ -164,7 +164,7 @@ test('filters by Status from the Status field', () => {
   render(<RmaListPage requests={requests} />)
 
   fireEvent.click(screen.getByRole('combobox', { name: 'Status' }))
-  expect(screen.getByRole('option', { name: /All/ })).toBeInTheDocument()
+  expect(screen.queryByRole('option', { name: /All/ })).not.toBeInTheDocument()
   expect(screen.getByRole('option', { name: /Pending/ })).toBeInTheDocument()
   expect(screen.getByRole('option', { name: /Approved/ })).toBeInTheDocument()
   expect(screen.getByRole('option', { name: /Rejected/ })).toBeInTheDocument()
@@ -200,7 +200,7 @@ test('Reset clears draft filters, applied filters, and selected summary card', (
 
   expect(screen.getByRole('textbox', { name: 'Search' })).toHaveValue('')
   expect(screen.getByRole('combobox', { name: 'Status' })).toHaveTextContent(
-    'All',
+    'Status',
   )
   expect(getRenderedRmaIds()).toEqual([
     'RMA-2026-1002',
@@ -211,21 +211,36 @@ test('Reset clears draft filters, applied filters, and selected summary card', (
   ])
 })
 
-test('summary cards filter immediately and sync the Status field', () => {
+test('summary cards clear filters, submit, and sync the Status field', () => {
   render(<RmaListPage requests={requests} />)
 
+  fireEvent.change(screen.getByRole('textbox', { name: 'Search' }), {
+    target: { value: 'Mina' },
+  })
+  fireEvent.click(screen.getByRole('button', { name: 'Submitted Date' }))
+  fireEvent.click(
+    screen.getByRole('button', { name: 'Wednesday, March 4th, 2026' }),
+  )
   fireEvent.click(screen.getByRole('button', { name: 'Pending summary' }))
 
+  expect(screen.getByRole('textbox', { name: 'Search' })).toHaveValue('')
   expect(screen.getByRole('combobox', { name: 'Status' })).toHaveTextContent(
     'Pending',
   )
+  expect(
+    screen.getByRole('button', { name: 'Submitted Date' }),
+  ).toHaveTextContent('Submitted Date')
   expect(getRenderedRmaIds()).toEqual(['RMA-2026-1002', 'RMA-2026-1001'])
 
   fireEvent.click(screen.getByRole('button', { name: 'Total RMAs summary' }))
 
+  expect(screen.getByRole('textbox', { name: 'Search' })).toHaveValue('')
   expect(screen.getByRole('combobox', { name: 'Status' })).toHaveTextContent(
-    'All',
+    'Status',
   )
+  expect(
+    screen.getByRole('button', { name: 'Submitted Date' }),
+  ).toHaveTextContent('Submitted Date')
   expect(getRenderedRmaIds()).toEqual([
     'RMA-2026-1002',
     'RMA-2026-1005',
@@ -233,4 +248,23 @@ test('summary cards filter immediately and sync the Status field', () => {
     'RMA-2026-1003',
     'RMA-2026-1001',
   ])
+})
+
+test('shows selected Status icon and label in the field', () => {
+  render(<RmaListPage requests={requests} />)
+
+  const statusField = screen.getByRole('combobox', { name: 'Status' })
+
+  expect(statusField).toHaveTextContent('Status')
+
+  fireEvent.click(statusField)
+  fireEvent.click(screen.getByRole('option', { name: /Approved/ }))
+
+  expect(statusField).toHaveTextContent('Approved')
+  expect(statusField).not.toHaveTextContent('Authorized for return')
+
+  fireEvent.click(statusField)
+  expect(
+    screen.getByRole('option', { name: /Authorized for return/ }),
+  ).toBeInTheDocument()
 })

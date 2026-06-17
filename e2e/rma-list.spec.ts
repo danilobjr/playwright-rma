@@ -110,7 +110,7 @@ test('filters by Status and keeps summary cards in sync', async ({ page }) => {
   await page.goto('/#/rma')
 
   await page.getByRole('combobox', { name: 'Status' }).click()
-  await expect(page.getByRole('option', { name: /All/ })).toBeVisible()
+  await expect(page.getByRole('option', { name: /All/ })).toHaveCount(0)
   await expect(page.getByRole('option', { name: /Pending/ })).toBeVisible()
   await expect(page.getByRole('option', { name: /Approved/ })).toBeVisible()
   await expect(page.getByRole('option', { name: /Rejected/ })).toBeVisible()
@@ -120,15 +120,18 @@ test('filters by Status and keeps summary cards in sync', async ({ page }) => {
 
   await expectRmaOrder(page, ['RMA-2026-1002'])
 
+  await page.getByRole('textbox', { name: 'Search' }).fill('battery')
   await page.getByRole('button', { name: 'Pending summary' }).click()
+  await expect(page.getByRole('textbox', { name: 'Search' })).toHaveValue('')
   await expect(page.getByRole('combobox', { name: 'Status' })).toContainText(
     'Pending',
   )
   await expectRmaOrder(page, ['RMA-2026-1001'])
 
   await page.getByRole('button', { name: 'Total RMAs summary' }).click()
+  await expect(page.getByRole('textbox', { name: 'Search' })).toHaveValue('')
   await expect(page.getByRole('combobox', { name: 'Status' })).toContainText(
-    'All',
+    'Status',
   )
   await expectRmaOrder(page, ['RMA-2026-1002', 'RMA-2026-1001'])
 })
@@ -146,7 +149,7 @@ test('filters by Submitted Date and resets filters', async ({ page }) => {
 
   await expect(page.getByRole('textbox', { name: 'Search' })).toHaveValue('')
   await expect(page.getByRole('combobox', { name: 'Status' })).toContainText(
-    'All',
+    'Status',
   )
   await expectRmaOrder(page, ['RMA-2026-1002', 'RMA-2026-1001'])
 })

@@ -41,14 +41,18 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import type { RmaRequest } from '@/services/api/rma/rma-request.model'
+import type {
+  RmaRequest,
+  RmaStatus,
+} from '@/services/api/rma/rma-request.model'
 import { cn } from '@/utils/styles/cn.util'
 
 const ALL_STATUSES = 'All'
 
-const STATUS_FILTER_OPTIONS = [ALL_STATUSES, ...RMA_STATUS_ORDER] as const
+const STATUS_FILTER_OPTIONS = RMA_STATUS_ORDER
 
-type StatusFilterValue = (typeof STATUS_FILTER_OPTIONS)[number]
+type StatusFilterValue = RmaStatus | ''
+type SummaryStatusValue = RmaStatus | typeof ALL_STATUSES
 
 type RmaListFilters = {
   search: string
@@ -62,7 +66,7 @@ type RmaListPageProps = {
 
 const defaultFilters: RmaListFilters = {
   search: '',
-  status: ALL_STATUSES,
+  status: '',
 }
 
 function normalizeFilterText(value: string) {
@@ -102,8 +106,7 @@ function matchesSubmittedDate(request: RmaRequest, submittedDate?: Date) {
 
 function filterRmaRequests(requests: RmaRequest[], filters: RmaListFilters) {
   return requests.filter((request) => {
-    const statusMatches =
-      filters.status === ALL_STATUSES || request.status === filters.status
+    const statusMatches = !filters.status || request.status === filters.status
 
     return (
       statusMatches &&
@@ -134,7 +137,7 @@ function RmaListPage({ requests }: RmaListPageProps) {
   const [appliedFilters, setAppliedFilters] =
     useState<RmaListFilters>(defaultFilters)
   const [selectedSummaryStatus, setSelectedSummaryStatus] = useState<
-    StatusFilterValue | undefined
+    SummaryStatusValue | undefined
   >()
   const statusCounts = RMA_STATUS_ORDER.reduce(
     (counts, status) => ({
@@ -172,9 +175,15 @@ function RmaListPage({ requests }: RmaListPageProps) {
     setSelectedSummaryStatus(undefined)
   }
 
-  function applySummaryFilter(status: StatusFilterValue) {
-    const nextFilters = {
-      ...draftFilters,
+  function applyTotalSummaryFilter() {
+    setDraftFilters(defaultFilters)
+    setAppliedFilters(defaultFilters)
+    setSelectedSummaryStatus(ALL_STATUSES)
+  }
+
+  function applyStatusSummaryFilter(status: RmaStatus) {
+    const nextFilters: RmaListFilters = {
+      ...defaultFilters,
       status,
     }
 
@@ -195,7 +204,7 @@ function RmaListPage({ requests }: RmaListPageProps) {
             aria-pressed={selectedSummaryStatus === ALL_STATUSES}
             className="grid w-full gap-3 text-left"
             type="button"
-            onClick={() => applySummaryFilter(ALL_STATUSES)}
+            onClick={applyTotalSummaryFilter}
           >
             <CardHeader>
               <div className="flex items-start justify-between gap-3">
@@ -235,7 +244,7 @@ function RmaListPage({ requests }: RmaListPageProps) {
                 aria-pressed={selectedSummaryStatus === status}
                 className="grid w-full gap-3 text-left"
                 type="button"
-                onClick={() => applySummaryFilter(status)}
+                onClick={() => applyStatusSummaryFilter(status)}
               >
                 <CardHeader>
                   <div className="flex items-start justify-between gap-3">
@@ -287,39 +296,49 @@ function RmaListPage({ requests }: RmaListPageProps) {
                 <FieldLabel htmlFor="rma-status-filter">Status</FieldLabel>
                 <Select
                   value={draftFilters.status}
-                  onValueChange={(status: StatusFilterValue) =>
+                  onValueChange={(status: RmaStatus) =>
                     updateDraftFilters({ status })
                   }
                 >
                   <SelectTrigger
                     id="rma-status-filter"
                     aria-label="Status"
-                    className="h-10 w-full"
+                    className="!h-10 w-full"
                   >
-                    <SelectValue />
+                    {draftFilters.status ? (
+                      <span className="flex items-center gap-2">
+                        {(() => {
+                          const presentation =
+                            RMA_STATUS_PRESENTATION[draftFilters.status]
+                          const Icon = presentation.icon
+
+                          return (
+                            <>
+                              <Icon
+                                aria-hidden="true"
+                                className="size-4 text-muted-foreground"
+                              />
+                              <span>{presentation.label}</span>
+                            </>
+                          )
+                        })()}
+                      </span>
+                    ) : (
+                      <SelectValue placeholder="Status" />
+                    )}
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
                       {STATUS_FILTER_OPTIONS.map((status) => {
-                        if (status === ALL_STATUSES) {
-                          return (
-                            <SelectItem key={status} value={status}>
-                              <ClipboardListIcon aria-hidden="true" />
-                              <span className="grid gap-0.5">
-                                <span>All</span>
-                                <span className="text-xs text-muted-foreground">
-                                  All active RMA Requests
-                                </span>
-                              </span>
-                            </SelectItem>
-                          )
-                        }
-
                         const presentation = RMA_STATUS_PRESENTATION[status]
                         const Icon = presentation.icon
 
                         return (
-                          <SelectItem key={status} value={status}>
+                          <SelectItem
+                            key={status}
+                            textValue={presentation.label}
+                            value={status}
+                          >
                             <Icon aria-hidden="true" />
                             <span className="grid gap-0.5">
                               <span>{presentation.label}</span>
