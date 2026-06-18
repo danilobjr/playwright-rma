@@ -46,10 +46,16 @@ test('creates a Pending RMA Request end-to-end', async ({ page }) => {
   await page.getByRole('button', { name: 'Submit' }).click()
 
   await expect(page).toHaveURL(/#\/rma$/)
-  await expect(page.getByText(nextRmaId)).toBeVisible()
-  await expect(page.getByText('Jordan Lee')).toBeVisible()
-  await expect(page.getByText('PRD-A1B2')).toBeVisible()
-  await expect(page.getByText('Screen flickers after startup.')).toBeVisible()
+  const row = page.getByRole('row', {
+    name: new RegExp(`${nextRmaId} Jordan Lee`),
+  })
+
+  await expect(row.getByRole('link', { name: nextRmaId })).toBeVisible()
+  await expect(row.getByRole('link', { name: 'Jordan Lee' })).toBeVisible()
+  await expect(row.getByRole('link', { name: 'PRD-A1B2' })).toBeVisible()
+  await expect(
+    row.getByRole('link', { name: 'Screen flickers after startup.' }),
+  ).toBeVisible()
   await expect(page.getByText('RMA request created')).toBeVisible()
 })
 
