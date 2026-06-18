@@ -34,6 +34,18 @@ async function expectSummaryOrder(summaryCards: Locator) {
   ).toBeVisible()
 }
 
+async function expectRmaOrder(page: Page, rmaIds: string[]) {
+  const cards = page.getByRole('article', { name: /^RMA-\d{4}-\d{4}/ })
+
+  await expect(cards).toHaveCount(rmaIds.length)
+
+  for (const [index, rmaId] of rmaIds.entries()) {
+    await expect(
+      cards.nth(index).getByRole('heading', { name: rmaId }),
+    ).toBeVisible()
+  }
+}
+
 test('shows RMA status summary counts in workflow order', async ({ page }) => {
   await page.goto('/#/rma')
 
@@ -78,4 +90,76 @@ test('keeps RMA status summary usable on mobile', async ({ page }) => {
   await expectSummaryCard(page, 'Rejected', '0')
   await expectSummaryCard(page, 'Completed', '0')
   await expectNoHorizontalOverflow(page)
+})
+
+test('filters RMA Requests only after Search is clicked', async ({ page }) => {
+  await page.goto('/#/rma')
+
+  await expectRmaOrder(page, ['RMA-2026-1002', 'RMA-2026-1001'])
+
+  await page.getByRole('textbox', { name: 'Search' }).fill('battery')
+  await expect(page.getByText('Avery Stone')).toBeVisible()
+  await expect(page.getByText('Mina Patel')).toBeVisible()
+
+  await page.getByRole('button', { name: 'Search' }).click()
+  await expectRmaOrder(page, ['RMA-2026-1002'])
+  await expect(page.getByText('Avery Stone')).not.toBeVisible()
+})
+
+test('filters by Status and keeps summary cards in sync', async ({ page }) => {
+  await page.goto('/#/rma')
+
+  await page.getByRole('combobox', { name: 'Status' }).click()
+  await expect(page.getByRole('option', { name: /All/ })).toHaveCount(0)
+  await expect(page.getByRole('option', { name: /Pending/ })).toBeVisible()
+  await expect(page.getByRole('option', { name: /Approved/ })).toBeVisible()
+  await expect(page.getByRole('option', { name: /Rejected/ })).toBeVisible()
+  await expect(page.getByRole('option', { name: /Completed/ })).toBeVisible()
+  await page.getByRole('option', { name: /Approved/ }).click()
+  await page.getByRole('button', { name: 'Search' }).click()
+
+  await expectRmaOrder(page, ['RMA-2026-1002'])
+
+  await page.getByRole('textbox', { name: 'Search' }).fill('battery')
+  await page.getByRole('button', { name: 'Pending summary' }).click()
+  await expect(page.getByRole('textbox', { name: 'Search' })).toHaveValue('')
+  await expect(page.getByRole('combobox', { name: 'Status' })).toContainText(
+    'Pending',
+  )
+  await expectRmaOrder(page, ['RMA-2026-1001'])
+
+  await page.getByRole('button', { name: 'Total RMAs summary' }).click()
+  await expect(page.getByRole('textbox', { name: 'Search' })).toHaveValue('')
+  await expect(page.getByRole('combobox', { name: 'Status' })).toContainText(
+    'Status',
+  )
+  await expectRmaOrder(page, ['RMA-2026-1002', 'RMA-2026-1001'])
+})
+
+test('filters by Submitted Date and resets filters', async ({ page }) => {
+  await page.goto('/#/rma')
+
+  await page.getByRole('button', { name: 'Submitted Date' }).click()
+  await page.getByRole('button', { name: 'Sunday, February 8th, 2026' }).click()
+  await page.getByRole('button', { name: 'Search' }).click()
+
+  await expectRmaOrder(page, ['RMA-2026-1002'])
+
+  await page.getByRole('button', { name: 'Reset' }).click()
+
+  await expect(page.getByRole('textbox', { name: 'Search' })).toHaveValue('')
+  await expect(page.getByRole('combobox', { name: 'Status' })).toContainText(
+    'Status',
+  )
+  await expectRmaOrder(page, ['RMA-2026-1002', 'RMA-2026-1001'])
+})
+
+test('shows tooltips for filter actions', async ({ page }) => {
+  await page.goto('/#/rma')
+
+  await page.getByRole('button', { name: 'Search' }).focus()
+  await expect(page.getByRole('tooltip', { name: 'Search' })).toBeVisible()
+
+  await page.getByRole('button', { name: 'Reset' }).focus()
+  await expect(page.getByRole('tooltip', { name: 'Reset' })).toBeVisible()
 })
