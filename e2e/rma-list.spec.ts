@@ -63,6 +63,17 @@ async function expectRmaTableColumns(page: Page) {
   ).toBeVisible()
 }
 
+async function expectFilterActionWidth(
+  page: Page,
+  name: 'Search' | 'Reset',
+  predicate: (width: number) => boolean,
+) {
+  const box = await page.getByRole('button', { name }).boundingBox()
+
+  expect(box).not.toBeNull()
+  expect(predicate(box?.width ?? 0)).toBe(true)
+}
+
 test('shows RMA status summary counts in workflow order', async ({ page }) => {
   await page.goto('/#/rma')
 
@@ -109,19 +120,74 @@ test('keeps RMA status summary usable on mobile', async ({ page }) => {
   await expectNoHorizontalOverflow(page)
 })
 
+test('shows stacked RMA Request cards on mobile', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 })
+  await page.goto('/#/rma')
+
+  await expect(page.getByRole('table', { name: 'RMA Requests' })).toHaveCount(0)
+
+  const card = page.getByRole('article', { name: 'RMA Request RMA-2026-1002' })
+
+  await expect(card).toBeVisible()
+  await expect(card.getByText('RMA ID', { exact: true })).toBeVisible()
+  await expect(card.getByRole('link', { name: 'RMA-2026-1002' })).toBeVisible()
+  await expect(card.getByText('Customer Name', { exact: true })).toBeVisible()
+  await expect(card.getByRole('link', { name: 'Mina Patel' })).toBeVisible()
+  await expect(card.getByText('Product ID', { exact: true })).toBeVisible()
+  await expect(card.getByRole('link', { name: 'PRD-9C4D' })).toBeVisible()
+  await expect(card.getByText('Reason', { exact: true })).toBeVisible()
+  await expect(card.getByRole('link', { name: /Battery/ })).toBeVisible()
+  await expect(card.getByText('Status', { exact: true })).toBeVisible()
+  await expect(card.getByRole('link', { name: 'Approved' })).toBeVisible()
+  await expect(card.getByText('Submitted Date', { exact: true })).toBeVisible()
+  await expect(card.getByText('Actions', { exact: true })).toBeVisible()
+  await expect(card.getByRole('link', { name: 'Update' })).toBeVisible()
+  await expectNoHorizontalOverflow(page)
+
+  await card.getByRole('link', { name: 'Approved' }).click()
+
+  await expect(page).toHaveURL(/#\/rma\/RMA-2026-1002$/)
+})
+
+test('shows mobile filter action labels and compact desktop actions', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 375, height: 812 })
+  await page.goto('/#/rma')
+
+  await expect(page.getByRole('button', { name: 'Search' })).toContainText(
+    'Search',
+  )
+  await expect(page.getByRole('button', { name: 'Reset' })).toContainText(
+    'Reset',
+  )
+  await expectFilterActionWidth(page, 'Search', (width) => width > 100)
+  await expectFilterActionWidth(page, 'Reset', (width) => width > 100)
+
+  await page.setViewportSize({ width: 1280, height: 800 })
+
+  await expectFilterActionWidth(page, 'Search', (width) => width <= 44)
+  await expectFilterActionWidth(page, 'Reset', (width) => width <= 44)
+  await page.getByRole('button', { name: 'Search' }).focus()
+  await expect(page.getByRole('tooltip', { name: 'Search' })).toBeVisible()
+  await page.getByRole('button', { name: 'Reset' }).focus()
+  await expect(page.getByRole('tooltip', { name: 'Reset' })).toBeVisible()
+})
+
 test('filters RMA Requests only after Search is clicked', async ({ page }) => {
   await page.goto('/#/rma')
+  const table = page.getByRole('table', { name: 'RMA Requests' })
 
   await expectRmaTableColumns(page)
   await expectRmaOrder(page, ['RMA-2026-1002', 'RMA-2026-1001'])
 
   await page.getByRole('textbox', { name: 'Search' }).fill('battery')
-  await expect(page.getByText('Avery Stone')).toBeVisible()
-  await expect(page.getByText('Mina Patel')).toBeVisible()
+  await expect(table.getByText('Avery Stone')).toBeVisible()
+  await expect(table.getByText('Mina Patel')).toBeVisible()
 
   await page.getByRole('button', { name: 'Search' }).click()
   await expectRmaOrder(page, ['RMA-2026-1002'])
-  await expect(page.getByText('Avery Stone')).not.toBeVisible()
+  await expect(table.getByText('Avery Stone')).toHaveCount(0)
 })
 
 test('links RMA Request table content to update screen', async ({ page }) => {

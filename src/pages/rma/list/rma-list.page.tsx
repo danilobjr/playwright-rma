@@ -431,11 +431,12 @@ function RmaListPage({ requests }: RmaListPageProps) {
                     <TooltipTrigger asChild>
                       <Button
                         aria-label="Search"
-                        className="size-10"
+                        className="h-10 flex-1 gap-2 lg:size-10 lg:flex-none lg:px-0"
                         type="button"
                         onClick={applyFilters}
                       >
                         <SearchIcon aria-hidden="true" />
+                        <span className="lg:sr-only">Search</span>
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>Search</TooltipContent>
@@ -444,12 +445,13 @@ function RmaListPage({ requests }: RmaListPageProps) {
                     <TooltipTrigger asChild>
                       <Button
                         aria-label="Reset"
-                        className="size-10"
+                        className="h-10 flex-1 gap-2 lg:size-10 lg:flex-none lg:px-0"
                         type="button"
                         variant="outline"
                         onClick={resetFilters}
                       >
                         <RotateCcwIcon aria-hidden="true" />
+                        <span className="lg:sr-only">Reset</span>
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>Reset</TooltipContent>
@@ -473,49 +475,131 @@ function RmaListPage({ requests }: RmaListPageProps) {
       ) : (
         <Card>
           <CardContent className="grid gap-4 pt-(--card-spacing)">
-            <Table aria-label="RMA Requests">
-              <TableHeader>
-                <TableRow>
-                  <TableHead>RMA ID</TableHead>
-                  <TableHead>Customer Name</TableHead>
-                  <TableHead>Product ID</TableHead>
-                  <TableHead>Reason</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Submitted Date</TableHead>
-                  <TableHead>Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {paginatedRequests.map((request) => {
-                  const presentation = RMA_STATUS_PRESENTATION[request.status]
-                  const updateLink = {
-                    params: { rmaId: request.rmaId },
-                    to: '/rma/$rmaId' as const,
-                  }
+            <div className="hidden md:block">
+              <Table aria-label="RMA Requests">
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>RMA ID</TableHead>
+                    <TableHead>Customer Name</TableHead>
+                    <TableHead>Product ID</TableHead>
+                    <TableHead>Reason</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Submitted Date</TableHead>
+                    <TableHead>Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {paginatedRequests.map((request) => {
+                    const presentation = RMA_STATUS_PRESENTATION[request.status]
+                    const updateLink = {
+                      params: { rmaId: request.rmaId },
+                      to: '/rma/$rmaId' as const,
+                    }
 
-                  return (
-                    <TableRow key={request.rmaId}>
-                      <TableCell className="font-medium">
-                        <Link className={tableLinkClassName} {...updateLink}>
+                    return (
+                      <TableRow key={request.rmaId}>
+                        <TableCell className="font-medium">
+                          <Link className={tableLinkClassName} {...updateLink}>
+                            {request.rmaId}
+                          </Link>
+                        </TableCell>
+                        <TableCell>
+                          <Link className={tableLinkClassName} {...updateLink}>
+                            {request.customerName}
+                          </Link>
+                        </TableCell>
+                        <TableCell>
+                          <Link className={tableLinkClassName} {...updateLink}>
+                            {request.productId}
+                          </Link>
+                        </TableCell>
+                        <TableCell className="max-w-80 whitespace-normal">
+                          <Link className={tableLinkClassName} {...updateLink}>
+                            {request.reason}
+                          </Link>
+                        </TableCell>
+                        <TableCell>
+                          <Link className={tableLinkClassName} {...updateLink}>
+                            <Badge
+                              className={presentation.className}
+                              variant="outline"
+                            >
+                              {presentation.label}
+                            </Badge>
+                          </Link>
+                        </TableCell>
+                        <TableCell>
+                          {formatSubmittedDate(new Date(request.createdAt))}
+                        </TableCell>
+                        <TableCell>
+                          <Button asChild size="sm" variant="outline">
+                            <Link {...updateLink}>Update</Link>
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    )
+                  })}
+                </TableBody>
+              </Table>
+            </div>
+            <div aria-label="RMA Requests" className="grid gap-3 md:hidden">
+              {paginatedRequests.map((request) => {
+                const presentation = RMA_STATUS_PRESENTATION[request.status]
+                const submittedDate = formatSubmittedDate(
+                  new Date(request.createdAt),
+                )
+                const updateLink = {
+                  params: { rmaId: request.rmaId },
+                  to: '/rma/$rmaId' as const,
+                }
+
+                return (
+                  <Card
+                    key={request.rmaId}
+                    aria-label={`RMA Request ${request.rmaId}`}
+                    role="article"
+                    size="sm"
+                  >
+                    <CardContent className="grid gap-3 pt-(--card-spacing)">
+                      <div className="grid gap-1">
+                        <span className="text-xs font-medium text-muted-foreground">
+                          RMA ID
+                        </span>
+                        <Link
+                          className={cn(tableLinkClassName, 'font-medium')}
+                          {...updateLink}
+                        >
                           {request.rmaId}
                         </Link>
-                      </TableCell>
-                      <TableCell>
+                      </div>
+                      <div className="grid gap-1">
+                        <span className="text-xs font-medium text-muted-foreground">
+                          Customer Name
+                        </span>
                         <Link className={tableLinkClassName} {...updateLink}>
                           {request.customerName}
                         </Link>
-                      </TableCell>
-                      <TableCell>
+                      </div>
+                      <div className="grid gap-1">
+                        <span className="text-xs font-medium text-muted-foreground">
+                          Product ID
+                        </span>
                         <Link className={tableLinkClassName} {...updateLink}>
                           {request.productId}
                         </Link>
-                      </TableCell>
-                      <TableCell className="max-w-80 whitespace-normal">
+                      </div>
+                      <div className="grid gap-1">
+                        <span className="text-xs font-medium text-muted-foreground">
+                          Reason
+                        </span>
                         <Link className={tableLinkClassName} {...updateLink}>
                           {request.reason}
                         </Link>
-                      </TableCell>
-                      <TableCell>
+                      </div>
+                      <div className="grid gap-1">
+                        <span className="text-xs font-medium text-muted-foreground">
+                          Status
+                        </span>
                         <Link className={tableLinkClassName} {...updateLink}>
                           <Badge
                             className={presentation.className}
@@ -524,20 +608,26 @@ function RmaListPage({ requests }: RmaListPageProps) {
                             {presentation.label}
                           </Badge>
                         </Link>
-                      </TableCell>
-                      <TableCell>
-                        {formatSubmittedDate(new Date(request.createdAt))}
-                      </TableCell>
-                      <TableCell>
+                      </div>
+                      <div className="grid gap-1">
+                        <span className="text-xs font-medium text-muted-foreground">
+                          Submitted Date
+                        </span>
+                        <span>{submittedDate}</span>
+                      </div>
+                      <div className="grid gap-1">
+                        <span className="text-xs font-medium text-muted-foreground">
+                          Actions
+                        </span>
                         <Button asChild size="sm" variant="outline">
                           <Link {...updateLink}>Update</Link>
                         </Button>
-                      </TableCell>
-                    </TableRow>
-                  )
-                })}
-              </TableBody>
-            </Table>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )
+              })}
+            </div>
             <div className="flex flex-col gap-3 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
               <p>
                 Showing {visibleRangeStart}-{visibleRangeEnd} of{' '}
