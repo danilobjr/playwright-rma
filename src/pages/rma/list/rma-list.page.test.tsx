@@ -1,5 +1,11 @@
-import { type ReactNode } from 'react'
-import { fireEvent, render, screen, within } from '@testing-library/react'
+import { useState, type ReactNode } from 'react'
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react'
 import { beforeAll, expect, test, vi } from 'vitest'
 
 import type { RmaRequest } from '@/services/api/rma/rma-request.model'
@@ -294,6 +300,98 @@ test('links mobile RMA ID, Status badge, and action to the update screen', () =>
     'href',
     '/rma/RMA-2026-1002',
   )
+})
+
+test('shows delete confirmation copy and cancels without deleting', () => {
+  const onDeleteRequest = vi.fn()
+
+  render(<RmaListPage requests={requests} onDeleteRequest={onDeleteRequest} />)
+
+  const row = screen.getByRole('row', { name: /RMA-2026-1002 Jordan Lee/ })
+
+  fireEvent.click(within(row).getByRole('button', { name: 'Delete request' }))
+
+  expect(
+    screen.getByRole('heading', { name: 'Delete RMA Request?' }),
+  ).toBeInTheDocument()
+  expect(
+    screen.getByText(
+      'This will remove RMA Request RMA-2026-1002 for Jordan Lee from the list. You cannot restore it after deleting.',
+    ),
+  ).toBeInTheDocument()
+
+  fireEvent.click(screen.getByRole('button', { name: 'Cancel' }))
+
+  expect(onDeleteRequest).not.toHaveBeenCalled()
+  expect(
+    screen.queryByRole('heading', { name: 'Delete RMA Request?' }),
+  ).not.toBeInTheDocument()
+  expect(
+    within(row).getByRole('link', { name: 'RMA-2026-1002' }),
+  ).toBeInTheDocument()
+})
+
+test('deletes visible RMA Request and updates active counts', async () => {
+  function StatefulRmaListPage() {
+    const [activeRequests, setActiveRequests] = useState(requests)
+
+    return (
+      <RmaListPage
+        requests={activeRequests}
+        onDeleteRequest={(rmaId) => {
+          setActiveRequests((currentRequests) =>
+            currentRequests.filter((request) => request.rmaId !== rmaId),
+          )
+        }}
+      />
+    )
+  }
+
+  render(<StatefulRmaListPage />)
+
+  const row = screen.getByRole('row', { name: /RMA-2026-1002 Jordan Lee/ })
+
+  fireEvent.click(within(row).getByRole('button', { name: 'Delete request' }))
+  fireEvent.click(screen.getByRole('button', { name: 'Delete request' }))
+
+  await waitFor(() => {
+    expect(
+      screen.queryByRole('heading', { name: 'Delete RMA Request?' }),
+    ).not.toBeInTheDocument()
+  })
+
+  expect(
+    within(
+      screen.getByRole('article', { name: 'Total RMAs summary' }),
+    ).getByText('11'),
+  ).toBeInTheDocument()
+  expect(
+    within(screen.getByRole('article', { name: 'Pending summary' })).getByText(
+      '4',
+    ),
+  ).toBeInTheDocument()
+  expect(
+    screen.queryByRole('link', { name: 'RMA-2026-1002' }),
+  ).not.toBeInTheDocument()
+  expect(screen.getByText('Showing 1-10 of 11')).toBeInTheDocument()
+})
+
+test('exposes delete action for every Status', () => {
+  render(<RmaListPage requests={requests} onDeleteRequest={vi.fn()} />)
+
+  for (const rmaId of [
+    'RMA-2026-1002',
+    'RMA-2026-1011',
+    'RMA-2026-1008',
+    'RMA-2026-1009',
+  ]) {
+    expect(
+      within(screen.getByRole('row', { name: new RegExp(rmaId) })).getByRole(
+        'button',
+        { name: 'Delete request' },
+      ),
+    ).toBeInTheDocument()
+  }
 })
 
 test('paginates RMA Requests with visible range and total count', () => {

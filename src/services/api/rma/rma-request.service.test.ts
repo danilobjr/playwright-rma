@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import {
   createRmaRequest,
+  deleteRmaRequest,
   listRmaRequests,
   peekNextRmaId,
 } from './rma-request.service'
@@ -51,6 +52,50 @@ describe('RMA request service', () => {
 
   it('previews the next RMA ID without creating a request', async () => {
     await expect(peekNextRmaId()).resolves.toBe('RMA-2026-1003')
+  })
+
+  it('hard-deletes a seeded RMA Request from the active list', async () => {
+    await expect(deleteRmaRequest('RMA-2026-1001')).resolves.toMatchObject({
+      rmaId: 'RMA-2026-1001',
+      customerName: 'Avery Stone',
+    })
+
+    await expect(listRmaRequests()).resolves.not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ rmaId: 'RMA-2026-1001' }),
+      ]),
+    )
+  })
+
+  it('keeps deleted seeded RMA Requests hidden after new requests are added', async () => {
+    await deleteRmaRequest('RMA-2026-1001')
+    await createRmaRequest({
+      customerName: 'Jordan Lee',
+      productId: 'PRD-A1B2',
+      reason: 'Screen flickers after startup.',
+    })
+
+    await expect(listRmaRequests()).resolves.not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ rmaId: 'RMA-2026-1001' }),
+      ]),
+    )
+  })
+
+  it('hard-deletes a created RMA Request from the active list', async () => {
+    const request = await createRmaRequest({
+      customerName: 'Jordan Lee',
+      productId: 'PRD-A1B2',
+      reason: 'Screen flickers after startup.',
+    })
+
+    await deleteRmaRequest(request.rmaId)
+
+    await expect(listRmaRequests()).resolves.not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ rmaId: request.rmaId }),
+      ]),
+    )
   })
 
   it('rejects missing required values', async () => {

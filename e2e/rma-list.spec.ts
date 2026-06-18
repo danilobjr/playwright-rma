@@ -205,6 +205,47 @@ test('links RMA Request table content to update screen', async ({ page }) => {
   await expect(page).toHaveURL(/#\/rma\/RMA-2026-1002$/)
 })
 
+test('deletes an RMA Request after accessible confirmation', async ({
+  page,
+}) => {
+  await page.goto('/#/rma')
+
+  const row = page.getByRole('row', { name: /RMA-2026-1001 Avery Stone/ })
+  const deleteButton = row.getByRole('button', { name: 'Delete request' })
+
+  await deleteButton.focus()
+  await expect(
+    page.getByRole('tooltip', { name: 'Delete request' }),
+  ).toBeVisible()
+
+  await deleteButton.click()
+  await expect(
+    page.getByRole('heading', { name: 'Delete RMA Request?' }),
+  ).toBeVisible()
+  await expect(
+    page.getByText(
+      'This will remove RMA Request RMA-2026-1001 for Avery Stone from the list. You cannot restore it after deleting.',
+    ),
+  ).toBeVisible()
+
+  await page.getByRole('button', { name: 'Cancel' }).click()
+  await expect(row.getByRole('link', { name: 'RMA-2026-1001' })).toBeVisible()
+
+  await deleteButton.click()
+  await page.getByRole('button', { name: 'Delete request' }).click()
+
+  await expect(page.getByText('RMA Request deleted')).toBeVisible()
+  await expect(page.getByRole('link', { name: 'RMA-2026-1001' })).toHaveCount(0)
+  await expectSummaryCard(page, 'Total RMAs', '1')
+  await expectSummaryCard(page, 'Pending', '0')
+  await expectRmaOrder(page, ['RMA-2026-1002'])
+
+  await page.reload()
+
+  await expect(page.getByRole('link', { name: 'RMA-2026-1001' })).toHaveCount(0)
+  await expectRmaOrder(page, ['RMA-2026-1002'])
+})
+
 test('filters by Status and keeps summary cards in sync', async ({ page }) => {
   await page.goto('/#/rma')
 
