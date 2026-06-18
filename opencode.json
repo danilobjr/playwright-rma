@@ -5,6 +5,11 @@
       "type": "local",
       "command": ["pnpm", "dlx", "@playwright/mcp@latest"],
       "enabled": true
+    },
+    "shadcn": {
+      "type": "local",
+      "command": ["pnpm", "exec", "shadcn", "mcp"],
+      "enabled": true
     }
   },
   "permission": {
