@@ -188,4 +188,78 @@ describe('RMA request service', () => {
       productId: 'PRD-9C4D',
     })
   })
+
+  it('does not reuse RMA ID after hard-deleting the highest active request', async () => {
+    const first = await createRmaRequest({
+      customerName: 'Jordan Lee',
+      productId: 'PRD-A1B2',
+      reason: 'Screen flickers after startup.',
+    })
+
+    expect(first.rmaId).toBe('RMA-2026-1003')
+
+    await deleteRmaRequest(first.rmaId)
+
+    const second = await createRmaRequest({
+      customerName: 'Taylor Reed',
+      productId: 'PRD-C3D4',
+      reason: 'Device overheats during normal use.',
+    })
+
+    expect(second.rmaId).toBe('RMA-2026-1004')
+  })
+
+  it('previews monotonic next RMA ID after delete of highest request', async () => {
+    const first = await createRmaRequest({
+      customerName: 'Jordan Lee',
+      productId: 'PRD-A1B2',
+      reason: 'Screen flickers after startup.',
+    })
+
+    expect(first.rmaId).toBe('RMA-2026-1003')
+
+    await expect(peekNextRmaId()).resolves.toBe('RMA-2026-1004')
+
+    await deleteRmaRequest(first.rmaId)
+
+    await expect(peekNextRmaId()).resolves.toBe('RMA-2026-1004')
+  })
+
+  it('preserves sequence counter when all active requests are deleted', async () => {
+    const first = await createRmaRequest({
+      customerName: 'Jordan Lee',
+      productId: 'PRD-A1B2',
+      reason: 'Screen flickers after startup.',
+    })
+
+    await deleteRmaRequest(first.rmaId)
+    await deleteRmaRequest('RMA-2026-1001')
+    await deleteRmaRequest('RMA-2026-1002')
+
+    const second = await createRmaRequest({
+      customerName: 'Taylor Reed',
+      productId: 'PRD-C3D4',
+      reason: 'Device overheats during normal use.',
+    })
+
+    expect(second.rmaId).toBe('RMA-2026-1004')
+  })
+
+  it('resets RMA ID sequence to start value for a new year', async () => {
+    await createRmaRequest({
+      customerName: 'Jordan Lee',
+      productId: 'PRD-A1B2',
+      reason: 'Screen flickers after startup.',
+    })
+
+    vi.setSystemTime(new Date('2027-01-15T10:30:00.000Z'))
+
+    const request = await createRmaRequest({
+      customerName: 'Taylor Reed',
+      productId: 'PRD-C3D4',
+      reason: 'Device overheats during normal use.',
+    })
+
+    expect(request.rmaId).toBe('RMA-2027-1001')
+  })
 })

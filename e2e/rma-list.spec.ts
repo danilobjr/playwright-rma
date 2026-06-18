@@ -303,3 +303,28 @@ test('shows tooltips for filter actions', async ({ page }) => {
   await page.getByRole('button', { name: 'Reset' }).focus()
   await expect(page.getByRole('tooltip', { name: 'Reset' })).toBeVisible()
 })
+
+test('delete then create does not reuse the removed RMA ID', async ({
+  page,
+}) => {
+  const currentYear = new Date().getFullYear()
+
+  await page.goto('/#/rma/create')
+  await expect(page.getByLabel('RMA ID')).toHaveValue(`RMA-${currentYear}-1003`)
+
+  await page.getByLabel('Customer Name').fill('Test User')
+  await page.getByLabel('Product ID').fill('a1b2')
+  await page.getByLabel('Reason').fill('Product requires thorough evaluation.')
+  await page.getByRole('button', { name: 'Submit' }).click()
+
+  await page.goto('/#/rma')
+  const row = page.getByRole('row', {
+    name: new RegExp(`RMA-${currentYear}-1003 Test User`),
+  })
+  await row.getByRole('button', { name: 'Delete request' }).click()
+  await page.getByRole('button', { name: 'Delete request' }).click()
+  await expect(page.getByText('RMA Request deleted')).toBeVisible()
+
+  await page.goto('/#/rma/create')
+  await expect(page.getByLabel('RMA ID')).toHaveValue(`RMA-${currentYear}-1004`)
+})

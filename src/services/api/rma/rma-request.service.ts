@@ -5,10 +5,16 @@ import type {
 } from './rma-request.model'
 
 const RMA_STORAGE_KEY = 'playwright-rma:rma-requests:v1'
+const RMA_ID_SEQUENCE_KEY = 'playwright-rma:rma-id-sequence:v1'
 const RMA_ID_START_SEQUENCE = 1001
 const PENDING_STATUS = 'Pending'
 
 type StoredRmaRequests = RmaRequest[] | { requests: RmaRequest[] }
+
+type RmaIdSequence = {
+  year: number
+  nextSequence: number
+}
 
 class DuplicateRmaRequestError extends Error {
   matchingRmaId: string
@@ -139,6 +145,20 @@ function writeActiveRmaRequests(requests: RmaRequest[]) {
   localStorage.setItem(RMA_STORAGE_KEY, JSON.stringify({ requests }))
 }
 
+function readRmaIdSequence(): RmaIdSequence | null {
+  const stored = localStorage.getItem(RMA_ID_SEQUENCE_KEY)
+
+  if (!stored) {
+    return null
+  }
+
+  return JSON.parse(stored) as RmaIdSequence
+}
+
+function writeRmaIdSequence(sequence: RmaIdSequence) {
+  localStorage.setItem(RMA_ID_SEQUENCE_KEY, JSON.stringify(sequence))
+}
+
 function getAllRmaRequests() {
   return readActiveRmaRequests()
 }
@@ -158,8 +178,16 @@ function getNextRmaId(requests: RmaRequest[]) {
 
     return [Number(match[2])]
   })
-  const nextSequence =
+  const fromActive =
     Math.max(RMA_ID_START_SEQUENCE - 1, ...currentYearSequences) + 1
+
+  const persisted = readRmaIdSequence()
+  const fromPersisted =
+    persisted && persisted.year === currentYear
+      ? persisted.nextSequence
+      : RMA_ID_START_SEQUENCE
+
+  const nextSequence = Math.max(fromActive, fromPersisted)
 
   return `RMA-${currentYear}-${nextSequence}`
 }
@@ -195,6 +223,10 @@ async function createRmaRequest(input: CreateRmaRequestInput) {
   }
 
   writeActiveRmaRequests([...existingRequests, request])
+
+  const currentYear = getCurrentYear()
+  const requestSequence = Number(request.rmaId.split('-')[2])
+  writeRmaIdSequence({ year: currentYear, nextSequence: requestSequence + 1 })
 
   return request
 }
