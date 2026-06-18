@@ -140,9 +140,13 @@ beforeAll(() => {
 })
 
 function getRenderedRmaIds() {
-  return screen
+  return within(screen.getByRole('table', { name: 'RMA Requests' }))
     .getAllByRole('link', { name: /^RMA-\d{4}-\d{4}$/ })
     .map((link) => link.textContent)
+}
+
+function getMobileRmaCard(rmaId: string) {
+  return screen.getByRole('article', { name: `RMA Request ${rmaId}` })
 }
 
 test('shows real RMA status summary counts', () => {
@@ -251,6 +255,47 @@ test('links RMA row content and Status badge to the update screen', () => {
   )
 })
 
+test('shows mobile RMA Request cards with table-equivalent labels', () => {
+  render(<RmaListPage requests={requests} />)
+
+  const card = getMobileRmaCard('RMA-2026-1002')
+
+  expect(within(card).getByText('RMA ID')).toBeInTheDocument()
+  expect(
+    within(card).getByRole('link', { name: 'RMA-2026-1002' }),
+  ).toHaveAttribute('href', '/rma/RMA-2026-1002')
+  expect(within(card).getByText('Customer Name')).toBeInTheDocument()
+  expect(within(card).getByText('Jordan Lee')).toBeInTheDocument()
+  expect(within(card).getByText('Product ID')).toBeInTheDocument()
+  expect(within(card).getByText('PRD-A1B2')).toBeInTheDocument()
+  expect(within(card).getByText('Reason')).toBeInTheDocument()
+  expect(
+    within(card).getByText('Screen flickers after startup.'),
+  ).toBeInTheDocument()
+  expect(within(card).getByText('Status')).toBeInTheDocument()
+  expect(within(card).getByText('Submitted Date')).toBeInTheDocument()
+  expect(within(card).getByText('Mar 4, 2026')).toBeInTheDocument()
+  expect(within(card).getByText('Actions')).toBeInTheDocument()
+})
+
+test('links mobile RMA ID, Status badge, and action to the update screen', () => {
+  render(<RmaListPage requests={requests} />)
+
+  const card = getMobileRmaCard('RMA-2026-1002')
+
+  expect(
+    within(card).getByRole('link', { name: 'RMA-2026-1002' }),
+  ).toHaveAttribute('href', '/rma/RMA-2026-1002')
+  expect(within(card).getByRole('link', { name: 'Pending' })).toHaveAttribute(
+    'href',
+    '/rma/RMA-2026-1002',
+  )
+  expect(within(card).getByRole('link', { name: 'Update' })).toHaveAttribute(
+    'href',
+    '/rma/RMA-2026-1002',
+  )
+})
+
 test('paginates RMA Requests with visible range and total count', () => {
   render(<RmaListPage requests={requests} />)
 
@@ -273,13 +318,13 @@ test('applies Search only after Search is clicked', () => {
     target: { value: '  screen   FLICKERS ' },
   })
 
-  expect(screen.getByText('Sofia Rivera')).toBeInTheDocument()
-  expect(screen.getByText('Jordan Lee')).toBeInTheDocument()
+  expect(screen.getAllByText('Sofia Rivera').length).toBeGreaterThan(0)
+  expect(screen.getAllByText('Jordan Lee').length).toBeGreaterThan(0)
 
   fireEvent.click(screen.getByRole('button', { name: 'Search' }))
 
   expect(screen.queryByText('Sofia Rivera')).not.toBeInTheDocument()
-  expect(screen.getByText('Jordan Lee')).toBeInTheDocument()
+  expect(screen.getAllByText('Jordan Lee').length).toBeGreaterThan(0)
 })
 
 test('searches RMA ID, Customer Name, Product ID, and Reason', () => {
