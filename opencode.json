@@ -3,15 +3,16 @@
   "mcp": {
     "playwright": {
       "type": "local",
-      "command": ["pnpm", "exec", "playwright-mcp"],
+      "command": ["pnpm", "dlx", "@playwright/mcp@latest"],
       "enabled": true
     }
   },
   "permission": {
     "bash": {
       "*": "ask",
-      "git *": "allow",
       "git commit *": "ask",
+      "git log *": "allow",
+      "git status *": "allow",
       "grep *": "allow",
       "rm *": "deny"
     }

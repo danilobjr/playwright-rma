@@ -4,7 +4,7 @@
  * Provides better error messages for emoji-based commits
  */
 
-const EMOJI_LIST = ['✨', '🐞', '♻️', '🚧', '✏️', '💄', '🧪', '⚡️', '📦️']
+const EMOJI_LIST = ['✨', '🐞', '♻️', '🚧', '✏️', '💄', '🧪', '⚡️', '📦']
 
 const EMOJI_TO_TYPE = {
   '✨': 'feat',

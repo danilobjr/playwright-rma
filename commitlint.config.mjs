@@ -129,7 +129,7 @@ export default {
             description: 'A code change that improves performance',
           },
           build: {
-            emoji: '📦️',
+            emoji: '📦',
             title: 'Build system',
             description:
               'Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)',
