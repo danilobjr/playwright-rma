@@ -35,15 +35,32 @@ async function expectSummaryOrder(summaryCards: Locator) {
 }
 
 async function expectRmaOrder(page: Page, rmaIds: string[]) {
-  const cards = page.getByRole('article', { name: /^RMA-\d{4}-\d{4}/ })
+  const rmaLinks = page.getByRole('link', { name: /^RMA-\d{4}-\d{4}$/ })
 
-  await expect(cards).toHaveCount(rmaIds.length)
+  await expect(rmaLinks).toHaveCount(rmaIds.length)
 
   for (const [index, rmaId] of rmaIds.entries()) {
-    await expect(
-      cards.nth(index).getByRole('heading', { name: rmaId }),
-    ).toBeVisible()
+    await expect(rmaLinks.nth(index)).toHaveText(rmaId)
   }
+}
+
+async function expectRmaTableColumns(page: Page) {
+  await expect(page.getByRole('table', { name: 'RMA Requests' })).toBeVisible()
+  await expect(page.getByRole('columnheader', { name: 'RMA ID' })).toBeVisible()
+  await expect(
+    page.getByRole('columnheader', { name: 'Customer Name' }),
+  ).toBeVisible()
+  await expect(
+    page.getByRole('columnheader', { name: 'Product ID' }),
+  ).toBeVisible()
+  await expect(page.getByRole('columnheader', { name: 'Reason' })).toBeVisible()
+  await expect(page.getByRole('columnheader', { name: 'Status' })).toBeVisible()
+  await expect(
+    page.getByRole('columnheader', { name: 'Submitted Date' }),
+  ).toBeVisible()
+  await expect(
+    page.getByRole('columnheader', { name: 'Actions' }),
+  ).toBeVisible()
 }
 
 test('shows RMA status summary counts in workflow order', async ({ page }) => {
@@ -95,6 +112,7 @@ test('keeps RMA status summary usable on mobile', async ({ page }) => {
 test('filters RMA Requests only after Search is clicked', async ({ page }) => {
   await page.goto('/#/rma')
 
+  await expectRmaTableColumns(page)
   await expectRmaOrder(page, ['RMA-2026-1002', 'RMA-2026-1001'])
 
   await page.getByRole('textbox', { name: 'Search' }).fill('battery')
@@ -104,6 +122,21 @@ test('filters RMA Requests only after Search is clicked', async ({ page }) => {
   await page.getByRole('button', { name: 'Search' }).click()
   await expectRmaOrder(page, ['RMA-2026-1002'])
   await expect(page.getByText('Avery Stone')).not.toBeVisible()
+})
+
+test('links RMA Request table content to update screen', async ({ page }) => {
+  await page.goto('/#/rma')
+
+  const row = page.getByRole('row', { name: /RMA-2026-1002 Mina Patel/ })
+
+  await expect(row.getByRole('link', { name: 'RMA-2026-1002' })).toBeVisible()
+  await expect(row.getByRole('link', { name: 'Mina Patel' })).toBeVisible()
+  await expect(row.getByRole('link', { name: 'PRD-9C4D' })).toBeVisible()
+  await expect(row.getByRole('link', { name: 'Approved' })).toBeVisible()
+
+  await row.getByRole('link', { name: 'Approved' }).click()
+
+  await expect(page).toHaveURL(/#\/rma\/RMA-2026-1002$/)
 })
 
 test('filters by Status and keeps summary cards in sync', async ({ page }) => {

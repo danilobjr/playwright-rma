@@ -1,6 +1,9 @@
 import { useState } from 'react'
+import { Link } from '@tanstack/react-router'
 import {
   CalendarIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
   ClipboardListIcon,
   RotateCcwIcon,
   SearchIcon,
@@ -23,6 +26,11 @@ import {
 import { Field, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+} from '@/components/ui/pagination'
+import {
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -36,6 +44,14 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
@@ -48,6 +64,7 @@ import type {
 import { cn } from '@/utils/styles/cn.util'
 
 const ALL_STATUSES = 'All'
+const ROWS_PER_PAGE = 10
 
 const STATUS_FILTER_OPTIONS = RMA_STATUS_ORDER
 
@@ -68,6 +85,9 @@ const defaultFilters: RmaListFilters = {
   search: '',
   status: '',
 }
+
+const tableLinkClassName =
+  'rounded-sm text-foreground no-underline transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
 
 function normalizeFilterText(value: string) {
   return value.trim().replace(/\s+/g, ' ').toLocaleLowerCase()
@@ -136,6 +156,7 @@ function RmaListPage({ requests }: RmaListPageProps) {
     useState<RmaListFilters>(defaultFilters)
   const [appliedFilters, setAppliedFilters] =
     useState<RmaListFilters>(defaultFilters)
+  const [currentPage, setCurrentPage] = useState(1)
   const [selectedSummaryStatus, setSelectedSummaryStatus] = useState<
     SummaryStatusValue | undefined
   >()
@@ -153,6 +174,23 @@ function RmaListPage({ requests }: RmaListPageProps) {
   )
   const sortedRequests = sortRmaRequestsBySubmittedDateDesc(requests)
   const displayedRequests = filterRmaRequests(sortedRequests, appliedFilters)
+  const pageCount = Math.max(
+    1,
+    Math.ceil(displayedRequests.length / ROWS_PER_PAGE),
+  )
+  const safeCurrentPage = Math.min(currentPage, pageCount)
+  const paginatedRequests = displayedRequests.slice(
+    (safeCurrentPage - 1) * ROWS_PER_PAGE,
+    safeCurrentPage * ROWS_PER_PAGE,
+  )
+  const visibleRangeStart =
+    displayedRequests.length === 0
+      ? 0
+      : (safeCurrentPage - 1) * ROWS_PER_PAGE + 1
+  const visibleRangeEnd = Math.min(
+    safeCurrentPage * ROWS_PER_PAGE,
+    displayedRequests.length,
+  )
   const defaultCalendarMonth = sortedRequests[0]
     ? new Date(sortedRequests[0].createdAt)
     : new Date()
@@ -167,18 +205,21 @@ function RmaListPage({ requests }: RmaListPageProps) {
 
   function applyFilters() {
     setAppliedFilters(draftFilters)
+    setCurrentPage(1)
   }
 
   function resetFilters() {
     setDraftFilters(defaultFilters)
     setAppliedFilters(defaultFilters)
     setSelectedSummaryStatus(undefined)
+    setCurrentPage(1)
   }
 
   function applyTotalSummaryFilter() {
     setDraftFilters(defaultFilters)
     setAppliedFilters(defaultFilters)
     setSelectedSummaryStatus(ALL_STATUSES)
+    setCurrentPage(1)
   }
 
   function applyStatusSummaryFilter(status: RmaStatus) {
@@ -190,6 +231,7 @@ function RmaListPage({ requests }: RmaListPageProps) {
     setDraftFilters(nextFilters)
     setAppliedFilters(nextFilters)
     setSelectedSummaryStatus(status)
+    setCurrentPage(1)
   }
 
   return (
@@ -429,50 +471,111 @@ function RmaListPage({ requests }: RmaListPageProps) {
           </CardHeader>
         </Card>
       ) : (
-        <section className="grid gap-3">
-          {displayedRequests.map((request) => {
-            const presentation = RMA_STATUS_PRESENTATION[request.status]
+        <Card>
+          <CardContent className="grid gap-4 pt-(--card-spacing)">
+            <Table aria-label="RMA Requests">
+              <TableHeader>
+                <TableRow>
+                  <TableHead>RMA ID</TableHead>
+                  <TableHead>Customer Name</TableHead>
+                  <TableHead>Product ID</TableHead>
+                  <TableHead>Reason</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Submitted Date</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {paginatedRequests.map((request) => {
+                  const presentation = RMA_STATUS_PRESENTATION[request.status]
+                  const updateLink = {
+                    params: { rmaId: request.rmaId },
+                    to: '/rma/$rmaId' as const,
+                  }
 
-            return (
-              <Card
-                key={request.rmaId}
-                aria-label={request.rmaId}
-                role="article"
-                size="sm"
-              >
-                <CardHeader>
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex flex-col gap-1">
-                      <CardTitle>
-                        <h3>{request.rmaId}</h3>
-                      </CardTitle>
-                      <CardDescription>{request.customerName}</CardDescription>
-                    </div>
-                    <Badge className={presentation.className} variant="outline">
-                      {presentation.label}
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent className="grid gap-2 text-sm md:grid-cols-4">
-                  <div>
-                    <span className="font-medium">Product ID</span>
-                    <p className="text-muted-foreground">{request.productId}</p>
-                  </div>
-                  <div>
-                    <span className="font-medium">Submitted Date</span>
-                    <p className="text-muted-foreground">
-                      {formatSubmittedDate(new Date(request.createdAt))}
-                    </p>
-                  </div>
-                  <div className="md:col-span-2">
-                    <span className="font-medium">Reason</span>
-                    <p className="text-muted-foreground">{request.reason}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            )
-          })}
-        </section>
+                  return (
+                    <TableRow key={request.rmaId}>
+                      <TableCell className="font-medium">
+                        <Link className={tableLinkClassName} {...updateLink}>
+                          {request.rmaId}
+                        </Link>
+                      </TableCell>
+                      <TableCell>
+                        <Link className={tableLinkClassName} {...updateLink}>
+                          {request.customerName}
+                        </Link>
+                      </TableCell>
+                      <TableCell>
+                        <Link className={tableLinkClassName} {...updateLink}>
+                          {request.productId}
+                        </Link>
+                      </TableCell>
+                      <TableCell className="max-w-80 whitespace-normal">
+                        <Link className={tableLinkClassName} {...updateLink}>
+                          {request.reason}
+                        </Link>
+                      </TableCell>
+                      <TableCell>
+                        <Link className={tableLinkClassName} {...updateLink}>
+                          <Badge
+                            className={presentation.className}
+                            variant="outline"
+                          >
+                            {presentation.label}
+                          </Badge>
+                        </Link>
+                      </TableCell>
+                      <TableCell>
+                        {formatSubmittedDate(new Date(request.createdAt))}
+                      </TableCell>
+                      <TableCell>
+                        <Button asChild size="sm" variant="outline">
+                          <Link {...updateLink}>Update</Link>
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  )
+                })}
+              </TableBody>
+            </Table>
+            <div className="flex flex-col gap-3 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+              <p>
+                Showing {visibleRangeStart}-{visibleRangeEnd} of{' '}
+                {displayedRequests.length}
+              </p>
+              <Pagination className="mx-0 w-auto justify-start sm:justify-end">
+                <PaginationContent>
+                  <PaginationItem>
+                    <Button
+                      aria-label="Go to previous page"
+                      disabled={safeCurrentPage === 1}
+                      size="sm"
+                      type="button"
+                      variant="outline"
+                      onClick={() => setCurrentPage(safeCurrentPage - 1)}
+                    >
+                      <ChevronLeftIcon data-icon="inline-start" />
+                      Previous
+                    </Button>
+                  </PaginationItem>
+                  <PaginationItem>
+                    <Button
+                      aria-label="Go to next page"
+                      disabled={safeCurrentPage === pageCount}
+                      size="sm"
+                      type="button"
+                      variant="outline"
+                      onClick={() => setCurrentPage(safeCurrentPage + 1)}
+                    >
+                      Next
+                      <ChevronRightIcon data-icon="inline-end" />
+                    </Button>
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </div>
+          </CardContent>
+        </Card>
       )}
     </div>
   )

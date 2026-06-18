@@ -5,15 +5,29 @@
       "type": "local",
       "command": ["pnpm", "dlx", "@playwright/mcp@latest"],
       "enabled": true
+    },
+    "shadcn": {
+      "type": "local",
+      "command": ["pnpm", "exec", "shadcn", "mcp"],
+      "enabled": true
     }
   },
   "permission": {
     "bash": {
       "*": "ask",
+      "gh issue view *": "allow",
+      "gh label list *": "allow",
+      "gh pr view *": "allow",
       "git commit *": "ask",
       "git log *": "allow",
       "git status *": "allow",
       "grep *": "allow",
+      "pnpm *": "ask",
+      "pnpm build *": "allow",
+      "pnpm lint *": "allow",
+      "pnpm test *": "allow",
+      "pnpm test:e2e *": "allow",
+      "pnpm vitest *": "allow",
       "rm *": "deny"
     }
   }
