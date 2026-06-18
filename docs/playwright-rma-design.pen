@@ -884,7 +884,7 @@
                               "id": "jWrQW",
                               "name": "Status filter value",
                               "fill": "#18181B",
-                              "content": "All statuses",
+                              "content": "All",
                               "fontFamily": "Geist",
                               "fontSize": 14
                             },
