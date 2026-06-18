@@ -7,12 +7,23 @@ import {
   ClipboardListIcon,
   RotateCcwIcon,
   SearchIcon,
+  TrashIcon,
 } from 'lucide-react'
 
 import {
   RMA_STATUS_ORDER,
   RMA_STATUS_PRESENTATION,
 } from '@/pages/rma/rma-status-presentation.model'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
@@ -78,6 +89,7 @@ type RmaListFilters = {
 }
 
 type RmaListPageProps = {
+  onDeleteRequest?: (rmaId: string) => Promise<void> | void
   requests: RmaRequest[]
 }
 
@@ -151,7 +163,7 @@ function formatSubmittedDate(date: Date) {
   }).format(date)
 }
 
-function RmaListPage({ requests }: RmaListPageProps) {
+function RmaListPage({ onDeleteRequest, requests }: RmaListPageProps) {
   const [draftFilters, setDraftFilters] =
     useState<RmaListFilters>(defaultFilters)
   const [appliedFilters, setAppliedFilters] =
@@ -159,6 +171,9 @@ function RmaListPage({ requests }: RmaListPageProps) {
   const [currentPage, setCurrentPage] = useState(1)
   const [selectedSummaryStatus, setSelectedSummaryStatus] = useState<
     SummaryStatusValue | undefined
+  >()
+  const [requestPendingDelete, setRequestPendingDelete] = useState<
+    RmaRequest | undefined
   >()
   const statusCounts = RMA_STATUS_ORDER.reduce(
     (counts, status) => ({
@@ -234,198 +249,234 @@ function RmaListPage({ requests }: RmaListPageProps) {
     setCurrentPage(1)
   }
 
-  return (
-    <div className="grid gap-4">
-      <section
-        aria-label="RMA status summary"
-        className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5"
-      >
-        <Card aria-label="Total RMAs summary" role="article" size="sm">
-          <button
-            aria-label="Total RMAs summary"
-            aria-pressed={selectedSummaryStatus === ALL_STATUSES}
-            className="grid w-full gap-3 text-left"
+  async function confirmDeleteRequest() {
+    if (!requestPendingDelete || !onDeleteRequest) {
+      return
+    }
+
+    await onDeleteRequest(requestPendingDelete.rmaId)
+    setRequestPendingDelete(undefined)
+  }
+
+  function renderDeleteAction(request: RmaRequest) {
+    if (!onDeleteRequest) {
+      return null
+    }
+
+    return (
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            aria-label="Delete request"
+            size="sm"
             type="button"
-            onClick={applyTotalSummaryFilter}
+            variant="destructive"
+            onClick={() => setRequestPendingDelete(request)}
           >
-            <CardHeader>
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0">
-                  <CardTitle>
-                    <h3>Total RMAs</h3>
-                  </CardTitle>
-                  <CardDescription>All active RMA Requests</CardDescription>
-                </div>
-                <ClipboardListIcon
-                  aria-hidden="true"
-                  className="size-5 text-muted-foreground"
-                />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-3xl font-semibold tabular-nums">
-                {requests.length}
-              </p>
-            </CardContent>
-          </button>
-        </Card>
-        {RMA_STATUS_ORDER.map((status) => {
-          const presentation = RMA_STATUS_PRESENTATION[status]
-          const Icon = presentation.icon
+            <TrashIcon data-icon="inline-start" />
+            <span className="sr-only">Delete request</span>
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>Delete request</TooltipContent>
+      </Tooltip>
+    )
+  }
 
-          return (
-            <Card
-              key={status}
-              aria-label={`${status} summary`}
-              className={cn('border', presentation.className)}
-              role="article"
-              size="sm"
+  return (
+    <TooltipProvider>
+      <div className="grid gap-4">
+        <section
+          aria-label="RMA status summary"
+          className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5"
+        >
+          <Card aria-label="Total RMAs summary" role="article" size="sm">
+            <button
+              aria-label="Total RMAs summary"
+              aria-pressed={selectedSummaryStatus === ALL_STATUSES}
+              className="grid w-full gap-3 text-left"
+              type="button"
+              onClick={applyTotalSummaryFilter}
             >
-              <button
-                aria-label={`${status} summary`}
-                aria-pressed={selectedSummaryStatus === status}
-                className="grid w-full gap-3 text-left"
-                type="button"
-                onClick={() => applyStatusSummaryFilter(status)}
-              >
-                <CardHeader>
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="min-w-0">
-                      <CardTitle>
-                        <h3>{presentation.label}</h3>
-                      </CardTitle>
-                      <CardDescription>
-                        {presentation.description}
-                      </CardDescription>
-                    </div>
-                    <Icon aria-hidden="true" className="size-5" />
+              <CardHeader>
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <CardTitle>
+                      <h3>Total RMAs</h3>
+                    </CardTitle>
+                    <CardDescription>All active RMA Requests</CardDescription>
                   </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-3xl font-semibold tabular-nums">
-                    {statusCounts[status]}
-                  </p>
-                </CardContent>
-              </button>
-            </Card>
-          )
-        })}
-      </section>
-
-      <Card>
-        <CardContent className="pt-(--card-spacing)">
-          <FieldGroup>
-            <div className="grid gap-4 lg:grid-cols-[minmax(220px,1fr)_220px_240px_auto] lg:items-end">
-              <Field>
-                <FieldLabel htmlFor="rma-search">Search</FieldLabel>
-                <div className="relative">
-                  <SearchIcon
+                  <ClipboardListIcon
                     aria-hidden="true"
-                    className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
-                  />
-                  <Input
-                    className="h-10 pl-9"
-                    id="rma-search"
-                    placeholder="Search RMA Requests"
-                    value={draftFilters.search}
-                    onChange={(event) =>
-                      updateDraftFilters({ search: event.currentTarget.value })
-                    }
+                    className="size-5 text-muted-foreground"
                   />
                 </div>
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="rma-status-filter">Status</FieldLabel>
-                <Select
-                  value={draftFilters.status}
-                  onValueChange={(status: RmaStatus) =>
-                    updateDraftFilters({ status })
-                  }
+              </CardHeader>
+              <CardContent>
+                <p className="text-3xl font-semibold tabular-nums">
+                  {requests.length}
+                </p>
+              </CardContent>
+            </button>
+          </Card>
+          {RMA_STATUS_ORDER.map((status) => {
+            const presentation = RMA_STATUS_PRESENTATION[status]
+            const Icon = presentation.icon
+
+            return (
+              <Card
+                key={status}
+                aria-label={`${status} summary`}
+                className={cn('border', presentation.className)}
+                role="article"
+                size="sm"
+              >
+                <button
+                  aria-label={`${status} summary`}
+                  aria-pressed={selectedSummaryStatus === status}
+                  className="grid w-full gap-3 text-left"
+                  type="button"
+                  onClick={() => applyStatusSummaryFilter(status)}
                 >
-                  <SelectTrigger
-                    id="rma-status-filter"
-                    aria-label="Status"
-                    className="!h-10 w-full"
+                  <CardHeader>
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <CardTitle>
+                          <h3>{presentation.label}</h3>
+                        </CardTitle>
+                        <CardDescription>
+                          {presentation.description}
+                        </CardDescription>
+                      </div>
+                      <Icon aria-hidden="true" className="size-5" />
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-3xl font-semibold tabular-nums">
+                      {statusCounts[status]}
+                    </p>
+                  </CardContent>
+                </button>
+              </Card>
+            )
+          })}
+        </section>
+
+        <Card>
+          <CardContent className="pt-(--card-spacing)">
+            <FieldGroup>
+              <div className="grid gap-4 lg:grid-cols-[minmax(220px,1fr)_220px_240px_auto] lg:items-end">
+                <Field>
+                  <FieldLabel htmlFor="rma-search">Search</FieldLabel>
+                  <div className="relative">
+                    <SearchIcon
+                      aria-hidden="true"
+                      className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
+                    />
+                    <Input
+                      className="h-10 pl-9"
+                      id="rma-search"
+                      placeholder="Search RMA Requests"
+                      value={draftFilters.search}
+                      onChange={(event) =>
+                        updateDraftFilters({
+                          search: event.currentTarget.value,
+                        })
+                      }
+                    />
+                  </div>
+                </Field>
+                <Field>
+                  <FieldLabel htmlFor="rma-status-filter">Status</FieldLabel>
+                  <Select
+                    value={draftFilters.status}
+                    onValueChange={(status: RmaStatus) =>
+                      updateDraftFilters({ status })
+                    }
                   >
-                    {draftFilters.status ? (
-                      <span className="flex items-center gap-2">
-                        {(() => {
-                          const presentation =
-                            RMA_STATUS_PRESENTATION[draftFilters.status]
+                    <SelectTrigger
+                      id="rma-status-filter"
+                      aria-label="Status"
+                      className="!h-10 w-full"
+                    >
+                      {draftFilters.status ? (
+                        <span className="flex items-center gap-2">
+                          {(() => {
+                            const presentation =
+                              RMA_STATUS_PRESENTATION[draftFilters.status]
+                            const Icon = presentation.icon
+
+                            return (
+                              <>
+                                <Icon
+                                  aria-hidden="true"
+                                  className="size-4 text-muted-foreground"
+                                />
+                                <span>{presentation.label}</span>
+                              </>
+                            )
+                          })()}
+                        </span>
+                      ) : (
+                        <SelectValue placeholder="Status" />
+                      )}
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        {STATUS_FILTER_OPTIONS.map((status) => {
+                          const presentation = RMA_STATUS_PRESENTATION[status]
                           const Icon = presentation.icon
 
                           return (
-                            <>
-                              <Icon
-                                aria-hidden="true"
-                                className="size-4 text-muted-foreground"
-                              />
-                              <span>{presentation.label}</span>
-                            </>
-                          )
-                        })()}
-                      </span>
-                    ) : (
-                      <SelectValue placeholder="Status" />
-                    )}
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      {STATUS_FILTER_OPTIONS.map((status) => {
-                        const presentation = RMA_STATUS_PRESENTATION[status]
-                        const Icon = presentation.icon
-
-                        return (
-                          <SelectItem
-                            key={status}
-                            textValue={presentation.label}
-                            value={status}
-                          >
-                            <Icon aria-hidden="true" />
-                            <span className="grid gap-0.5">
-                              <span>{presentation.label}</span>
-                              <span className="text-xs text-muted-foreground">
-                                {presentation.description}
+                            <SelectItem
+                              key={status}
+                              textValue={presentation.label}
+                              value={status}
+                            >
+                              <Icon aria-hidden="true" />
+                              <span className="grid gap-0.5">
+                                <span>{presentation.label}</span>
+                                <span className="text-xs text-muted-foreground">
+                                  {presentation.description}
+                                </span>
                               </span>
-                            </span>
-                          </SelectItem>
-                        )
-                      })}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </Field>
-              <Field>
-                <FieldLabel>Submitted Date</FieldLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      aria-label="Submitted Date"
-                      className={cn(
-                        'h-10 w-full justify-start text-left font-normal',
-                        !draftFilters.submittedDate && 'text-muted-foreground',
-                      )}
-                      variant="outline"
-                    >
-                      <CalendarIcon aria-hidden="true" />
-                      {draftFilters.submittedDate
-                        ? formatSubmittedDate(draftFilters.submittedDate)
-                        : 'Submitted Date'}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      defaultMonth={defaultCalendarMonth}
-                      selected={draftFilters.submittedDate}
-                      onSelect={(submittedDate) =>
-                        updateDraftFilters({ submittedDate })
-                      }
-                    />
-                  </PopoverContent>
-                </Popover>
-              </Field>
-              <TooltipProvider>
+                            </SelectItem>
+                          )
+                        })}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </Field>
+                <Field>
+                  <FieldLabel>Submitted Date</FieldLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        aria-label="Submitted Date"
+                        className={cn(
+                          'h-10 w-full justify-start text-left font-normal',
+                          !draftFilters.submittedDate &&
+                            'text-muted-foreground',
+                        )}
+                        variant="outline"
+                      >
+                        <CalendarIcon aria-hidden="true" />
+                        {draftFilters.submittedDate
+                          ? formatSubmittedDate(draftFilters.submittedDate)
+                          : 'Submitted Date'}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        defaultMonth={defaultCalendarMonth}
+                        selected={draftFilters.submittedDate}
+                        onSelect={(submittedDate) =>
+                          updateDraftFilters({ submittedDate })
+                        }
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </Field>
                 <div className="flex gap-2">
                   <Tooltip>
                     <TooltipTrigger asChild>
@@ -457,68 +508,167 @@ function RmaListPage({ requests }: RmaListPageProps) {
                     <TooltipContent>Reset</TooltipContent>
                   </Tooltip>
                 </div>
-              </TooltipProvider>
-            </div>
-          </FieldGroup>
-        </CardContent>
-      </Card>
-
-      {displayedRequests.length === 0 ? (
-        <Card>
-          <CardHeader>
-            <CardTitle>No RMA Requests</CardTitle>
-            <CardDescription>
-              Create an RMA Request to start tracking returns.
-            </CardDescription>
-          </CardHeader>
+              </div>
+            </FieldGroup>
+          </CardContent>
         </Card>
-      ) : (
-        <Card>
-          <CardContent className="grid gap-4 pt-(--card-spacing)">
-            <div className="hidden md:block">
-              <Table aria-label="RMA Requests">
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>RMA ID</TableHead>
-                    <TableHead>Customer Name</TableHead>
-                    <TableHead>Product ID</TableHead>
-                    <TableHead>Reason</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Submitted Date</TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {paginatedRequests.map((request) => {
-                    const presentation = RMA_STATUS_PRESENTATION[request.status]
-                    const updateLink = {
-                      params: { rmaId: request.rmaId },
-                      to: '/rma/$rmaId' as const,
-                    }
 
-                    return (
-                      <TableRow key={request.rmaId}>
-                        <TableCell className="font-medium">
-                          <Link className={tableLinkClassName} {...updateLink}>
+        {displayedRequests.length === 0 ? (
+          <Card>
+            <CardHeader>
+              <CardTitle>No RMA Requests</CardTitle>
+              <CardDescription>
+                Create an RMA Request to start tracking returns.
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        ) : (
+          <Card>
+            <CardContent className="grid gap-4 pt-(--card-spacing)">
+              <div className="hidden md:block">
+                <Table aria-label="RMA Requests">
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>RMA ID</TableHead>
+                      <TableHead>Customer Name</TableHead>
+                      <TableHead>Product ID</TableHead>
+                      <TableHead>Reason</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Submitted Date</TableHead>
+                      <TableHead>Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {paginatedRequests.map((request) => {
+                      const presentation =
+                        RMA_STATUS_PRESENTATION[request.status]
+                      const updateLink = {
+                        params: { rmaId: request.rmaId },
+                        to: '/rma/$rmaId' as const,
+                      }
+
+                      return (
+                        <TableRow key={request.rmaId}>
+                          <TableCell className="font-medium">
+                            <Link
+                              className={tableLinkClassName}
+                              {...updateLink}
+                            >
+                              {request.rmaId}
+                            </Link>
+                          </TableCell>
+                          <TableCell>
+                            <Link
+                              className={tableLinkClassName}
+                              {...updateLink}
+                            >
+                              {request.customerName}
+                            </Link>
+                          </TableCell>
+                          <TableCell>
+                            <Link
+                              className={tableLinkClassName}
+                              {...updateLink}
+                            >
+                              {request.productId}
+                            </Link>
+                          </TableCell>
+                          <TableCell className="max-w-80 whitespace-normal">
+                            <Link
+                              className={tableLinkClassName}
+                              {...updateLink}
+                            >
+                              {request.reason}
+                            </Link>
+                          </TableCell>
+                          <TableCell>
+                            <Link
+                              className={tableLinkClassName}
+                              {...updateLink}
+                            >
+                              <Badge
+                                className={presentation.className}
+                                variant="outline"
+                              >
+                                {presentation.label}
+                              </Badge>
+                            </Link>
+                          </TableCell>
+                          <TableCell>
+                            {formatSubmittedDate(new Date(request.createdAt))}
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex gap-2">
+                              <Button asChild size="sm" variant="outline">
+                                <Link {...updateLink}>Update</Link>
+                              </Button>
+                              {renderDeleteAction(request)}
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      )
+                    })}
+                  </TableBody>
+                </Table>
+              </div>
+              <div aria-label="RMA Requests" className="grid gap-3 md:hidden">
+                {paginatedRequests.map((request) => {
+                  const presentation = RMA_STATUS_PRESENTATION[request.status]
+                  const submittedDate = formatSubmittedDate(
+                    new Date(request.createdAt),
+                  )
+                  const updateLink = {
+                    params: { rmaId: request.rmaId },
+                    to: '/rma/$rmaId' as const,
+                  }
+
+                  return (
+                    <Card
+                      key={request.rmaId}
+                      aria-label={`RMA Request ${request.rmaId}`}
+                      role="article"
+                      size="sm"
+                    >
+                      <CardContent className="grid gap-3 pt-(--card-spacing)">
+                        <div className="grid gap-1">
+                          <span className="text-xs font-medium text-muted-foreground">
+                            RMA ID
+                          </span>
+                          <Link
+                            className={cn(tableLinkClassName, 'font-medium')}
+                            {...updateLink}
+                          >
                             {request.rmaId}
                           </Link>
-                        </TableCell>
-                        <TableCell>
+                        </div>
+                        <div className="grid gap-1">
+                          <span className="text-xs font-medium text-muted-foreground">
+                            Customer Name
+                          </span>
                           <Link className={tableLinkClassName} {...updateLink}>
                             {request.customerName}
                           </Link>
-                        </TableCell>
-                        <TableCell>
+                        </div>
+                        <div className="grid gap-1">
+                          <span className="text-xs font-medium text-muted-foreground">
+                            Product ID
+                          </span>
                           <Link className={tableLinkClassName} {...updateLink}>
                             {request.productId}
                           </Link>
-                        </TableCell>
-                        <TableCell className="max-w-80 whitespace-normal">
+                        </div>
+                        <div className="grid gap-1">
+                          <span className="text-xs font-medium text-muted-foreground">
+                            Reason
+                          </span>
                           <Link className={tableLinkClassName} {...updateLink}>
                             {request.reason}
                           </Link>
-                        </TableCell>
-                        <TableCell>
+                        </div>
+                        <div className="grid gap-1">
+                          <span className="text-xs font-medium text-muted-foreground">
+                            Status
+                          </span>
                           <Link className={tableLinkClassName} {...updateLink}>
                             <Badge
                               className={presentation.className}
@@ -527,147 +677,101 @@ function RmaListPage({ requests }: RmaListPageProps) {
                               {presentation.label}
                             </Badge>
                           </Link>
-                        </TableCell>
-                        <TableCell>
-                          {formatSubmittedDate(new Date(request.createdAt))}
-                        </TableCell>
-                        <TableCell>
-                          <Button asChild size="sm" variant="outline">
-                            <Link {...updateLink}>Update</Link>
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    )
-                  })}
-                </TableBody>
-              </Table>
-            </div>
-            <div aria-label="RMA Requests" className="grid gap-3 md:hidden">
-              {paginatedRequests.map((request) => {
-                const presentation = RMA_STATUS_PRESENTATION[request.status]
-                const submittedDate = formatSubmittedDate(
-                  new Date(request.createdAt),
-                )
-                const updateLink = {
-                  params: { rmaId: request.rmaId },
-                  to: '/rma/$rmaId' as const,
-                }
-
-                return (
-                  <Card
-                    key={request.rmaId}
-                    aria-label={`RMA Request ${request.rmaId}`}
-                    role="article"
-                    size="sm"
-                  >
-                    <CardContent className="grid gap-3 pt-(--card-spacing)">
-                      <div className="grid gap-1">
-                        <span className="text-xs font-medium text-muted-foreground">
-                          RMA ID
-                        </span>
-                        <Link
-                          className={cn(tableLinkClassName, 'font-medium')}
-                          {...updateLink}
-                        >
-                          {request.rmaId}
-                        </Link>
-                      </div>
-                      <div className="grid gap-1">
-                        <span className="text-xs font-medium text-muted-foreground">
-                          Customer Name
-                        </span>
-                        <Link className={tableLinkClassName} {...updateLink}>
-                          {request.customerName}
-                        </Link>
-                      </div>
-                      <div className="grid gap-1">
-                        <span className="text-xs font-medium text-muted-foreground">
-                          Product ID
-                        </span>
-                        <Link className={tableLinkClassName} {...updateLink}>
-                          {request.productId}
-                        </Link>
-                      </div>
-                      <div className="grid gap-1">
-                        <span className="text-xs font-medium text-muted-foreground">
-                          Reason
-                        </span>
-                        <Link className={tableLinkClassName} {...updateLink}>
-                          {request.reason}
-                        </Link>
-                      </div>
-                      <div className="grid gap-1">
-                        <span className="text-xs font-medium text-muted-foreground">
-                          Status
-                        </span>
-                        <Link className={tableLinkClassName} {...updateLink}>
-                          <Badge
-                            className={presentation.className}
-                            variant="outline"
-                          >
-                            {presentation.label}
-                          </Badge>
-                        </Link>
-                      </div>
-                      <div className="grid gap-1">
-                        <span className="text-xs font-medium text-muted-foreground">
-                          Submitted Date
-                        </span>
-                        <span>{submittedDate}</span>
-                      </div>
-                      <div className="grid gap-1">
-                        <span className="text-xs font-medium text-muted-foreground">
-                          Actions
-                        </span>
-                        <Button asChild size="sm" variant="outline">
-                          <Link {...updateLink}>Update</Link>
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                )
-              })}
-            </div>
-            <div className="flex flex-col gap-3 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-              <p>
-                Showing {visibleRangeStart}-{visibleRangeEnd} of{' '}
-                {displayedRequests.length}
-              </p>
-              <Pagination className="mx-0 w-auto justify-start sm:justify-end">
-                <PaginationContent>
-                  <PaginationItem>
-                    <Button
-                      aria-label="Go to previous page"
-                      disabled={safeCurrentPage === 1}
-                      size="sm"
-                      type="button"
-                      variant="outline"
-                      onClick={() => setCurrentPage(safeCurrentPage - 1)}
-                    >
-                      <ChevronLeftIcon data-icon="inline-start" />
-                      Previous
-                    </Button>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <Button
-                      aria-label="Go to next page"
-                      disabled={safeCurrentPage === pageCount}
-                      size="sm"
-                      type="button"
-                      variant="outline"
-                      onClick={() => setCurrentPage(safeCurrentPage + 1)}
-                    >
-                      Next
-                      <ChevronRightIcon data-icon="inline-end" />
-                    </Button>
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-    </div>
+                        </div>
+                        <div className="grid gap-1">
+                          <span className="text-xs font-medium text-muted-foreground">
+                            Submitted Date
+                          </span>
+                          <span>{submittedDate}</span>
+                        </div>
+                        <div className="grid gap-1">
+                          <span className="text-xs font-medium text-muted-foreground">
+                            Actions
+                          </span>
+                          <div className="flex gap-2">
+                            <Button asChild size="sm" variant="outline">
+                              <Link {...updateLink}>Update</Link>
+                            </Button>
+                            {renderDeleteAction(request)}
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )
+                })}
+              </div>
+              <div className="flex flex-col gap-3 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+                <p>
+                  Showing {visibleRangeStart}-{visibleRangeEnd} of{' '}
+                  {displayedRequests.length}
+                </p>
+                <Pagination className="mx-0 w-auto justify-start sm:justify-end">
+                  <PaginationContent>
+                    <PaginationItem>
+                      <Button
+                        aria-label="Go to previous page"
+                        disabled={safeCurrentPage === 1}
+                        size="sm"
+                        type="button"
+                        variant="outline"
+                        onClick={() => setCurrentPage(safeCurrentPage - 1)}
+                      >
+                        <ChevronLeftIcon data-icon="inline-start" />
+                        Previous
+                      </Button>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <Button
+                        aria-label="Go to next page"
+                        disabled={safeCurrentPage === pageCount}
+                        size="sm"
+                        type="button"
+                        variant="outline"
+                        onClick={() => setCurrentPage(safeCurrentPage + 1)}
+                      >
+                        Next
+                        <ChevronRightIcon data-icon="inline-end" />
+                      </Button>
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+      </div>
+      <AlertDialog
+        open={Boolean(requestPendingDelete)}
+        onOpenChange={(open) => {
+          if (!open) {
+            setRequestPendingDelete(undefined)
+          }
+        }}
+      >
+        <AlertDialogContent size="sm">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete RMA Request?</AlertDialogTitle>
+            <AlertDialogDescription>
+              {requestPendingDelete
+                ? `This will remove RMA Request ${requestPendingDelete.rmaId} for ${requestPendingDelete.customerName} from the list. You cannot restore it after deleting.`
+                : ''}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              variant="destructive"
+              onClick={(event) => {
+                event.preventDefault()
+                void confirmDeleteRequest()
+              }}
+            >
+              Delete request
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </TooltipProvider>
   )
 }
 
