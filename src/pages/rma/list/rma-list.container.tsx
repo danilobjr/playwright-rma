@@ -1,14 +1,17 @@
 import { Link } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
+import { toast } from 'sonner'
 
 import { useLayout } from '@/components/app/layout/use-layout.hook'
 import { Button } from '@/components/ui/button'
+import { useDeleteRmaRequest } from '@/hooks/api/rma/use-delete-rma-request.hook'
 import { useRmaRequests } from '@/hooks/api/rma/use-rma-requests.hook'
 
 import { RmaListPage } from './rma-list.page'
 
 function RmaListContainer() {
   const rmaRequestsQuery = useRmaRequests()
+  const deleteRmaRequestMutation = useDeleteRmaRequest()
 
   useLayout(
     {
@@ -28,7 +31,20 @@ function RmaListContainer() {
     [],
   )
 
-  return <RmaListPage requests={rmaRequestsQuery.data ?? []} />
+  async function deleteRequest(rmaId: string) {
+    await deleteRmaRequestMutation.mutateAsync(rmaId)
+    toast.success('RMA Request deleted')
+  }
+
+  return (
+    <RmaListPage
+      error={rmaRequestsQuery.error}
+      isError={rmaRequestsQuery.isError}
+      isPending={rmaRequestsQuery.isPending}
+      requests={rmaRequestsQuery.data ?? []}
+      onDeleteRequest={deleteRequest}
+    />
+  )
 }
 
 export { RmaListContainer }

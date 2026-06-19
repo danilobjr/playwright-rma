@@ -5,8 +5,16 @@ import type {
 } from './rma-request.model'
 
 const RMA_STORAGE_KEY = 'playwright-rma:rma-requests:v1'
+const RMA_ID_SEQUENCE_KEY = 'playwright-rma:rma-id-sequence:v1'
 const RMA_ID_START_SEQUENCE = 1001
 const PENDING_STATUS = 'Pending'
+
+type StoredRmaRequests = RmaRequest[] | { requests: RmaRequest[] }
+
+type RmaIdSequence = {
+  year: number
+  nextSequence: number
+}
 
 class DuplicateRmaRequestError extends Error {
   matchingRmaId: string
@@ -117,22 +125,42 @@ function findDuplicateRmaRequest(
   })
 }
 
-function readStoredRmaRequests() {
+function readActiveRmaRequests() {
   const stored = localStorage.getItem(RMA_STORAGE_KEY)
 
   if (!stored) {
-    return []
+    return [...seedRmaRequests]
   }
 
-  return JSON.parse(stored) as RmaRequest[]
+  const parsed = JSON.parse(stored) as StoredRmaRequests
+
+  if (Array.isArray(parsed)) {
+    return [...seedRmaRequests, ...parsed]
+  }
+
+  return parsed.requests
 }
 
-function writeStoredRmaRequests(requests: RmaRequest[]) {
-  localStorage.setItem(RMA_STORAGE_KEY, JSON.stringify(requests))
+function writeActiveRmaRequests(requests: RmaRequest[]) {
+  localStorage.setItem(RMA_STORAGE_KEY, JSON.stringify({ requests }))
+}
+
+function readRmaIdSequence(): RmaIdSequence | null {
+  const stored = localStorage.getItem(RMA_ID_SEQUENCE_KEY)
+
+  if (!stored) {
+    return null
+  }
+
+  return JSON.parse(stored) as RmaIdSequence
+}
+
+function writeRmaIdSequence(sequence: RmaIdSequence) {
+  localStorage.setItem(RMA_ID_SEQUENCE_KEY, JSON.stringify(sequence))
 }
 
 function getAllRmaRequests() {
-  return [...seedRmaRequests, ...readStoredRmaRequests()]
+  return readActiveRmaRequests()
 }
 
 function getCurrentYear() {
@@ -150,8 +178,16 @@ function getNextRmaId(requests: RmaRequest[]) {
 
     return [Number(match[2])]
   })
-  const nextSequence =
+  const fromActive =
     Math.max(RMA_ID_START_SEQUENCE - 1, ...currentYearSequences) + 1
+
+  const persisted = readRmaIdSequence()
+  const fromPersisted =
+    persisted && persisted.year === currentYear
+      ? persisted.nextSequence
+      : RMA_ID_START_SEQUENCE
+
+  const nextSequence = Math.max(fromActive, fromPersisted)
 
   return `RMA-${currentYear}-${nextSequence}`
 }
@@ -165,8 +201,7 @@ async function peekNextRmaId() {
 }
 
 async function createRmaRequest(input: CreateRmaRequestInput) {
-  const storedRequests = readStoredRmaRequests()
-  const existingRequests = [...seedRmaRequests, ...storedRequests]
+  const existingRequests = readActiveRmaRequests()
   const createdAt = new Date()
   const duplicateRequest = findDuplicateRmaRequest(
     input,
@@ -187,13 +222,35 @@ async function createRmaRequest(input: CreateRmaRequestInput) {
     createdAt: createdAt.toISOString(),
   }
 
-  writeStoredRmaRequests([...storedRequests, request])
+  writeActiveRmaRequests([...existingRequests, request])
+
+  const currentYear = getCurrentYear()
+  const requestSequence = Number(request.rmaId.split('-')[2])
+  writeRmaIdSequence({ year: currentYear, nextSequence: requestSequence + 1 })
 
   return request
 }
 
+async function deleteRmaRequest(rmaId: string) {
+  const existingRequests = readActiveRmaRequests()
+  const deletedRequest = existingRequests.find(
+    (request) => request.rmaId === rmaId,
+  )
+
+  if (!deletedRequest) {
+    throw new Error('RMA Request not found')
+  }
+
+  writeActiveRmaRequests(
+    existingRequests.filter((request) => request.rmaId !== rmaId),
+  )
+
+  return deletedRequest
+}
+
 export {
   createRmaRequest,
+  deleteRmaRequest,
   DuplicateRmaRequestError,
   listRmaRequests,
   peekNextRmaId,

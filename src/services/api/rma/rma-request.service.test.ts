@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import {
   createRmaRequest,
+  deleteRmaRequest,
   listRmaRequests,
   peekNextRmaId,
 } from './rma-request.service'
@@ -51,6 +52,50 @@ describe('RMA request service', () => {
 
   it('previews the next RMA ID without creating a request', async () => {
     await expect(peekNextRmaId()).resolves.toBe('RMA-2026-1003')
+  })
+
+  it('hard-deletes a seeded RMA Request from the active list', async () => {
+    await expect(deleteRmaRequest('RMA-2026-1001')).resolves.toMatchObject({
+      rmaId: 'RMA-2026-1001',
+      customerName: 'Avery Stone',
+    })
+
+    await expect(listRmaRequests()).resolves.not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ rmaId: 'RMA-2026-1001' }),
+      ]),
+    )
+  })
+
+  it('keeps deleted seeded RMA Requests hidden after new requests are added', async () => {
+    await deleteRmaRequest('RMA-2026-1001')
+    await createRmaRequest({
+      customerName: 'Jordan Lee',
+      productId: 'PRD-A1B2',
+      reason: 'Screen flickers after startup.',
+    })
+
+    await expect(listRmaRequests()).resolves.not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ rmaId: 'RMA-2026-1001' }),
+      ]),
+    )
+  })
+
+  it('hard-deletes a created RMA Request from the active list', async () => {
+    const request = await createRmaRequest({
+      customerName: 'Jordan Lee',
+      productId: 'PRD-A1B2',
+      reason: 'Screen flickers after startup.',
+    })
+
+    await deleteRmaRequest(request.rmaId)
+
+    await expect(listRmaRequests()).resolves.not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ rmaId: request.rmaId }),
+      ]),
+    )
   })
 
   it('rejects missing required values', async () => {
@@ -142,5 +187,79 @@ describe('RMA request service', () => {
       customerName: 'Mina Patel',
       productId: 'PRD-9C4D',
     })
+  })
+
+  it('does not reuse RMA ID after hard-deleting the highest active request', async () => {
+    const first = await createRmaRequest({
+      customerName: 'Jordan Lee',
+      productId: 'PRD-A1B2',
+      reason: 'Screen flickers after startup.',
+    })
+
+    expect(first.rmaId).toBe('RMA-2026-1003')
+
+    await deleteRmaRequest(first.rmaId)
+
+    const second = await createRmaRequest({
+      customerName: 'Taylor Reed',
+      productId: 'PRD-C3D4',
+      reason: 'Device overheats during normal use.',
+    })
+
+    expect(second.rmaId).toBe('RMA-2026-1004')
+  })
+
+  it('previews monotonic next RMA ID after delete of highest request', async () => {
+    const first = await createRmaRequest({
+      customerName: 'Jordan Lee',
+      productId: 'PRD-A1B2',
+      reason: 'Screen flickers after startup.',
+    })
+
+    expect(first.rmaId).toBe('RMA-2026-1003')
+
+    await expect(peekNextRmaId()).resolves.toBe('RMA-2026-1004')
+
+    await deleteRmaRequest(first.rmaId)
+
+    await expect(peekNextRmaId()).resolves.toBe('RMA-2026-1004')
+  })
+
+  it('preserves sequence counter when all active requests are deleted', async () => {
+    const first = await createRmaRequest({
+      customerName: 'Jordan Lee',
+      productId: 'PRD-A1B2',
+      reason: 'Screen flickers after startup.',
+    })
+
+    await deleteRmaRequest(first.rmaId)
+    await deleteRmaRequest('RMA-2026-1001')
+    await deleteRmaRequest('RMA-2026-1002')
+
+    const second = await createRmaRequest({
+      customerName: 'Taylor Reed',
+      productId: 'PRD-C3D4',
+      reason: 'Device overheats during normal use.',
+    })
+
+    expect(second.rmaId).toBe('RMA-2026-1004')
+  })
+
+  it('resets RMA ID sequence to start value for a new year', async () => {
+    await createRmaRequest({
+      customerName: 'Jordan Lee',
+      productId: 'PRD-A1B2',
+      reason: 'Screen flickers after startup.',
+    })
+
+    vi.setSystemTime(new Date('2027-01-15T10:30:00.000Z'))
+
+    const request = await createRmaRequest({
+      customerName: 'Taylor Reed',
+      productId: 'PRD-C3D4',
+      reason: 'Device overheats during normal use.',
+    })
+
+    expect(request.rmaId).toBe('RMA-2027-1001')
   })
 })

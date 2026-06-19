@@ -47,7 +47,7 @@ This project is indexed by GitNexus as **playwright-rma** (18 symbols, 9 relatio
 
 ### Always Do
 
-- Before starting any codebase changes, show the current branch and ask: "Do you want to create a new branch?" If Yes (or similar), create the new branch from the current one. If No (or similar), stop and wait for a new prompt.
+- Before starting any codebase changes, show the current branch and ask: "Do you want to create a new branch?". If Yes (or similar), ask if new branch name sounds good. If Yes, create the new branch from the current one. If No (or similar), stop and wait for a new prompt. The branch name format should be: [ISSUE_NUMBER]/[DASH_SEPARATED_NAME]. Issue number if context impl.
 
 ### Never Do
 
