@@ -38,6 +38,9 @@ function RmaListContainer() {
 
   return (
     <RmaListPage
+      error={rmaRequestsQuery.error}
+      isError={rmaRequestsQuery.isError}
+      isPending={rmaRequestsQuery.isPending}
       requests={rmaRequestsQuery.data ?? []}
       onDeleteRequest={deleteRequest}
     />

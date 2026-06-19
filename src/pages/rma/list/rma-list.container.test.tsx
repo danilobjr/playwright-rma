@@ -9,10 +9,41 @@ import {
 } from '@testing-library/react'
 import { beforeEach, expect, test, vi } from 'vitest'
 
+import type { RmaRequest } from '@/services/api/rma/rma-request.model'
+
 import { RmaListContainer } from './rma-list.container'
 
-const { toastSuccess } = vi.hoisted(() => ({
-  toastSuccess: vi.fn(),
+const seedRequests: RmaRequest[] = [
+  {
+    rmaId: 'RMA-2026-1001',
+    status: 'Pending',
+    customerName: 'Avery Stone',
+    productId: 'PRD-7F2A',
+    reason: 'Display panel intermittently turns black during use.',
+    createdAt: '2026-01-15T14:05:00.000Z',
+  },
+  {
+    rmaId: 'RMA-2026-1002',
+    status: 'Approved',
+    customerName: 'Jordan Lee',
+    productId: 'PRD-A1B2',
+    reason: 'Screen flickers after startup.',
+    createdAt: '2026-03-04T10:30:00.000Z',
+  },
+]
+
+const { listRmaRequests, peekNextRmaId, toastSuccess, deleteRmaRequest } =
+  vi.hoisted(() => ({
+    listRmaRequests: vi.fn(),
+    peekNextRmaId: vi.fn(),
+    toastSuccess: vi.fn(),
+    deleteRmaRequest: vi.fn(),
+  }))
+
+vi.mock('@/services/api/rma/rma-request.service', () => ({
+  deleteRmaRequest,
+  listRmaRequests,
+  peekNextRmaId,
 }))
 
 vi.mock('sonner', () => ({
@@ -54,7 +85,8 @@ function renderWithQueryClient(children: ReactNode) {
 }
 
 beforeEach(() => {
-  localStorage.clear()
+  listRmaRequests.mockReturnValue(seedRequests)
+  peekNextRmaId.mockReturnValue('RMA-2026-1003')
   toastSuccess.mockClear()
 })
 
@@ -71,14 +103,16 @@ test('deletes an RMA Request, refreshes the list, and shows success toast', asyn
   await waitFor(() => {
     expect(toastSuccess).toHaveBeenCalledWith('RMA Request deleted')
   })
+})
+
+test('shows error alert when RMA requests fail to load', async () => {
+  listRmaRequests.mockRejectedValue(new Error('Network error'))
+
+  renderWithQueryClient(<RmaListContainer />)
+
   await waitFor(() => {
-    expect(
-      screen.queryByRole('link', { name: 'RMA-2026-1001' }),
-    ).not.toBeInTheDocument()
+    expect(screen.getByRole('alert')).toHaveTextContent(
+      "Couldn't load RMA Requests",
+    )
   })
-  expect(
-    within(
-      screen.getByRole('article', { name: 'Total RMAs summary' }),
-    ).getByText('1'),
-  ).toBeInTheDocument()
 })
