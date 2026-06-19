@@ -328,3 +328,53 @@ test('delete then create does not reuse the removed RMA ID', async ({
   await page.goto('/#/rma/create')
   await expect(page.getByLabel('RMA ID')).toHaveValue(`RMA-${currentYear}-1004`)
 })
+
+test('shows initial empty state with New RMA action when no requests exist', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    const key = 'playwright-rma:rma-requests:v1'
+    const originalGetItem = localStorage.getItem.bind(localStorage)
+    localStorage.getItem = function (k) {
+      if (k === key) return JSON.stringify({ requests: [] })
+      return originalGetItem(k)
+    }
+  })
+  await page.goto('/#/rma')
+
+  await expect(page.getByText('No RMA Requests')).toBeVisible()
+  await expect(
+    page.getByRole('link', { name: /New RMA/ }).first(),
+  ).toHaveAttribute('href', /\/rma\/create$/)
+})
+
+test('shows filtered empty state with Reset when no results match filters', async ({
+  page,
+}) => {
+  await page.goto('/#/rma')
+
+  await page.getByRole('textbox', { name: 'Search' }).fill('ZZZZN0N3X1STENT')
+  await page.getByRole('button', { name: 'Search' }).click()
+
+  await expect(page.getByText('No RMA Requests found')).toBeVisible()
+  await expect(
+    page.getByRole('button', { name: /Reset filters/i }),
+  ).toBeVisible()
+})
+
+test('shows error alert when RMA data is corrupted', async ({ page }) => {
+  await page.addInitScript(() => {
+    const key = 'playwright-rma:rma-requests:v1'
+    const originalGetItem = localStorage.getItem.bind(localStorage)
+    localStorage.getItem = function (k) {
+      if (k === key) return '{invalid json!!!}'
+      return originalGetItem(k)
+    }
+  })
+  await page.goto('/#/rma')
+
+  await expect(page.getByRole('alert')).toContainText(
+    "Couldn't load RMA Requests",
+    { timeout: 15000 },
+  )
+})

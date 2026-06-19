@@ -559,6 +559,59 @@ test('summary cards clear filters, submit, and sync the Status field', () => {
   expect(getRenderedRmaIds()).toEqual(firstPageRmaIds)
 })
 
+test('shows error alert when loading fails', () => {
+  render(
+    <RmaListPage
+      requests={[]}
+      isPending={false}
+      isError={true}
+      error={new Error('Failed to fetch')}
+    />,
+  )
+
+  expect(screen.getByRole('alert')).toHaveTextContent(
+    "Couldn't load RMA Requests",
+  )
+})
+
+test('shows filtered-empty state with Reset when no results match filters', () => {
+  render(<RmaListPage requests={[requests[0]]} />)
+
+  fireEvent.change(screen.getByRole('textbox', { name: 'Search' }), {
+    target: { value: 'N0NE3ISTENT' },
+  })
+  fireEvent.click(screen.getByRole('button', { name: 'Search' }))
+
+  expect(screen.getByText('No RMA Requests found')).toBeInTheDocument()
+  expect(
+    screen.getByRole('button', { name: /Reset filters/i }),
+  ).toBeInTheDocument()
+  expect(
+    screen.queryByRole('link', { name: /New RMA/ }),
+  ).not.toBeInTheDocument()
+})
+
+test('shows empty state with New RMA action when no requests exist', () => {
+  render(<RmaListPage requests={[]} />)
+
+  expect(screen.getByText('No RMA Requests')).toBeInTheDocument()
+  expect(
+    screen.getByText('Create an RMA Request to start tracking returns.'),
+  ).toBeInTheDocument()
+  expect(screen.getByRole('link', { name: /New RMA/ })).toHaveAttribute(
+    'href',
+    '/rma/create',
+  )
+})
+
+test('shows skeleton rows when loading and hides empty state', () => {
+  render(<RmaListPage requests={[]} isPending={true} />)
+
+  const skeletons = screen.getAllByTestId('rma-list-skeleton')
+  expect(skeletons.length).toBeGreaterThan(0)
+  expect(screen.queryByText('No RMA Requests')).not.toBeInTheDocument()
+})
+
 test('shows selected Status icon and label in the field', () => {
   render(<RmaListPage requests={requests} />)
 

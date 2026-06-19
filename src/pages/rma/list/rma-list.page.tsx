@@ -5,6 +5,7 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
   ClipboardListIcon,
+  Plus,
   RotateCcwIcon,
   SearchIcon,
   TrashIcon,
@@ -14,6 +15,7 @@ import {
   RMA_STATUS_ORDER,
   RMA_STATUS_PRESENTATION,
 } from '@/pages/rma/rma-status-presentation.model'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -34,6 +36,13 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle,
+} from '@/components/ui/empty'
 import { Field, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import {
@@ -54,6 +63,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { Skeleton } from '@/components/ui/skeleton'
 import {
   Table,
   TableBody,
@@ -91,6 +101,9 @@ type RmaListFilters = {
 type RmaListPageProps = {
   onDeleteRequest?: (rmaId: string) => Promise<void> | void
   requests: RmaRequest[]
+  isPending?: boolean
+  isError?: boolean
+  error?: Error | null
 }
 
 const defaultFilters: RmaListFilters = {
@@ -163,7 +176,13 @@ function formatSubmittedDate(date: Date) {
   }).format(date)
 }
 
-function RmaListPage({ onDeleteRequest, requests }: RmaListPageProps) {
+function RmaListPage({
+  error,
+  isError,
+  isPending,
+  onDeleteRequest,
+  requests,
+}: RmaListPageProps) {
   const [draftFilters, setDraftFilters] =
     useState<RmaListFilters>(defaultFilters)
   const [appliedFilters, setAppliedFilters] =
@@ -513,15 +532,113 @@ function RmaListPage({ onDeleteRequest, requests }: RmaListPageProps) {
           </CardContent>
         </Card>
 
-        {displayedRequests.length === 0 ? (
+        {isPending ? (
           <Card>
-            <CardHeader>
-              <CardTitle>No RMA Requests</CardTitle>
-              <CardDescription>
-                Create an RMA Request to start tracking returns.
-              </CardDescription>
-            </CardHeader>
+            <CardContent className="grid gap-4 pt-(--card-spacing)">
+              <div aria-hidden="true" className="hidden md:block">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>RMA ID</TableHead>
+                      <TableHead>Customer Name</TableHead>
+                      <TableHead>Product ID</TableHead>
+                      <TableHead>Reason</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Submitted Date</TableHead>
+                      <TableHead>Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {Array.from({ length: 10 }).map((_, index) => (
+                      <TableRow key={index}>
+                        <TableCell>
+                          <Skeleton
+                            className="h-4 w-28"
+                            data-testid="rma-list-skeleton"
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton className="h-4 w-36" />
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton className="h-4 w-20" />
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton className="h-4 w-60" />
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton className="h-4 w-20" />
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton className="h-4 w-24" />
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton className="h-8 w-24" />
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+              <div aria-hidden="true" className="grid gap-3 md:hidden">
+                {Array.from({ length: 10 }).map((_, index) => (
+                  <Card key={index} size="sm">
+                    <CardContent className="grid gap-3 pt-(--card-spacing)">
+                      <div className="grid gap-1">
+                        <Skeleton className="h-3 w-12" />
+                        <Skeleton className="h-4 w-28" />
+                      </div>
+                      <div className="grid gap-1">
+                        <Skeleton className="h-3 w-20" />
+                        <Skeleton className="h-4 w-36" />
+                      </div>
+                      <div className="grid gap-1">
+                        <Skeleton className="h-3 w-16" />
+                        <Skeleton className="h-4 w-20" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </CardContent>
           </Card>
+        ) : isError ? (
+          <Alert variant="destructive">
+            <AlertTitle>Couldn&apos;t load RMA Requests</AlertTitle>
+            <AlertDescription>{error?.message}</AlertDescription>
+          </Alert>
+        ) : displayedRequests.length === 0 ? (
+          requests.length === 0 ? (
+            <Empty>
+              <EmptyHeader>
+                <EmptyTitle>No RMA Requests</EmptyTitle>
+                <EmptyDescription>
+                  Create an RMA Request to start tracking returns.
+                </EmptyDescription>
+              </EmptyHeader>
+              <EmptyContent>
+                <Button asChild>
+                  <Link to="/rma/create">
+                    <Plus aria-hidden="true" />
+                    New RMA
+                  </Link>
+                </Button>
+              </EmptyContent>
+            </Empty>
+          ) : (
+            <Empty>
+              <EmptyHeader>
+                <EmptyTitle>No RMA Requests found</EmptyTitle>
+                <EmptyDescription>Try adjusting your filters.</EmptyDescription>
+              </EmptyHeader>
+              <EmptyContent>
+                <Button variant="outline" onClick={resetFilters}>
+                  <RotateCcwIcon aria-hidden="true" />
+                  Reset filters
+                </Button>
+              </EmptyContent>
+            </Empty>
+          )
         ) : (
           <Card>
             <CardContent className="grid gap-4 pt-(--card-spacing)">
