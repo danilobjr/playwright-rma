@@ -1,3 +1,5 @@
+import { waitBetween } from '@/utils/timing/wait-between.util'
+
 import type {
   CreateRmaRequestInput,
   RmaRequest,
@@ -192,60 +194,71 @@ function getNextRmaId(requests: RmaRequest[]) {
   return `RMA-${currentYear}-${nextSequence}`
 }
 
+async function withRmaApiDelay<T>(operation: () => T | Promise<T>) {
+  await waitBetween()
+
+  return operation()
+}
+
 async function listRmaRequests() {
-  return getAllRmaRequests()
+  return withRmaApiDelay(() => getAllRmaRequests())
 }
 
 async function peekNextRmaId() {
-  return getNextRmaId(getAllRmaRequests())
+  return withRmaApiDelay(() => getNextRmaId(getAllRmaRequests()))
 }
 
 async function createRmaRequest(input: CreateRmaRequestInput) {
-  const existingRequests = readActiveRmaRequests()
   const createdAt = new Date()
-  const duplicateRequest = findDuplicateRmaRequest(
-    input,
-    existingRequests,
-    createdAt,
-  )
 
-  if (duplicateRequest) {
-    throw new DuplicateRmaRequestError(duplicateRequest)
-  }
+  return withRmaApiDelay(() => {
+    const existingRequests = readActiveRmaRequests()
+    const duplicateRequest = findDuplicateRmaRequest(
+      input,
+      existingRequests,
+      createdAt,
+    )
 
-  const request: RmaRequest = {
-    rmaId: getNextRmaId(existingRequests),
-    status: PENDING_STATUS,
-    customerName: normalizeRequiredText(input.customerName, 'Customer Name'),
-    productId: normalizeProductId(input.productId),
-    reason: normalizeReason(input.reason),
-    createdAt: createdAt.toISOString(),
-  }
+    if (duplicateRequest) {
+      throw new DuplicateRmaRequestError(duplicateRequest)
+    }
 
-  writeActiveRmaRequests([...existingRequests, request])
+    const request: RmaRequest = {
+      rmaId: getNextRmaId(existingRequests),
+      status: PENDING_STATUS,
+      customerName: normalizeRequiredText(input.customerName, 'Customer Name'),
+      productId: normalizeProductId(input.productId),
+      reason: normalizeReason(input.reason),
+      createdAt: createdAt.toISOString(),
+    }
 
-  const currentYear = getCurrentYear()
-  const requestSequence = Number(request.rmaId.split('-')[2])
-  writeRmaIdSequence({ year: currentYear, nextSequence: requestSequence + 1 })
+    writeActiveRmaRequests([...existingRequests, request])
 
-  return request
+    const currentYear = getCurrentYear()
+    const requestSequence = Number(request.rmaId.split('-')[2])
+    writeRmaIdSequence({ year: currentYear, nextSequence: requestSequence + 1 })
+
+    return request
+  })
 }
 
 async function deleteRmaRequest(rmaId: string) {
-  const existingRequests = readActiveRmaRequests()
-  const deletedRequest = existingRequests.find(
-    (request) => request.rmaId === rmaId,
-  )
+  return withRmaApiDelay(() => {
+    const existingRequests = readActiveRmaRequests()
+    const deletedRequest = existingRequests.find(
+      (request) => request.rmaId === rmaId,
+    )
 
-  if (!deletedRequest) {
-    throw new Error('RMA Request not found')
-  }
+    if (!deletedRequest) {
+      throw new Error('RMA Request not found')
+    }
 
-  writeActiveRmaRequests(
-    existingRequests.filter((request) => request.rmaId !== rmaId),
-  )
+    writeActiveRmaRequests(
+      existingRequests.filter((request) => request.rmaId !== rmaId),
+    )
 
-  return deletedRequest
+    return deletedRequest
+  })
 }
 
 export {
