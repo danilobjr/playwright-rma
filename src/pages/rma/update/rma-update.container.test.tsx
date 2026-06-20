@@ -1,6 +1,6 @@
 import { type ReactNode } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { beforeEach, expect, test, vi } from 'vitest'
 
 import type { RmaRequest } from '@/services/api/rma/rma-request.model'
@@ -77,6 +77,32 @@ test('loads the RMA Request by route RMA ID', async () => {
   expect(screen.getByRole('combobox', { name: 'Status' })).toHaveTextContent(
     'Approved',
   )
+})
+
+test('shows not-found state when RMA ID returns no data', async () => {
+  getRmaRequestById.mockResolvedValue(undefined)
+
+  renderWithQueryClient(<RmaUpdateContainer rmaId="RMA-9999" />)
+
+  expect(
+    await screen.findByRole('heading', { name: 'RMA request not found' }),
+  ).toBeInTheDocument()
+})
+
+test('shows error state on load failure and retries via Try again', async () => {
+  getRmaRequestById.mockRejectedValue(new Error('Network failure'))
+
+  renderWithQueryClient(<RmaUpdateContainer rmaId="RMA-9999" />)
+
+  await screen.findByText('Unable to load RMA request')
+
+  getRmaRequestById.mockClear()
+
+  fireEvent.click(screen.getByRole('button', { name: 'Try again' }))
+
+  await waitFor(() => {
+    expect(getRmaRequestById).toHaveBeenCalledWith('RMA-9999')
+  })
 })
 
 test('shows loading skeleton while the RMA Request loads', () => {

@@ -23,7 +23,10 @@ const nextRmaIdQueryOptions = queryOptions({
 const rmaRequestQueryOptions = (rmaId: string) =>
   queryOptions({
     queryKey: rmaRequestQueryKey(rmaId),
-    queryFn: () => getRmaRequestById(rmaId),
+    queryFn: async () => {
+      const result = await getRmaRequestById(rmaId)
+      return result ?? null
+    },
   })
 
 function useRmaRequests() {
