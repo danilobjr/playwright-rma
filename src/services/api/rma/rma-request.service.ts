@@ -4,6 +4,7 @@ import type {
   CreateRmaRequestInput,
   RmaRequest,
   RmaStatus,
+  UpdateRmaRequestInput,
 } from './rma-request.model'
 
 const RMA_STORAGE_KEY = 'playwright-rma:rma-requests:v1'
@@ -267,6 +268,30 @@ async function deleteRmaRequest(rmaId: string) {
   })
 }
 
+async function updateRmaRequest(rmaId: string, input: UpdateRmaRequestInput) {
+  return withRmaApiDelay(() => {
+    const existingRequests = readActiveRmaRequests()
+    const requestIndex = existingRequests.findIndex(
+      (request) => request.rmaId === rmaId,
+    )
+
+    if (requestIndex === -1) {
+      throw new Error('RMA request not found')
+    }
+
+    const updatedRequest: RmaRequest = {
+      ...existingRequests[requestIndex],
+      status: input.status,
+    }
+
+    const nextRequests = [...existingRequests]
+    nextRequests[requestIndex] = updatedRequest
+    writeActiveRmaRequests(nextRequests)
+
+    return updatedRequest
+  })
+}
+
 export {
   createRmaRequest,
   deleteRmaRequest,
@@ -274,4 +299,5 @@ export {
   getRmaRequestById,
   listRmaRequests,
   peekNextRmaId,
+  updateRmaRequest,
 }

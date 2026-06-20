@@ -111,7 +111,7 @@ test('Try again calls onRetry callback', () => {
 })
 
 test('starts Status select with saved Status and keeps options closed by default', () => {
-  render(<RmaUpdatePage request={request} />)
+  render(<RmaUpdatePage request={request} draftStatus="Approved" />)
 
   const statusField = screen.getByRole('combobox', { name: 'Status' })
 
@@ -126,4 +126,145 @@ test('starts Status select with saved Status and keeps options closed by default
   expect(
     screen.getByRole('option', { name: /Return is authorized/ }),
   ).toBeInTheDocument()
+})
+
+test('badge shows persisted status even when draft differs', () => {
+  render(
+    <RmaUpdatePage
+      request={request}
+      draftStatus="Rejected"
+      onStatusChange={vi.fn()}
+    />,
+  )
+
+  const card = screen.getByRole('article', {
+    name: 'RMA Request RMA-2026-1002',
+  })
+
+  expect(within(card).getByText('Approved')).toBeInTheDocument()
+})
+
+test('select shows draft status', () => {
+  render(
+    <RmaUpdatePage
+      request={request}
+      draftStatus="Rejected"
+      onStatusChange={vi.fn()}
+    />,
+  )
+
+  expect(screen.getByRole('combobox', { name: 'Status' })).toHaveTextContent(
+    'Rejected',
+  )
+})
+
+test('save is disabled when draft matches persisted status', () => {
+  render(
+    <RmaUpdatePage
+      request={request}
+      draftStatus="Approved"
+      saveDisabled={true}
+      onSave={vi.fn()}
+      onCancel={vi.fn()}
+    />,
+  )
+
+  expect(screen.getByRole('button', { name: 'Save' })).toBeDisabled()
+})
+
+test('save is disabled while update is pending', () => {
+  render(
+    <RmaUpdatePage
+      request={request}
+      draftStatus="Rejected"
+      isSaving={true}
+      saveDisabled={false}
+      onSave={vi.fn()}
+      onCancel={vi.fn()}
+    />,
+  )
+
+  expect(screen.getByRole('button', { name: 'Save' })).toBeDisabled()
+})
+
+test('save label stays Save while pending', () => {
+  render(
+    <RmaUpdatePage
+      request={request}
+      draftStatus="Rejected"
+      isSaving={true}
+      saveDisabled={false}
+      onSave={vi.fn()}
+      onCancel={vi.fn()}
+    />,
+  )
+
+  expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument()
+})
+
+test('save calls onSave callback', () => {
+  const onSave = vi.fn()
+  render(
+    <RmaUpdatePage
+      request={request}
+      draftStatus="Rejected"
+      saveDisabled={false}
+      onSave={onSave}
+      onCancel={vi.fn()}
+    />,
+  )
+
+  fireEvent.click(screen.getByRole('button', { name: 'Save' }))
+
+  expect(onSave).toHaveBeenCalledOnce()
+})
+
+test('cancel calls onCancel callback', () => {
+  const onCancel = vi.fn()
+  render(
+    <RmaUpdatePage
+      request={request}
+      draftStatus="Approved"
+      onCancel={onCancel}
+      onSave={vi.fn()}
+    />,
+  )
+
+  fireEvent.click(screen.getByRole('button', { name: 'Cancel' }))
+
+  expect(onCancel).toHaveBeenCalledOnce()
+})
+
+test('shows save error alert when saveError is set', () => {
+  render(
+    <RmaUpdatePage
+      request={request}
+      draftStatus="Rejected"
+      saveError="RMA request not found"
+      onSave={vi.fn()}
+      onCancel={vi.fn()}
+    />,
+  )
+
+  expect(screen.getByRole('alert')).toHaveTextContent('RMA request not found')
+})
+
+test('changing select calls onStatusChange with new status', () => {
+  const onStatusChange = vi.fn()
+  render(
+    <RmaUpdatePage
+      request={request}
+      draftStatus="Approved"
+      onStatusChange={onStatusChange}
+      onSave={vi.fn()}
+      onCancel={vi.fn()}
+    />,
+  )
+
+  const statusField = screen.getByRole('combobox', { name: 'Status' })
+
+  fireEvent.click(statusField)
+  fireEvent.click(screen.getByRole('option', { name: /Pending/ }))
+
+  expect(onStatusChange).toHaveBeenCalledWith('Pending')
 })

@@ -16,18 +16,33 @@ const request: RmaRequest = {
   createdAt: '2026-02-08T09:12:00.000Z',
 }
 
-const { getRmaRequestById, listRmaRequests, peekNextRmaId } = vi.hoisted(
-  () => ({
-    getRmaRequestById: vi.fn(),
-    listRmaRequests: vi.fn(),
-    peekNextRmaId: vi.fn(),
-  }),
-)
+const {
+  getRmaRequestById,
+  listRmaRequests,
+  peekNextRmaId,
+  updateRmaRequest,
+  toastSuccess,
+  navigate,
+} = vi.hoisted(() => ({
+  getRmaRequestById: vi.fn(),
+  listRmaRequests: vi.fn(),
+  peekNextRmaId: vi.fn(),
+  updateRmaRequest: vi.fn(),
+  toastSuccess: vi.fn(),
+  navigate: vi.fn<(args: { to: string }) => void>(),
+}))
 
 vi.mock('@/services/api/rma/rma-request.service', () => ({
   getRmaRequestById,
   listRmaRequests,
   peekNextRmaId,
+  updateRmaRequest,
+}))
+
+vi.mock('sonner', () => ({
+  toast: {
+    success: toastSuccess,
+  },
 }))
 
 vi.mock('@tanstack/react-router', () => ({
@@ -43,6 +58,7 @@ vi.mock('@tanstack/react-router', () => ({
       {children}
     </a>
   ),
+  useNavigate: () => navigate,
 }))
 
 function renderWithQueryClient(children: ReactNode) {
@@ -113,4 +129,94 @@ test('shows loading skeleton while the RMA Request loads', () => {
   expect(
     screen.getByRole('article', { name: 'Loading RMA Request' }),
   ).toBeInTheDocument()
+})
+
+test('select status change updates draft and enables save', async () => {
+  renderWithQueryClient(<RmaUpdateContainer rmaId="RMA-2026-1002" />)
+
+  await screen.findByText('Mina Patel')
+
+  const statusField = screen.getByRole('combobox', { name: 'Status' })
+
+  expect(statusField).toHaveTextContent('Approved')
+
+  fireEvent.click(statusField)
+  fireEvent.click(screen.getByRole('option', { name: /Pending/ }))
+
+  expect(statusField).toHaveTextContent('Pending')
+})
+
+test('save is disabled when draft matches persisted status initially', async () => {
+  renderWithQueryClient(<RmaUpdateContainer rmaId="RMA-2026-1002" />)
+
+  await screen.findByText('Mina Patel')
+
+  expect(screen.getByRole('button', { name: 'Save' })).toBeDisabled()
+})
+
+test('save is enabled after status change', async () => {
+  renderWithQueryClient(<RmaUpdateContainer rmaId="RMA-2026-1002" />)
+
+  await screen.findByText('Mina Patel')
+
+  fireEvent.click(screen.getByRole('combobox', { name: 'Status' }))
+  fireEvent.click(screen.getByRole('option', { name: /Pending/ }))
+
+  await waitFor(() => {
+    expect(screen.getByRole('button', { name: 'Save' })).not.toBeDisabled()
+  })
+})
+
+test('successful save shows toast and navigates to list', async () => {
+  updateRmaRequest.mockResolvedValue({ ...request, status: 'Rejected' })
+
+  renderWithQueryClient(<RmaUpdateContainer rmaId="RMA-2026-1002" />)
+
+  await screen.findByText('Mina Patel')
+
+  fireEvent.click(screen.getByRole('combobox', { name: 'Status' }))
+  fireEvent.click(screen.getByRole('option', { name: /Rejected/ }))
+
+  fireEvent.click(screen.getByRole('button', { name: 'Save' }))
+
+  await waitFor(() => {
+    expect(updateRmaRequest).toHaveBeenCalledWith('RMA-2026-1002', {
+      status: 'Rejected',
+    })
+  })
+
+  await waitFor(() => {
+    expect(toastSuccess).toHaveBeenCalledWith('RMA request status updated')
+  })
+
+  expect(navigate).toHaveBeenCalledWith({ to: '/rma' })
+})
+
+test('save error stays visible on screen', async () => {
+  updateRmaRequest.mockRejectedValue(new Error('RMA request not found'))
+
+  renderWithQueryClient(<RmaUpdateContainer rmaId="RMA-2026-1002" />)
+
+  await screen.findByText('Mina Patel')
+
+  fireEvent.click(screen.getByRole('combobox', { name: 'Status' }))
+  fireEvent.click(screen.getByRole('option', { name: /Rejected/ }))
+
+  fireEvent.click(screen.getByRole('button', { name: 'Save' }))
+
+  await waitFor(() => {
+    expect(screen.getByRole('alert')).toHaveTextContent('RMA request not found')
+  })
+
+  expect(screen.getByText('Mina Patel')).toBeInTheDocument()
+})
+
+test('cancel navigates back to list', async () => {
+  renderWithQueryClient(<RmaUpdateContainer rmaId="RMA-2026-1002" />)
+
+  await screen.findByText('Mina Patel')
+
+  fireEvent.click(screen.getByRole('button', { name: 'Cancel' }))
+
+  expect(navigate).toHaveBeenCalledWith({ to: '/rma' })
 })
