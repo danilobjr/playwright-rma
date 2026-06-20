@@ -48,7 +48,7 @@ async function expectRmaTableColumns(page: Page) {
   await expect(page.getByRole('table', { name: 'RMA Requests' })).toBeVisible()
   await expect(page.getByRole('columnheader', { name: 'RMA ID' })).toBeVisible()
   await expect(
-    page.getByRole('columnheader', { name: 'Customer Name' }),
+    page.getByRole('columnheader', { name: 'Customer name' }),
   ).toBeVisible()
   await expect(
     page.getByRole('columnheader', { name: 'Product ID' }),
@@ -56,7 +56,7 @@ async function expectRmaTableColumns(page: Page) {
   await expect(page.getByRole('columnheader', { name: 'Reason' })).toBeVisible()
   await expect(page.getByRole('columnheader', { name: 'Status' })).toBeVisible()
   await expect(
-    page.getByRole('columnheader', { name: 'Submitted Date' }),
+    page.getByRole('columnheader', { name: 'Submitted date' }),
   ).toBeVisible()
   await expect(
     page.getByRole('columnheader', { name: 'Actions' }),
@@ -72,6 +72,27 @@ async function expectFilterActionWidth(
 
   expect(box).not.toBeNull()
   expect(predicate(box?.width ?? 0)).toBe(true)
+}
+
+async function goToCalendarMonth(page: Page, targetMonth: string) {
+  for (let attempt = 0; attempt < 24; attempt += 1) {
+    const visibleMonth = await page.getByRole('status').textContent()
+
+    if (visibleMonth === targetMonth) {
+      return
+    }
+
+    await page
+      .getByRole('button', {
+        name:
+          new Date(`${visibleMonth ?? ''} 1`) > new Date(`${targetMonth} 1`)
+            ? 'Go to the Previous Month'
+            : 'Go to the Next Month',
+      })
+      .click()
+  }
+
+  throw new Error(`Could not navigate calendar to ${targetMonth}`)
 }
 
 test('shows RMA status summary counts in workflow order', async ({ page }) => {
@@ -94,7 +115,7 @@ test('updates RMA status summary after creating a Pending request', async ({
 }) => {
   await page.goto('/#/rma/create')
 
-  await page.getByLabel('Customer Name').fill('Jordan Lee')
+  await page.getByLabel('Customer name').fill('Jordan Lee')
   await page.getByLabel('Product ID').fill('b7c8')
   await page.getByLabel('Reason').fill('Screen flickers after startup.')
   await page.getByRole('button', { name: 'Submit' }).click()
@@ -131,7 +152,7 @@ test('shows stacked RMA Request cards on mobile', async ({ page }) => {
   await expect(card).toBeVisible()
   await expect(card.getByText('RMA ID', { exact: true })).toBeVisible()
   await expect(card.getByRole('link', { name: 'RMA-2026-1002' })).toBeVisible()
-  await expect(card.getByText('Customer Name', { exact: true })).toBeVisible()
+  await expect(card.getByText('Customer name', { exact: true })).toBeVisible()
   await expect(card.getByRole('link', { name: 'Mina Patel' })).toBeVisible()
   await expect(card.getByText('Product ID', { exact: true })).toBeVisible()
   await expect(card.getByRole('link', { name: 'PRD-9C4D' })).toBeVisible()
@@ -139,7 +160,7 @@ test('shows stacked RMA Request cards on mobile', async ({ page }) => {
   await expect(card.getByRole('link', { name: /Battery/ })).toBeVisible()
   await expect(card.getByText('Status', { exact: true })).toBeVisible()
   await expect(card.getByRole('link', { name: 'Approved' })).toBeVisible()
-  await expect(card.getByText('Submitted Date', { exact: true })).toBeVisible()
+  await expect(card.getByText('Submitted date', { exact: true })).toBeVisible()
   await expect(card.getByText('Actions', { exact: true })).toBeVisible()
   await expect(card.getByRole('link', { name: 'Update' })).toBeVisible()
   await expectNoHorizontalOverflow(page)
@@ -276,10 +297,11 @@ test('filters by Status and keeps summary cards in sync', async ({ page }) => {
   await expectRmaOrder(page, ['RMA-2026-1002', 'RMA-2026-1001'])
 })
 
-test('filters by Submitted Date and resets filters', async ({ page }) => {
+test('filters by Submitted date and resets filters', async ({ page }) => {
   await page.goto('/#/rma')
 
-  await page.getByRole('button', { name: 'Submitted Date' }).click()
+  await page.getByRole('button', { name: 'Submitted date' }).click()
+  await goToCalendarMonth(page, 'February 2026')
   await page.getByRole('button', { name: 'Sunday, February 8th, 2026' }).click()
   await page.getByRole('button', { name: 'Search' }).click()
 
@@ -312,7 +334,7 @@ test('delete then create does not reuse the removed RMA ID', async ({
   await page.goto('/#/rma/create')
   await expect(page.getByLabel('RMA ID')).toHaveValue(`RMA-${currentYear}-1003`)
 
-  await page.getByLabel('Customer Name').fill('Test User')
+  await page.getByLabel('Customer name').fill('Test User')
   await page.getByLabel('Product ID').fill('a1b2')
   await page.getByLabel('Reason').fill('Product requires thorough evaluation.')
   await page.getByRole('button', { name: 'Submit' }).click()

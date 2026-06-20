@@ -46,7 +46,7 @@ Format:
 Header regex:
 
 ```txt
-^(✨|🐞|♻️|🚧|✏️|💄|🧪|⚡️️️|📦)\s+(\w+)(?:\(([^)]+)\))?(!)?: (.+)$
+^(✨|🐞|🔧|🚧|📝|💄|🧪|🚀|📦)\s+(\w+)(?:\(([^)]+)\))?(!)?: (.+)$
 ```
 
 Allowed types: `feat`, `fix`, `refactor`, `chore`, `docs`, `style`, `test`, `perf`, `build`.
@@ -55,13 +55,13 @@ Emoji map:
 
 - `✨ feat` = new feature
 - `🐞 fix` = bug fix
-- `♻️ refactor` = code change that neither fixes bug nor adds feature
+- `🔧 refactor` = code change that neither fixes bug nor adds feature
 - `🚧 chore` = other changes that do not modify src or test files
-- `✏️ docs` = docs-only changes
+- `📝 docs` = docs-only changes
 - `💄 style` = code style only, not app UI/UX design
 - `🧪 test` = add or correct tests
-- `⚡️ perf` = performance improvement
-- `📦️ build` = build system or dependency changes
+- `🚀 perf` = performance improvement
+- `📦 build` = build system or dependency changes
 
 Subject rules:
 

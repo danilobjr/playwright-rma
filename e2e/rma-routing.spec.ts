@@ -63,8 +63,10 @@ test('returns from create shell to the RMA request list', async ({ page }) => {
   ).toBeVisible()
 })
 
-test('opens the dynamic RMA update route placeholder', async ({ page }) => {
-  await page.goto('/#/rma/RMA-2026-1047')
+test('opens the dynamic RMA update route with loaded RMA Request data', async ({
+  page,
+}) => {
+  await page.goto('/#/rma/RMA-2026-1002')
 
   await expect(
     page.getByRole('heading', { name: 'Update RMA Status' }),
@@ -72,7 +74,7 @@ test('opens the dynamic RMA update route placeholder', async ({ page }) => {
   await expect(
     page
       .getByRole('navigation', { name: 'Breadcrumb' })
-      .getByText('RMA-2026-1047'),
+      .getByText('RMA-2026-1002'),
   ).toBeVisible()
   await expect(
     page.getByText('Review the request and choose the next workflow status.'),
@@ -80,6 +82,33 @@ test('opens the dynamic RMA update route placeholder', async ({ page }) => {
   await expect(
     page.getByRole('link', { name: 'Back to requests' }),
   ).toBeVisible()
+
+  await expect(
+    page.getByRole('article', { name: 'Loading RMA Request' }),
+  ).toBeVisible()
+
+  const requestCard = page.getByRole('article', {
+    name: 'RMA Request RMA-2026-1002',
+  })
+
+  await expect(requestCard).toBeVisible()
+  await expect(
+    requestCard.getByRole('heading', { name: 'RMA-2026-1002' }),
+  ).toBeVisible()
+  await expect(requestCard.getByText('Customer name')).toBeVisible()
+  await expect(requestCard.getByText('Mina Patel')).toBeVisible()
+  await expect(requestCard.getByText('PRD-9C4D')).toBeVisible()
+  await expect(
+    requestCard.getByText(
+      'Battery does not hold charge longer than thirty minutes.',
+    ),
+  ).toBeVisible()
+  await expect(
+    requestCard.getByText('Feb 8, 2026', { exact: true }),
+  ).toBeVisible()
+  await expect(
+    requestCard.getByRole('combobox', { name: 'Status' }),
+  ).toContainText('Approved')
 })
 
 test('does not show the scaffold placeholder', async ({ page }) => {

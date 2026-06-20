@@ -23,4 +23,18 @@ test('defines shared presentation for every RMA status in workflow order', () =>
     })
     expect(RMA_STATUS_PRESENTATION[status].icon).toBeDefined()
   }
+
+  expect(
+    Object.fromEntries(
+      RMA_STATUS_ORDER.map((status) => [
+        status,
+        RMA_STATUS_PRESENTATION[status].description,
+      ]),
+    ),
+  ).toEqual({
+    Pending: 'Awaiting review',
+    Approved: 'Return is authorized',
+    Rejected: 'Request is declined',
+    Completed: 'Return workflow is closed',
+  })
 })

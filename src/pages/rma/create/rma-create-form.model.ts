@@ -10,7 +10,7 @@ function sanitizeProductIdSuffix(value: string) {
 }
 
 const rmaCreateFormSchema = z.object({
-  customerName: z.string().trim().min(1, 'Customer Name is required'),
+  customerName: z.string().trim().min(1, 'Customer name is required'),
   productId: z
     .string()
     .transform(sanitizeProductIdSuffix)

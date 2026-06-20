@@ -4,18 +4,18 @@
  * Provides better error messages for emoji-based commits
  */
 
-const EMOJI_LIST = ['✨', '🐞', '♻️', '🚧', '✏️', '💄', '🧪', '⚡️', '📦']
+const EMOJI_LIST = ['✨', '🐞', '🔧', '🚧', '📄️', '💄', '🧪', '🚀', '📦']
 
 const EMOJI_TO_TYPE = {
   '✨': 'feat',
   '🐞': 'fix',
-  '♻️': 'refactor',
+  '🔧': 'refactor',
   '🚧': 'chore',
-  '✏️': 'docs',
+  '📄': 'docs',
   '💄': 'style',
   '🧪': 'test',
-  '⚡️': 'perf',
-  '📦️': 'build',
+  '🚀': 'perf',
+  '📦': 'build',
 }
 
 module.exports = {
@@ -45,12 +45,12 @@ module.exports = {
         message += '📝 Available emojis:\n'
         message += '   ✨ feat      - New feature\n'
         message += '   🐞 fix       - Bug fix\n'
-        message += '   ♻️ refactor  - Code refactoring\n'
+        message += '   🔧 refactor  - Code refactoring\n'
         message += '   🚧 chore     - Chores\n'
-        message += '   ✏️ docs      - Documentation\n'
+        message += '   📝 docs      - Documentation\n'
         message += '   💄 style     - Code style\n'
         message += '   🧪 test      - Tests\n'
-        message += '   ⚡️ perf      - Performance improvements\n'
+        message += '   🚀 perf      - Performance improvements\n'
         message += '   📦 build     - Build system\n'
         message +=
           "\n💡 Tip: Run 'pnpm commit' or VSCode Commit Message Editor extension"

@@ -25,7 +25,7 @@ export default {
       // ✨ feat: description         ✓
       // The emoji must be at the start
       headerPattern:
-        /^(✨|🐞|♻️|🚧|✏️|💄|🧪|⚡️️️|📦)\s+(\w+)(?:\(([^)]+)\))?(!)?: (.+)$/,
+        /^(✨|🐞|🔧|🚧|📝|💄|🧪|🚀|📦)\s+(\w+)(?:\(([^)]+)\))?(!)?: (.+)$/,
       headerCorrespondence: ['emoji', 'type', 'scope', 'breaking', 'subject'],
     },
   },
@@ -97,7 +97,7 @@ export default {
             description: 'A bug fix',
           },
           refactor: {
-            emoji: '♻️',
+            emoji: '🔧',
             title: 'Code Refactoring',
             description:
               'A code change that neither fixes a bug nor adds a feature',
@@ -108,7 +108,7 @@ export default {
             description: "Other changes that don't modify src or test files",
           },
           docs: {
-            emoji: '✏️',
+            emoji: '📝',
             title: 'Documentation',
             description: 'Documentation only changes',
           },
@@ -124,7 +124,7 @@ export default {
             description: 'Adding missing tests or correcting existing tests',
           },
           perf: {
-            emoji: '⚡️',
+            emoji: '🚀',
             title: 'Performance improvements',
             description: 'A code change that improves performance',
           },

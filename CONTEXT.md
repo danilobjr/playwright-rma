@@ -20,9 +20,13 @@ _Avoid_: State, phase
 The initial Status for every newly created RMA Request.
 _Avoid_: New, open
 
-**Customer Name**:
+**Customer name**:
 Free-text name of the customer associated with an RMA Request.
 _Avoid_: Customer, client, account
+
+**Submitted date**:
+The local calendar date when an RMA Request entered the system.
+_Avoid_: Date, created date
 
 **Product ID**:
 A product identifier with fixed `PRD-` prefix and a four-character uppercase alphanumeric suffix.
@@ -33,5 +37,5 @@ Customer-provided explanation for why the product is being returned.
 _Avoid_: Notes, description, issue
 
 **Duplicate RMA Request**:
-An RMA Request with matching Customer Name, Product ID, and Reason after trimming, whitespace normalization, and case-insensitive comparison. A matching Pending request is always duplicate; a matching Approved, Rejected, or Completed request is duplicate only on the same local calendar day.
+An RMA Request with matching Customer name, Product ID, and Reason after trimming, whitespace normalization, and case-insensitive comparison. A matching Pending request is always duplicate; a matching Approved, Rejected, or Completed request is duplicate only on the same local calendar day.
 _Avoid_: Duplicate record, repeated return

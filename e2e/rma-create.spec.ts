@@ -39,7 +39,7 @@ test('creates a Pending RMA Request end-to-end', async ({ page }) => {
   await expect(page.getByLabel('RMA ID')).toHaveValue(nextRmaId)
   await expect(page.getByText('Pending', { exact: true })).toBeVisible()
 
-  await page.getByLabel('Customer Name').fill('Jordan Lee')
+  await page.getByLabel('Customer name').fill('Jordan Lee')
   await page.getByLabel('Product ID').fill('a1b2')
   await expect(page.getByLabel('Product ID')).toHaveValue('A1B2')
   await page.getByLabel('Reason').fill('Screen flickers after startup.')
@@ -70,7 +70,7 @@ test('keeps create form responsive across desktop and mobile', async ({
     page.getByText('Status', { exact: true }),
   )
   await expectSameRow(
-    page.getByText('Customer Name', { exact: true }),
+    page.getByText('Customer name', { exact: true }),
     page.getByText('Product ID', { exact: true }),
   )
 
@@ -82,7 +82,7 @@ test('keeps create form responsive across desktop and mobile', async ({
     page.getByText('Status', { exact: true }),
   )
   await expectStackedBelow(
-    page.getByText('Customer Name', { exact: true }),
+    page.getByText('Customer name', { exact: true }),
     page.getByText('Product ID', { exact: true }),
   )
 
@@ -100,7 +100,7 @@ test('requires create form fields before successful creation', async ({
 
   await page.getByRole('button', { name: 'Submit' }).click()
 
-  await expect(page.getByText('Customer Name is required')).toBeVisible()
+  await expect(page.getByText('Customer name is required')).toBeVisible()
   await expect(page.getByText('Product ID is required')).toBeVisible()
   await expect(page.getByText('Reason is required')).toBeVisible()
   await expect(page).toHaveURL(/#\/rma\/create$/)
@@ -112,7 +112,7 @@ test('shows inline validation errors and preserves entered values', async ({
 }) => {
   await page.goto('/#/rma/create')
 
-  await page.getByLabel('Customer Name').fill('Jordan Lee')
+  await page.getByLabel('Customer name').fill('Jordan Lee')
   await page.getByLabel('Product ID').fill('a!')
   await page.getByLabel('Reason').fill('Too short')
   await page.getByRole('button', { name: 'Submit' }).click()
@@ -121,7 +121,7 @@ test('shows inline validation errors and preserves entered values', async ({
   await expect(
     page.getByText('Reason must be at least 10 characters'),
   ).toBeVisible()
-  await expect(page.getByLabel('Customer Name')).toHaveValue('Jordan Lee')
+  await expect(page.getByLabel('Customer name')).toHaveValue('Jordan Lee')
   await expect(page.getByLabel('Product ID')).toHaveValue('A')
   await expect(page.getByLabel('Reason')).toHaveValue('Too short')
   await expect(page).toHaveURL(/#\/rma\/create$/)
@@ -133,7 +133,7 @@ test('blocks duplicate RMA Requests with an inline recovery alert', async ({
 }) => {
   await page.goto('/#/rma/create')
 
-  await page.getByLabel('Customer Name').fill('  AVERY   STONE  ')
+  await page.getByLabel('Customer name').fill('  AVERY   STONE  ')
   await page.getByLabel('Product ID').fill('7f2a')
   await page
     .getByLabel('Reason')
@@ -155,7 +155,7 @@ test('blocks duplicate RMA Requests with an inline recovery alert', async ({
   await expect(
     duplicateAlert.getByRole('link', { name: 'View matching request' }),
   ).toBeVisible()
-  await expect(page.getByLabel('Customer Name')).toHaveValue(
+  await expect(page.getByLabel('Customer name')).toHaveValue(
     '  AVERY   STONE  ',
   )
   await expect(page.getByLabel('Product ID')).toHaveValue('7F2A')
@@ -170,7 +170,7 @@ test('opens the matching request from the duplicate alert', async ({
 }) => {
   await page.goto('/#/rma/create')
 
-  await page.getByLabel('Customer Name').fill('Avery Stone')
+  await page.getByLabel('Customer name').fill('Avery Stone')
   await page.getByLabel('Product ID').fill('7f2a')
   await page
     .getByLabel('Reason')
@@ -186,7 +186,7 @@ test('clears the duplicate alert when duplicate fields change', async ({
 }) => {
   await page.goto('/#/rma/create')
 
-  await page.getByLabel('Customer Name').fill('Avery Stone')
+  await page.getByLabel('Customer name').fill('Avery Stone')
   await page.getByLabel('Product ID').fill('7f2a')
   await page
     .getByLabel('Reason')
