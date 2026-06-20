@@ -196,7 +196,7 @@ describe('RMA request service', () => {
           reason: '',
         }),
       ),
-    ).rejects.toThrow('Customer Name is required')
+    ).rejects.toThrow('Customer name is required')
   })
 
   it('keeps failures pending before the simulated delay completes', async () => {
@@ -215,7 +215,7 @@ describe('RMA request service', () => {
     expect(settled).toBe(false)
 
     await expect(waitForRmaApiResponse(response)).rejects.toThrow(
-      'Customer Name is required',
+      'Customer name is required',
     )
   })
 

@@ -226,7 +226,7 @@ async function createRmaRequest(input: CreateRmaRequestInput) {
     const request: RmaRequest = {
       rmaId: getNextRmaId(existingRequests),
       status: PENDING_STATUS,
-      customerName: normalizeRequiredText(input.customerName, 'Customer Name'),
+      customerName: normalizeRequiredText(input.customerName, 'Customer name'),
       productId: normalizeProductId(input.productId),
       reason: normalizeReason(input.reason),
       createdAt: createdAt.toISOString(),
