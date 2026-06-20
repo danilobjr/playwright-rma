@@ -5,6 +5,7 @@ import {
   RMA_STATUS_ORDER,
   RMA_STATUS_PRESENTATION,
 } from '@/pages/rma/rma-status-presentation.model'
+import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -25,7 +26,10 @@ import {
 } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
-import type { RmaRequest } from '@/services/api/rma/rma-request.model'
+import type {
+  RmaRequest,
+  RmaStatus,
+} from '@/services/api/rma/rma-request.model'
 import { cn } from '@/utils/styles/cn.util'
 
 type RmaUpdatePageProps = {
@@ -34,6 +38,13 @@ type RmaUpdatePageProps = {
   isError?: boolean
   error?: Error | null
   onRetry?: () => void
+  draftStatus?: RmaStatus
+  onStatusChange?: (status: RmaStatus) => void
+  onSave?: () => void
+  onCancel?: () => void
+  isSaving?: boolean
+  saveError?: string
+  saveDisabled?: boolean
 }
 
 function formatSubmittedDate(date: Date) {
@@ -102,6 +113,13 @@ function RmaUpdatePage({
   isError,
   request,
   onRetry,
+  draftStatus,
+  onStatusChange,
+  onSave,
+  onCancel,
+  isSaving = false,
+  saveError,
+  saveDisabled = true,
 }: RmaUpdatePageProps) {
   if (isPending) {
     return <RmaUpdateSkeleton />
@@ -154,9 +172,11 @@ function RmaUpdatePage({
     )
   }
 
+  const currentDraft = draftStatus ?? request.status
   const submittedDate = formatSubmittedDate(new Date(request.createdAt))
-  const statusPresentation = RMA_STATUS_PRESENTATION[request.status]
-  const StatusIcon = statusPresentation.icon
+  const persistedPresentation = RMA_STATUS_PRESENTATION[request.status]
+  const draftPresentation = RMA_STATUS_PRESENTATION[currentDraft]
+  const DraftIcon = draftPresentation.icon
 
   return (
     <Card
@@ -173,14 +193,19 @@ function RmaUpdatePage({
             <CardDescription>Submitted {submittedDate}</CardDescription>
           </div>
           <Badge
-            className={cn('border', statusPresentation.className)}
+            className={cn('border', persistedPresentation.className)}
             variant="outline"
           >
-            {statusPresentation.label}
+            {persistedPresentation.label}
           </Badge>
         </div>
       </CardHeader>
       <CardContent className="grid gap-6 pt-(--card-spacing)">
+        {saveError && (
+          <Alert variant="destructive">
+            <AlertDescription>{saveError}</AlertDescription>
+          </Alert>
+        )}
         <dl className="grid gap-4">
           <DetailRow label="RMA ID" value={request.rmaId} />
           <DetailRow label="Customer name" value={request.customerName} />
@@ -192,18 +217,21 @@ function RmaUpdatePage({
         <FieldGroup>
           <Field>
             <FieldLabel htmlFor="rma-status">Status</FieldLabel>
-            <Select value={request.status}>
+            <Select
+              value={currentDraft}
+              onValueChange={(value) => onStatusChange?.(value as RmaStatus)}
+            >
               <SelectTrigger
                 id="rma-status"
                 aria-label="Status"
                 className="!h-10 w-full"
               >
                 <span className="flex items-center gap-2">
-                  <StatusIcon
+                  <DraftIcon
                     aria-hidden="true"
                     className="size-4 text-muted-foreground"
                   />
-                  <span>{statusPresentation.label}</span>
+                  <span>{draftPresentation.label}</span>
                 </span>
               </SelectTrigger>
               <SelectContent>
@@ -235,8 +263,10 @@ function RmaUpdatePage({
         </FieldGroup>
       </CardContent>
       <CardFooter className="justify-end border-t">
-        <Button variant="outline">Cancel</Button>
-        <Button>
+        <Button variant="outline" onClick={onCancel}>
+          Cancel
+        </Button>
+        <Button disabled={saveDisabled || isSaving} onClick={onSave}>
           <SaveIcon aria-hidden="true" />
           Save
         </Button>

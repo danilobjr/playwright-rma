@@ -6,6 +6,7 @@ import {
   getRmaRequestById,
   listRmaRequests,
   peekNextRmaId,
+  updateRmaRequest,
 } from './rma-request.service'
 
 const RMA_STORAGE_KEY = 'playwright-rma:rma-requests:v1'
@@ -427,6 +428,45 @@ describe('RMA request service', () => {
     )
 
     expect(second.rmaId).toBe('RMA-2026-1004')
+  })
+
+  it('updates RMA Request status and returns the updated request', async () => {
+    const updated = await waitForRmaApiResponse(
+      updateRmaRequest('RMA-2026-1002', { status: 'Rejected' }),
+    )
+
+    expect(updated.status).toBe('Rejected')
+    expect(updated.rmaId).toBe('RMA-2026-1002')
+
+    const requests = await waitForRmaApiResponse(listRmaRequests())
+    const reloaded = requests.find((r) => r.rmaId === 'RMA-2026-1002')
+
+    expect(reloaded?.status).toBe('Rejected')
+  })
+
+  it('throws RMA request not found for missing RMA ID on update', async () => {
+    await expect(
+      waitForRmaApiResponse(
+        updateRmaRequest('RMA-2026-9999', { status: 'Approved' }),
+      ),
+    ).rejects.toThrow('RMA request not found')
+  })
+
+  it('keeps update pending before the simulated delay completes', async () => {
+    const response = updateRmaRequest('RMA-2026-1002', { status: 'Rejected' })
+    let settled = false
+
+    response.then(() => {
+      settled = true
+    })
+
+    await vi.advanceTimersByTimeAsync(999)
+    expect(settled).toBe(false)
+
+    await vi.advanceTimersByTimeAsync(1)
+    await response
+
+    expect(settled).toBe(true)
   })
 
   it('resets RMA ID sequence to start value for a new year', async () => {

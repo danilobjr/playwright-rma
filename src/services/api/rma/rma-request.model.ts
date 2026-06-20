@@ -15,4 +15,13 @@ type CreateRmaRequestInput = {
   reason: string
 }
 
-export type { CreateRmaRequestInput, RmaRequest, RmaStatus }
+type UpdateRmaRequestInput = {
+  status: RmaStatus
+}
+
+export type {
+  CreateRmaRequestInput,
+  RmaRequest,
+  RmaStatus,
+  UpdateRmaRequestInput,
+}
