@@ -1,9 +1,25 @@
+import { type ReactNode } from 'react'
 import { fireEvent, render, screen, within } from '@testing-library/react'
-import { expect, test } from 'vitest'
+import { expect, test, vi } from 'vitest'
 
 import type { RmaRequest } from '@/services/api/rma/rma-request.model'
 
 import { RmaUpdatePage } from './rma-update.page'
+
+vi.mock('@tanstack/react-router', () => ({
+  Link: ({
+    children,
+    to,
+    ...otherProps
+  }: {
+    children: ReactNode
+    to: string
+  }) => (
+    <a href={to} {...otherProps}>
+      {children}
+    </a>
+  ),
+}))
 
 const request: RmaRequest = {
   rmaId: 'RMA-2026-1002',
@@ -48,6 +64,50 @@ test('shows loading skeleton in stable card layout', () => {
     screen.getByRole('article', { name: 'Loading RMA Request' }),
   ).toBeInTheDocument()
   expect(screen.getAllByTestId('rma-update-skeleton').length).toBeGreaterThan(0)
+})
+
+test('shows not-found state when no request data and not loading', () => {
+  render(<RmaUpdatePage />)
+
+  expect(
+    screen.getByRole('heading', { name: 'RMA request not found' }),
+  ).toBeInTheDocument()
+  expect(
+    screen.getByText('Check the RMA ID or return to the request list.'),
+  ).toBeInTheDocument()
+  expect(
+    screen.getByRole('link', { name: 'Back to requests' }),
+  ).toHaveAttribute('href', '/rma')
+})
+
+test('shows load-error state with Try again and Back to requests', () => {
+  render(
+    <RmaUpdatePage
+      isError
+      error={new Error('Network failure')}
+      onRetry={vi.fn()}
+    />,
+  )
+
+  expect(
+    screen.getByRole('heading', { name: 'Unable to load RMA request' }),
+  ).toBeInTheDocument()
+  expect(
+    screen.getByText('Try again or return to the request list.'),
+  ).toBeInTheDocument()
+  expect(screen.getByRole('button', { name: 'Try again' })).toBeInTheDocument()
+  expect(
+    screen.getByRole('link', { name: 'Back to requests' }),
+  ).toHaveAttribute('href', '/rma')
+})
+
+test('Try again calls onRetry callback', () => {
+  const onRetry = vi.fn()
+  render(<RmaUpdatePage isError error={new Error('fail')} onRetry={onRetry} />)
+
+  fireEvent.click(screen.getByRole('button', { name: 'Try again' }))
+
+  expect(onRetry).toHaveBeenCalledOnce()
 })
 
 test('starts Status select with saved Status and keeps options closed by default', () => {

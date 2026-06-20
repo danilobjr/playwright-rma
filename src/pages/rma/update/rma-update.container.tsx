@@ -36,6 +36,7 @@ function RmaUpdateContainer({ rmaId }: RmaUpdateContainerProps) {
       error={rmaRequestQuery.error}
       isError={rmaRequestQuery.isError}
       isPending={rmaRequestQuery.isPending}
+      onRetry={() => rmaRequestQuery.refetch()}
       request={rmaRequestQuery.data}
     />
   )

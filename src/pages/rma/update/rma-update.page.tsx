@@ -1,3 +1,4 @@
+import { Link } from '@tanstack/react-router'
 import { SaveIcon } from 'lucide-react'
 
 import {
@@ -32,6 +33,7 @@ type RmaUpdatePageProps = {
   isPending?: boolean
   isError?: boolean
   error?: Error | null
+  onRetry?: () => void
 }
 
 function formatSubmittedDate(date: Date) {
@@ -95,13 +97,61 @@ function DetailRow({ label, value }: { label: string; value: string }) {
   )
 }
 
-function RmaUpdatePage({ isPending, request }: RmaUpdatePageProps) {
+function RmaUpdatePage({
+  isPending,
+  isError,
+  request,
+  onRetry,
+}: RmaUpdatePageProps) {
   if (isPending) {
     return <RmaUpdateSkeleton />
   }
 
+  if (isError) {
+    return (
+      <Card
+        aria-label="Unable to load RMA request"
+        role="article"
+        className="mx-auto w-full max-w-3xl"
+      >
+        <CardContent className="flex flex-col items-center gap-4 py-16 text-center">
+          <h2 className="font-heading text-sm font-medium tracking-tight">
+            Unable to load RMA request
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            Try again or return to the request list.
+          </p>
+          <div className="mt-2 flex gap-2">
+            <Button onClick={onRetry}>Try again</Button>
+            <Button asChild variant="outline">
+              <Link to="/rma">Back to requests</Link>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    )
+  }
+
   if (!request) {
-    return null
+    return (
+      <Card
+        aria-label="RMA request not found"
+        role="article"
+        className="mx-auto w-full max-w-3xl"
+      >
+        <CardContent className="flex flex-col items-center gap-4 py-16 text-center">
+          <h2 className="font-heading text-sm font-medium tracking-tight">
+            RMA request not found
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            Check the RMA ID or return to the request list.
+          </p>
+          <Button asChild variant="outline" className="mt-2">
+            <Link to="/rma">Back to requests</Link>
+          </Button>
+        </CardContent>
+      </Card>
+    )
   }
 
   const submittedDate = formatSubmittedDate(new Date(request.createdAt))
