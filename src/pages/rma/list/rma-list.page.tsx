@@ -466,11 +466,11 @@ function RmaListPage({
                   </Select>
                 </Field>
                 <Field>
-                  <FieldLabel>Submitted Date</FieldLabel>
+                  <FieldLabel>Submitted date</FieldLabel>
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button
-                        aria-label="Submitted Date"
+                        aria-label="Submitted date"
                         className={cn(
                           'h-10 w-full justify-start text-left font-normal',
                           !draftFilters.submittedDate &&
@@ -481,7 +481,7 @@ function RmaListPage({
                         <CalendarIcon aria-hidden="true" />
                         {draftFilters.submittedDate
                           ? formatSubmittedDate(draftFilters.submittedDate)
-                          : 'Submitted Date'}
+                          : 'Submitted date'}
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
@@ -540,11 +540,11 @@ function RmaListPage({
                   <TableHeader>
                     <TableRow>
                       <TableHead>RMA ID</TableHead>
-                      <TableHead>Customer Name</TableHead>
+                      <TableHead>Customer name</TableHead>
                       <TableHead>Product ID</TableHead>
                       <TableHead>Reason</TableHead>
                       <TableHead>Status</TableHead>
-                      <TableHead>Submitted Date</TableHead>
+                      <TableHead>Submitted date</TableHead>
                       <TableHead>Actions</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -647,11 +647,11 @@ function RmaListPage({
                   <TableHeader>
                     <TableRow>
                       <TableHead>RMA ID</TableHead>
-                      <TableHead>Customer Name</TableHead>
+                      <TableHead>Customer name</TableHead>
                       <TableHead>Product ID</TableHead>
                       <TableHead>Reason</TableHead>
                       <TableHead>Status</TableHead>
-                      <TableHead>Submitted Date</TableHead>
+                      <TableHead>Submitted date</TableHead>
                       <TableHead>Actions</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -760,7 +760,7 @@ function RmaListPage({
                         </div>
                         <div className="grid gap-1">
                           <span className="text-xs font-medium text-muted-foreground">
-                            Customer Name
+                            Customer name
                           </span>
                           <Link className={tableLinkClassName} {...updateLink}>
                             {request.customerName}
@@ -797,7 +797,7 @@ function RmaListPage({
                         </div>
                         <div className="grid gap-1">
                           <span className="text-xs font-medium text-muted-foreground">
-                            Submitted Date
+                            Submitted date
                           </span>
                           <span>{submittedDate}</span>
                         </div>

@@ -201,7 +201,7 @@ test('does not use Dashboard terminology on the RMA List screen', () => {
   expect(screen.queryByText(/dashboard/i)).not.toBeInTheDocument()
 })
 
-test('sorts RMA Requests by Submitted Date descending by default', () => {
+test('sorts RMA Requests by Submitted date descending by default', () => {
   render(<RmaListPage requests={requests} />)
 
   expect(getRenderedRmaIds()).toEqual(firstPageRmaIds)
@@ -217,7 +217,7 @@ test('shows RMA Requests table columns', () => {
     screen.getByRole('columnheader', { name: 'RMA ID' }),
   ).toBeInTheDocument()
   expect(
-    screen.getByRole('columnheader', { name: 'Customer Name' }),
+    screen.getByRole('columnheader', { name: 'Customer name' }),
   ).toBeInTheDocument()
   expect(
     screen.getByRole('columnheader', { name: 'Product ID' }),
@@ -229,7 +229,7 @@ test('shows RMA Requests table columns', () => {
     screen.getByRole('columnheader', { name: 'Status' }),
   ).toBeInTheDocument()
   expect(
-    screen.getByRole('columnheader', { name: 'Submitted Date' }),
+    screen.getByRole('columnheader', { name: 'Submitted date' }),
   ).toBeInTheDocument()
   expect(
     screen.getByRole('columnheader', { name: 'Actions' }),
@@ -270,7 +270,7 @@ test('shows mobile RMA Request cards with table-equivalent labels', () => {
   expect(
     within(card).getByRole('link', { name: 'RMA-2026-1002' }),
   ).toHaveAttribute('href', '/rma/RMA-2026-1002')
-  expect(within(card).getByText('Customer Name')).toBeInTheDocument()
+  expect(within(card).getByText('Customer name')).toBeInTheDocument()
   expect(within(card).getByText('Jordan Lee')).toBeInTheDocument()
   expect(within(card).getByText('Product ID')).toBeInTheDocument()
   expect(within(card).getByText('PRD-A1B2')).toBeInTheDocument()
@@ -279,7 +279,7 @@ test('shows mobile RMA Request cards with table-equivalent labels', () => {
     within(card).getByText('Screen flickers after startup.'),
   ).toBeInTheDocument()
   expect(within(card).getByText('Status')).toBeInTheDocument()
-  expect(within(card).getByText('Submitted Date')).toBeInTheDocument()
+  expect(within(card).getByText('Submitted date')).toBeInTheDocument()
   expect(within(card).getByText('Mar 4, 2026')).toBeInTheDocument()
   expect(within(card).getByText('Actions')).toBeInTheDocument()
 })
@@ -425,7 +425,7 @@ test('applies Search only after Search is clicked', () => {
   expect(screen.getAllByText('Jordan Lee').length).toBeGreaterThan(0)
 })
 
-test('searches RMA ID, Customer Name, Product ID, and Reason', () => {
+test('searches RMA ID, Customer name, Product ID, and Reason', () => {
   render(<RmaListPage requests={requests} />)
 
   fireEvent.change(screen.getByRole('textbox', { name: 'Search' }), {
@@ -472,10 +472,10 @@ test('filters by Status from the Status field', () => {
   ])
 })
 
-test('filters by exact Submitted Date local calendar day', () => {
+test('filters by exact Submitted date local calendar day', () => {
   render(<RmaListPage requests={requests} />)
 
-  fireEvent.click(screen.getByRole('button', { name: 'Submitted Date' }))
+  fireEvent.click(screen.getByRole('button', { name: 'Submitted date' }))
   fireEvent.click(
     screen.getByRole('button', { name: 'Wednesday, March 4th, 2026' }),
   )
@@ -526,7 +526,7 @@ test('summary cards clear filters, submit, and sync the Status field', () => {
   fireEvent.change(screen.getByRole('textbox', { name: 'Search' }), {
     target: { value: 'Mina' },
   })
-  fireEvent.click(screen.getByRole('button', { name: 'Submitted Date' }))
+  fireEvent.click(screen.getByRole('button', { name: 'Submitted date' }))
   fireEvent.click(
     screen.getByRole('button', { name: 'Wednesday, March 4th, 2026' }),
   )
@@ -537,8 +537,8 @@ test('summary cards clear filters, submit, and sync the Status field', () => {
     'Pending',
   )
   expect(
-    screen.getByRole('button', { name: 'Submitted Date' }),
-  ).toHaveTextContent('Submitted Date')
+    screen.getByRole('button', { name: 'Submitted date' }),
+  ).toHaveTextContent('Submitted date')
   expect(getRenderedRmaIds()).toEqual([
     'RMA-2026-1002',
     'RMA-2026-1012',
@@ -554,8 +554,8 @@ test('summary cards clear filters, submit, and sync the Status field', () => {
     'Status',
   )
   expect(
-    screen.getByRole('button', { name: 'Submitted Date' }),
-  ).toHaveTextContent('Submitted Date')
+    screen.getByRole('button', { name: 'Submitted date' }),
+  ).toHaveTextContent('Submitted date')
   expect(getRenderedRmaIds()).toEqual(firstPageRmaIds)
 })
 
@@ -623,10 +623,10 @@ test('shows selected Status icon and label in the field', () => {
   fireEvent.click(screen.getByRole('option', { name: /Approved/ }))
 
   expect(statusField).toHaveTextContent('Approved')
-  expect(statusField).not.toHaveTextContent('Authorized for return')
+  expect(statusField).not.toHaveTextContent('Return is authorized')
 
   fireEvent.click(statusField)
   expect(
-    screen.getByRole('option', { name: /Authorized for return/ }),
+    screen.getByRole('option', { name: /Return is authorized/ }),
   ).toBeInTheDocument()
 })

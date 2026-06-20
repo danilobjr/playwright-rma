@@ -139,7 +139,7 @@ function RmaCreatePage({
               </div>
               <div className="grid gap-4 md:grid-cols-2">
                 <Field data-invalid={Boolean(errors.customerName)}>
-                  <FieldLabel htmlFor="customer-name">Customer Name</FieldLabel>
+                  <FieldLabel htmlFor="customer-name">Customer name</FieldLabel>
                   <div className="relative">
                     <UserIcon
                       aria-hidden="true"

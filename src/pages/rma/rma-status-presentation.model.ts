@@ -32,21 +32,21 @@ const RMA_STATUS_PRESENTATION: Record<RmaStatus, RmaStatusPresentation> = {
   },
   Approved: {
     label: 'Approved',
-    description: 'Authorized for return',
+    description: 'Return is authorized',
     icon: CheckIcon,
     className:
       'border-green-200 bg-green-50 text-green-700 dark:border-green-900/60 dark:bg-green-950/40 dark:text-green-300',
   },
   Rejected: {
     label: 'Rejected',
-    description: 'Declined request',
+    description: 'Request is declined',
     icon: XIcon,
     className:
       'border-red-200 bg-red-50 text-red-700 dark:border-red-900/60 dark:bg-red-950/40 dark:text-red-300',
   },
   Completed: {
     label: 'Completed',
-    description: 'Return workflow closed',
+    description: 'Return workflow is closed',
     icon: PackageCheckIcon,
     className:
       'border-zinc-200 bg-zinc-50 text-zinc-700 dark:border-zinc-800 dark:bg-zinc-950/40 dark:text-zinc-300',

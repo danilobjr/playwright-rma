@@ -1149,7 +1149,7 @@
                     {
                       "type": "frame",
                       "id": "QcI6u",
-                      "name": "TableHead - Customer Name",
+                      "name": "TableHead - Customer name",
                       "width": 190,
                       "height": "fill_container",
                       "padding": [
@@ -1161,11 +1161,11 @@
                         {
                           "type": "text",
                           "id": "teVsv",
-                          "name": "TableHead - Customer Name text",
+                          "name": "TableHead - Customer name text",
                           "fill": "#71717A",
                           "textGrowth": "fixed-width",
                           "width": "fill_container",
-                          "content": "Customer Name",
+                          "content": "Customer name",
                           "fontFamily": "Geist",
                           "fontSize": 13,
                           "fontWeight": "600"
@@ -1253,7 +1253,7 @@
                     {
                       "type": "frame",
                       "id": "O1h15",
-                      "name": "TableHead - Date",
+                      "name": "TableHead - Submitted date",
                       "width": 138,
                       "height": "fill_container",
                       "padding": [
@@ -1265,11 +1265,11 @@
                         {
                           "type": "text",
                           "id": "hRGSZ",
-                          "name": "TableHead - Date text",
+                          "name": "TableHead - Submitted date text",
                           "fill": "#71717A",
                           "textGrowth": "fixed-width",
                           "width": "fill_container",
-                          "content": "Date",
+                          "content": "Submitted date",
                           "fontFamily": "Geist",
                           "fontSize": 13,
                           "fontWeight": "600"
@@ -2927,7 +2927,7 @@
                             {
                               "type": "frame",
                               "id": "gFrCM",
-                              "name": "Customer Name Field",
+                              "name": "Customer name Field",
                               "width": "fill_container",
                               "layout": "vertical",
                               "gap": 8,
@@ -2935,7 +2935,7 @@
                                 {
                                   "type": "frame",
                                   "id": "JsdHp",
-                                  "name": "Customer Name Field header",
+                                  "name": "Customer name Field header",
                                   "width": "fill_container",
                                   "justifyContent": "space_between",
                                   "alignItems": "center",
@@ -2943,9 +2943,9 @@
                                     {
                                       "type": "text",
                                       "id": "CF1sf",
-                                      "name": "Customer Name FieldLabel",
+                                      "name": "Customer name FieldLabel",
                                       "fill": "#18181B",
-                                      "content": "Customer Name",
+                                      "content": "Customer name",
                                       "fontFamily": "Geist",
                                       "fontSize": 13,
                                       "fontWeight": "500"
@@ -2955,7 +2955,7 @@
                                 {
                                   "type": "frame",
                                   "id": "V5V4x1",
-                                  "name": "Customer Name Input",
+                                  "name": "Customer name Input",
                                   "width": "fill_container",
                                   "height": 40,
                                   "fill": "#FFFFFF",
@@ -2973,7 +2973,7 @@
                                     {
                                       "type": "icon",
                                       "id": "x3OoE",
-                                      "name": "Customer Name Input icon",
+                                      "name": "Customer name Input icon",
                                       "width": 16,
                                       "height": 16,
                                       "icon": "user",
@@ -2983,7 +2983,7 @@
                                     {
                                       "type": "text",
                                       "id": "G0Anh",
-                                      "name": "Customer Name Input value",
+                                      "name": "Customer name Input value",
                                       "fill": "#71717A",
                                       "textGrowth": "fixed-width",
                                       "width": "fill_container",
@@ -3626,18 +3626,18 @@
                         {
                           "type": "frame",
                           "id": "Proy0",
-                          "name": "Detail row - Date",
+                          "name": "Detail row - Submitted date",
                           "width": "fill_container",
                           "gap": 24,
                           "children": [
                             {
                               "type": "text",
                               "id": "YyPzJ",
-                              "name": "Date label",
+                              "name": "Submitted date label",
                               "fill": "#71717A",
                               "textGrowth": "fixed-width",
                               "width": 132,
-                              "content": "Date",
+                              "content": "Submitted date",
                               "fontFamily": "Geist",
                               "fontSize": 13,
                               "fontWeight": "500"
