@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   createRmaRequest,
   deleteRmaRequest,
+  getRmaRequestById,
   listRmaRequests,
   peekNextRmaId,
 } from './rma-request.service'
@@ -57,6 +58,48 @@ describe('RMA request service', () => {
         }),
       ]),
     )
+  })
+
+  it('reads a seeded RMA Request by exact RMA ID', async () => {
+    await expect(
+      waitForRmaApiResponse(getRmaRequestById('RMA-2026-1002')),
+    ).resolves.toMatchObject({
+      rmaId: 'RMA-2026-1002',
+      status: 'Approved',
+      customerName: 'Mina Patel',
+      productId: 'PRD-9C4D',
+      reason: 'Battery does not hold charge longer than thirty minutes.',
+      createdAt: '2026-02-08T09:12:00.000Z',
+    })
+  })
+
+  it('returns undefined for missing RMA ID reads', async () => {
+    await expect(
+      waitForRmaApiResponse(getRmaRequestById('RMA-2026-9999')),
+    ).resolves.toBeUndefined()
+  })
+
+  it('uses case-sensitive exact RMA ID reads', async () => {
+    await expect(
+      waitForRmaApiResponse(getRmaRequestById('rma-2026-1002')),
+    ).resolves.toBeUndefined()
+  })
+
+  it('keeps RMA ID reads pending before the simulated delay completes', async () => {
+    const response = getRmaRequestById('RMA-2026-1002')
+    let settled = false
+
+    response.then(() => {
+      settled = true
+    })
+
+    await vi.advanceTimersByTimeAsync(999)
+    expect(settled).toBe(false)
+
+    await vi.advanceTimersByTimeAsync(1)
+    await response
+
+    expect(settled).toBe(true)
   })
 
   it('keeps exported responses pending before the simulated delay completes', async () => {
