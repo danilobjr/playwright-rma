@@ -204,6 +204,12 @@ async function listRmaRequests() {
   return withRmaApiDelay(() => getAllRmaRequests())
 }
 
+async function getRmaRequestById(rmaId: string) {
+  return withRmaApiDelay(() =>
+    getAllRmaRequests().find((request) => request.rmaId === rmaId),
+  )
+}
+
 async function peekNextRmaId() {
   return withRmaApiDelay(() => getNextRmaId(getAllRmaRequests()))
 }
@@ -265,6 +271,7 @@ export {
   createRmaRequest,
   deleteRmaRequest,
   DuplicateRmaRequestError,
+  getRmaRequestById,
   listRmaRequests,
   peekNextRmaId,
 }

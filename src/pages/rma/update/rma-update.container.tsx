@@ -3,6 +3,7 @@ import { ArrowLeft } from 'lucide-react'
 
 import { useLayout } from '@/components/app/layout/use-layout.hook'
 import { Button } from '@/components/ui/button'
+import { useRmaRequest } from '@/hooks/api/rma/use-rma-requests.hook'
 
 import { RmaUpdatePage } from './rma-update.page'
 
@@ -11,6 +12,8 @@ type RmaUpdateContainerProps = {
 }
 
 function RmaUpdateContainer({ rmaId }: RmaUpdateContainerProps) {
+  const rmaRequestQuery = useRmaRequest(rmaId)
+
   useLayout(
     {
       breadcrumbs: ['RMA', rmaId],
@@ -28,7 +31,14 @@ function RmaUpdateContainer({ rmaId }: RmaUpdateContainerProps) {
     [rmaId],
   )
 
-  return <RmaUpdatePage rmaId={rmaId} />
+  return (
+    <RmaUpdatePage
+      error={rmaRequestQuery.error}
+      isError={rmaRequestQuery.isError}
+      isPending={rmaRequestQuery.isPending}
+      request={rmaRequestQuery.data}
+    />
+  )
 }
 
 export { RmaUpdateContainer }
