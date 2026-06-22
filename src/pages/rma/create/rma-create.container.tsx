@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { ArrowLeftIcon } from 'lucide-react'
-import { toast } from 'sonner'
 
 import { useLayout } from '@/components/app/layout/use-layout.hook'
+import { successToast } from '@/components/app/toast.util'
 import { Button } from '@/components/ui/button'
 import { useCreateRmaRequest } from '@/hooks/api/rma/use-create-rma-request.hook'
 import { useNextRmaId } from '@/hooks/api/rma/use-rma-requests.hook'
@@ -60,7 +60,10 @@ function RmaCreateContainer() {
       throw error
     }
 
-    toast.success('RMA request created')
+    successToast(
+      'RMA saved',
+      'The request was created or updated successfully.',
+    )
     await navigate({ to: '/rma' })
   }
 

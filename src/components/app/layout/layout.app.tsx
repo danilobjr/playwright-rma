@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { Toaster } from '@/components/ui/sonner'
+import { AppToaster } from '@/components/app/app-toaster.app'
 
 import { useLayoutSnapshot } from './use-layout.hook'
 
@@ -57,7 +57,7 @@ function Layout({ children }: LayoutProps) {
           {children}
         </div>
       </main>
-      <Toaster />
+      <AppToaster />
     </>
   )
 }

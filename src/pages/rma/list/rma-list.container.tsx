@@ -1,8 +1,8 @@
 import { Link } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
-import { toast } from 'sonner'
 
 import { useLayout } from '@/components/app/layout/use-layout.hook'
+import { successToast } from '@/components/app/toast.util'
 import { Button } from '@/components/ui/button'
 import { useDeleteRmaRequest } from '@/hooks/api/rma/use-delete-rma-request.hook'
 import { useRmaRequests } from '@/hooks/api/rma/use-rma-requests.hook'
@@ -33,7 +33,7 @@ function RmaListContainer() {
 
   async function deleteRequest(rmaId: string) {
     await deleteRmaRequestMutation.mutateAsync(rmaId)
-    toast.success('RMA Request deleted')
+    successToast('RMA deleted', 'The request was removed.')
   }
 
   return (

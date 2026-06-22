@@ -46,10 +46,8 @@ vi.mock('@/services/api/rma/rma-request.service', () => ({
   peekNextRmaId,
 }))
 
-vi.mock('sonner', () => ({
-  toast: {
-    success: toastSuccess,
-  },
+vi.mock('@/components/app/toast.util', () => ({
+  successToast: toastSuccess,
 }))
 
 vi.mock('@tanstack/react-router', () => ({
@@ -101,7 +99,10 @@ test('deletes an RMA Request, refreshes the list, and shows success toast', asyn
   fireEvent.click(screen.getByRole('button', { name: 'Delete request' }))
 
   await waitFor(() => {
-    expect(toastSuccess).toHaveBeenCalledWith('RMA Request deleted')
+    expect(toastSuccess).toHaveBeenCalledWith(
+      'RMA deleted',
+      'The request was removed.',
+    )
   })
 })
 

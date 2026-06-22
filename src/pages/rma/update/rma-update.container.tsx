@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { ArrowLeft } from 'lucide-react'
-import { toast } from 'sonner'
 
 import { useLayout } from '@/components/app/layout/use-layout.hook'
+import { successToast } from '@/components/app/toast.util'
 import { Button } from '@/components/ui/button'
 import { useRmaRequest } from '@/hooks/api/rma/use-rma-requests.hook'
 import { useUpdateRmaRequest } from '@/hooks/api/rma/use-update-rma-request.hook'
@@ -52,7 +52,10 @@ function RmaUpdateContainer({ rmaId }: RmaUpdateContainerProps) {
       return
     }
 
-    toast.success('RMA request status updated')
+    successToast(
+      'RMA saved',
+      'The request was created or updated successfully.',
+    )
     await navigate({ to: '/rma' })
   }
 

@@ -39,10 +39,8 @@ vi.mock('@/services/api/rma/rma-request.service', () => ({
   updateRmaRequest,
 }))
 
-vi.mock('sonner', () => ({
-  toast: {
-    success: toastSuccess,
-  },
+vi.mock('@/components/app/toast.util', () => ({
+  successToast: toastSuccess,
 }))
 
 vi.mock('@tanstack/react-router', () => ({
@@ -186,7 +184,10 @@ test('successful save shows toast and navigates to list', async () => {
   })
 
   await waitFor(() => {
-    expect(toastSuccess).toHaveBeenCalledWith('RMA request status updated')
+    expect(toastSuccess).toHaveBeenCalledWith(
+      'RMA saved',
+      'The request was created or updated successfully.',
+    )
   })
 
   expect(navigate).toHaveBeenCalledWith({ to: '/rma' })
