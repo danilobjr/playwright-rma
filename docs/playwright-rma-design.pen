@@ -386,7 +386,8 @@
                       "fill": "#A1A1AA",
                       "content": "/",
                       "fontFamily": "Geist",
-                      "fontSize": 13
+                      "fontSize": 13,
+                      "fontWeight": "normal"
                     },
                     {
                       "type": "text",
@@ -419,7 +420,8 @@
                   "width": 620,
                   "content": "Track return merchandise authorizations, filter by status and date, and start new requests.",
                   "fontFamily": "Geist",
-                  "fontSize": 14
+                  "fontSize": 14,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -518,7 +520,8 @@
                   "fill": "#71717A",
                   "content": "12 awaiting review",
                   "fontFamily": "Geist",
-                  "fontSize": 13
+                  "fontSize": 13,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -563,7 +566,8 @@
                   "fill": "#71717A",
                   "content": "8 this week",
                   "fontFamily": "Geist",
-                  "fontSize": 13
+                  "fontSize": 13,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -608,7 +612,8 @@
                   "fill": "#71717A",
                   "content": "Needs action",
                   "fontFamily": "Geist",
-                  "fontSize": 13
+                  "fontSize": 13,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -653,7 +658,8 @@
                   "fill": "#71717A",
                   "content": "Return closed",
                   "fontFamily": "Geist",
-                  "fontSize": 13
+                  "fontSize": 13,
+                  "fontWeight": "normal"
                 }
               ]
             }
@@ -713,46 +719,8 @@
                       "width": 420,
                       "content": "Component model: DataTable toolbar, Table, Badge, row actions, Pagination.",
                       "fontFamily": "Geist",
-                      "fontSize": 13
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "V1Xdy9",
-                  "name": "View columns button",
-                  "fill": "#FFFFFF",
-                  "cornerRadius": 8,
-                  "stroke": "#E4E4E7",
-                  "strokeWidth": 1,
-                  "strokeAlignment": "inner",
-                  "gap": 8,
-                  "padding": [
-                    10,
-                    16
-                  ],
-                  "justifyContent": "center",
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "icon",
-                      "id": "loEpW",
-                      "name": "View columns button icon",
-                      "width": 16,
-                      "height": 16,
-                      "icon": "columns-3",
-                      "library": "lucide",
-                      "fill": "#18181B"
-                    },
-                    {
-                      "type": "text",
-                      "id": "BAvPH",
-                      "name": "View columns button label",
-                      "fill": "#18181B",
-                      "content": "View columns",
-                      "fontFamily": "Geist",
-                      "fontSize": 14,
-                      "fontWeight": "500"
+                      "fontSize": 13,
+                      "fontWeight": "normal"
                     }
                   ]
                 }
@@ -836,7 +804,8 @@
                               "width": "fill_container",
                               "content": "Search customers",
                               "fontFamily": "Geist",
-                              "fontSize": 14
+                              "fontSize": 14,
+                              "fontWeight": "normal"
                             }
                           ]
                         }
@@ -886,7 +855,8 @@
                               "fill": "#18181B",
                               "content": "All",
                               "fontFamily": "Geist",
-                              "fontSize": 14
+                              "fontSize": 14,
+                              "fontWeight": "normal"
                             },
                             {
                               "type": "icon",
@@ -905,7 +875,7 @@
                     {
                       "type": "frame",
                       "id": "PXPAz",
-                      "name": "Date range Field",
+                      "name": "Submitted date Field",
                       "width": 220,
                       "layout": "vertical",
                       "gap": 8,
@@ -915,7 +885,7 @@
                           "id": "eR3ik",
                           "name": "Date range FieldLabel",
                           "fill": "#18181B",
-                          "content": "Date range",
+                          "content": "Submitted date",
                           "fontFamily": "Geist",
                           "fontSize": 13,
                           "fontWeight": "500"
@@ -923,7 +893,7 @@
                         {
                           "type": "frame",
                           "id": "MwhGi",
-                          "name": "Date range DatePickerTrigger",
+                          "name": "Submitted date DatePickerTrigger",
                           "width": "fill_container",
                           "height": 40,
                           "fill": "#FFFFFF",
@@ -953,9 +923,10 @@
                               "id": "o3IQM",
                               "name": "Date range value",
                               "fill": "#18181B",
-                              "content": "Jan 1 - Jan 31",
+                              "content": "Jan 15, 2026",
                               "fontFamily": "Geist",
-                              "fontSize": 14
+                              "fontSize": 14,
+                              "fontWeight": "normal"
                             }
                           ]
                         }
@@ -1149,7 +1120,7 @@
                     {
                       "type": "frame",
                       "id": "QcI6u",
-                      "name": "TableHead - Customer name",
+                      "name": "TableHead - Customer Name",
                       "width": 190,
                       "height": "fill_container",
                       "padding": [
@@ -1253,7 +1224,7 @@
                     {
                       "type": "frame",
                       "id": "O1h15",
-                      "name": "TableHead - Submitted date",
+                      "name": "TableHead - Date",
                       "width": 138,
                       "height": "fill_container",
                       "padding": [
@@ -1362,7 +1333,8 @@
                           "width": "fill_container",
                           "content": "Amelia Torres",
                           "fontFamily": "Geist",
-                          "fontSize": 13
+                          "fontSize": 13,
+                          "fontWeight": "normal"
                         }
                       ]
                     },
@@ -1387,7 +1359,8 @@
                           "width": "fill_container",
                           "content": "PRD-8K21",
                           "fontFamily": "Geist",
-                          "fontSize": 13
+                          "fontSize": 13,
+                          "fontWeight": "normal"
                         }
                       ]
                     },
@@ -1412,7 +1385,8 @@
                           "width": "fill_container",
                           "content": "Wrong item shipped",
                           "fontFamily": "Geist",
-                          "fontSize": 13
+                          "fontSize": 13,
+                          "fontWeight": "normal"
                         }
                       ]
                     },
@@ -1479,7 +1453,8 @@
                           "width": "fill_container",
                           "content": "Jan 28, 2026",
                           "fontFamily": "Geist",
-                          "fontSize": 13
+                          "fontSize": 13,
+                          "fontWeight": "normal"
                         }
                       ]
                     },
@@ -1569,7 +1544,8 @@
                           "width": "fill_container",
                           "content": "Marcus Lee",
                           "fontFamily": "Geist",
-                          "fontSize": 13
+                          "fontSize": 13,
+                          "fontWeight": "normal"
                         }
                       ]
                     },
@@ -1594,7 +1570,8 @@
                           "width": "fill_container",
                           "content": "PRD-4B19",
                           "fontFamily": "Geist",
-                          "fontSize": 13
+                          "fontSize": 13,
+                          "fontWeight": "normal"
                         }
                       ]
                     },
@@ -1619,7 +1596,8 @@
                           "width": "fill_container",
                           "content": "Defective screen",
                           "fontFamily": "Geist",
-                          "fontSize": 13
+                          "fontSize": 13,
+                          "fontWeight": "normal"
                         }
                       ]
                     },
@@ -1686,7 +1664,8 @@
                           "width": "fill_container",
                           "content": "Jan 27, 2026",
                           "fontFamily": "Geist",
-                          "fontSize": 13
+                          "fontSize": 13,
+                          "fontWeight": "normal"
                         }
                       ]
                     },
@@ -1776,7 +1755,8 @@
                           "width": "fill_container",
                           "content": "Nora Patel",
                           "fontFamily": "Geist",
-                          "fontSize": 13
+                          "fontSize": 13,
+                          "fontWeight": "normal"
                         }
                       ]
                     },
@@ -1801,7 +1781,8 @@
                           "width": "fill_container",
                           "content": "PRD-2Q77",
                           "fontFamily": "Geist",
-                          "fontSize": 13
+                          "fontSize": 13,
+                          "fontWeight": "normal"
                         }
                       ]
                     },
@@ -1826,7 +1807,8 @@
                           "width": "fill_container",
                           "content": "Customer changed mind",
                           "fontFamily": "Geist",
-                          "fontSize": 13
+                          "fontSize": 13,
+                          "fontWeight": "normal"
                         }
                       ]
                     },
@@ -1893,7 +1875,8 @@
                           "width": "fill_container",
                           "content": "Jan 25, 2026",
                           "fontFamily": "Geist",
-                          "fontSize": 13
+                          "fontSize": 13,
+                          "fontWeight": "normal"
                         }
                       ]
                     },
@@ -1983,7 +1966,8 @@
                           "width": "fill_container",
                           "content": "Evan Brooks",
                           "fontFamily": "Geist",
-                          "fontSize": 13
+                          "fontSize": 13,
+                          "fontWeight": "normal"
                         }
                       ]
                     },
@@ -2008,7 +1992,8 @@
                           "width": "fill_container",
                           "content": "PRD-9A03",
                           "fontFamily": "Geist",
-                          "fontSize": 13
+                          "fontSize": 13,
+                          "fontWeight": "normal"
                         }
                       ]
                     },
@@ -2033,7 +2018,8 @@
                           "width": "fill_container",
                           "content": "Missing accessories",
                           "fontFamily": "Geist",
-                          "fontSize": 13
+                          "fontSize": 13,
+                          "fontWeight": "normal"
                         }
                       ]
                     },
@@ -2100,7 +2086,8 @@
                           "width": "fill_container",
                           "content": "Jan 22, 2026",
                           "fontFamily": "Geist",
-                          "fontSize": 13
+                          "fontSize": 13,
+                          "fontWeight": "normal"
                         }
                       ]
                     },
@@ -2190,7 +2177,8 @@
                           "width": "fill_container",
                           "content": "Lina Chen",
                           "fontFamily": "Geist",
-                          "fontSize": 13
+                          "fontSize": 13,
+                          "fontWeight": "normal"
                         }
                       ]
                     },
@@ -2215,7 +2203,8 @@
                           "width": "fill_container",
                           "content": "PRD-5C44",
                           "fontFamily": "Geist",
-                          "fontSize": 13
+                          "fontSize": 13,
+                          "fontWeight": "normal"
                         }
                       ]
                     },
@@ -2240,7 +2229,8 @@
                           "width": "fill_container",
                           "content": "Arrived damaged",
                           "fontFamily": "Geist",
-                          "fontSize": 13
+                          "fontSize": 13,
+                          "fontWeight": "normal"
                         }
                       ]
                     },
@@ -2307,7 +2297,8 @@
                           "width": "fill_container",
                           "content": "Jan 21, 2026",
                           "fontFamily": "Geist",
-                          "fontSize": 13
+                          "fontSize": 13,
+                          "fontWeight": "normal"
                         }
                       ]
                     },
@@ -2550,7 +2541,8 @@
                   "fill": "#71717A",
                   "content": "0 of 12 row(s) selected.",
                   "fontFamily": "Geist",
-                  "fontSize": 13
+                  "fontSize": 13,
+                  "fontWeight": "normal"
                 },
                 {
                   "type": "frame",
@@ -2707,7 +2699,8 @@
                   "width": 680,
                   "content": "Use a compact FieldGroup form layout that matches shadcn form composition.",
                   "fontFamily": "Geist",
-                  "fontSize": 14
+                  "fontSize": 14,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -2806,7 +2799,8 @@
                       "width": "fill_container",
                       "content": "RMA ID is generated automatically",
                       "fontFamily": "Geist",
-                      "fontSize": 14
+                      "fontSize": 14,
+                      "fontWeight": "normal"
                     }
                   ]
                 },
@@ -2867,7 +2861,8 @@
                                       "fill": "#71717A",
                                       "content": "Read-only",
                                       "fontFamily": "Geist",
-                                      "fontSize": 12
+                                      "fontSize": 12,
+                                      "fontWeight": "normal"
                                     }
                                   ]
                                 },
@@ -2909,7 +2904,8 @@
                                       "width": "fill_container",
                                       "content": "RMA-2026-1049",
                                       "fontFamily": "Geist",
-                                      "fontSize": 14
+                                      "fontSize": 14,
+                                      "fontWeight": "normal"
                                     }
                                   ]
                                 }
@@ -2927,7 +2923,7 @@
                             {
                               "type": "frame",
                               "id": "gFrCM",
-                              "name": "Customer name Field",
+                              "name": "Customer Name Field",
                               "width": "fill_container",
                               "layout": "vertical",
                               "gap": 8,
@@ -2935,7 +2931,7 @@
                                 {
                                   "type": "frame",
                                   "id": "JsdHp",
-                                  "name": "Customer name Field header",
+                                  "name": "Customer Name Field header",
                                   "width": "fill_container",
                                   "justifyContent": "space_between",
                                   "alignItems": "center",
@@ -2955,7 +2951,7 @@
                                 {
                                   "type": "frame",
                                   "id": "V5V4x1",
-                                  "name": "Customer name Input",
+                                  "name": "Customer Name Input",
                                   "width": "fill_container",
                                   "height": 40,
                                   "fill": "#FFFFFF",
@@ -2973,7 +2969,7 @@
                                     {
                                       "type": "icon",
                                       "id": "x3OoE",
-                                      "name": "Customer name Input icon",
+                                      "name": "Customer Name Input icon",
                                       "width": 16,
                                       "height": 16,
                                       "icon": "user",
@@ -2989,7 +2985,8 @@
                                       "width": "fill_container",
                                       "content": "Enter customer name",
                                       "fontFamily": "Geist",
-                                      "fontSize": 14
+                                      "fontSize": 14,
+                                      "fontWeight": "normal"
                                     }
                                   ]
                                 }
@@ -3060,7 +3057,8 @@
                                       "width": "fill_container",
                                       "content": "Enter product ID",
                                       "fontFamily": "Geist",
-                                      "fontSize": 14
+                                      "fontSize": 14,
+                                      "fontWeight": "normal"
                                     }
                                   ]
                                 }
@@ -3109,7 +3107,8 @@
                                   "width": "fill_container",
                                   "content": "Describe why the customer is requesting a return.",
                                   "fontFamily": "Geist",
-                                  "fontSize": 14
+                                  "fontSize": 14,
+                                  "fontWeight": "normal"
                                 }
                               ]
                             },
@@ -3122,7 +3121,8 @@
                               "width": "fill_container",
                               "content": "Include condition, defect details, and customer-provided notes.",
                               "fontFamily": "Geist",
-                              "fontSize": 12
+                              "fontSize": 12,
+                              "fontWeight": "normal"
                             }
                           ]
                         }
@@ -3277,7 +3277,8 @@
                   "width": 700,
                   "content": "Review the request and choose the next workflow status.",
                   "fontFamily": "Geist",
-                  "fontSize": 14
+                  "fontSize": 14,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -3381,7 +3382,8 @@
                           "fill": "#71717A",
                           "content": "Submitted Jan 27, 2026",
                           "fontFamily": "Geist",
-                          "fontSize": 14
+                          "fontSize": 14,
+                          "fontWeight": "normal"
                         }
                       ]
                     },
@@ -3523,7 +3525,8 @@
                               "width": "fill_container",
                               "content": "RMA-2026-1047",
                               "fontFamily": "Geist",
-                              "fontSize": 14
+                              "fontSize": 14,
+                              "fontWeight": "normal"
                             }
                           ]
                         },
@@ -3555,7 +3558,8 @@
                               "width": "fill_container",
                               "content": "Marcus Lee",
                               "fontFamily": "Geist",
-                              "fontSize": 14
+                              "fontSize": 14,
+                              "fontWeight": "normal"
                             }
                           ]
                         },
@@ -3587,7 +3591,8 @@
                               "width": "fill_container",
                               "content": "PRD-4B19",
                               "fontFamily": "Geist",
-                              "fontSize": 14
+                              "fontSize": 14,
+                              "fontWeight": "normal"
                             }
                           ]
                         },
@@ -3619,14 +3624,15 @@
                               "width": "fill_container",
                               "content": "Defective screen reported after delivery inspection.",
                               "fontFamily": "Geist",
-                              "fontSize": 14
+                              "fontSize": 14,
+                              "fontWeight": "normal"
                             }
                           ]
                         },
                         {
                           "type": "frame",
                           "id": "Proy0",
-                          "name": "Detail row - Submitted date",
+                          "name": "Detail row - Date",
                           "width": "fill_container",
                           "gap": 24,
                           "children": [
@@ -3651,7 +3657,8 @@
                               "width": "fill_container",
                               "content": "Jan 27, 2026",
                               "fontFamily": "Geist",
-                              "fontSize": 14
+                              "fontSize": 14,
+                              "fontWeight": "normal"
                             }
                           ]
                         }
@@ -3821,7 +3828,8 @@
                                           "fill": "#71717A",
                                           "content": "Awaiting review",
                                           "fontFamily": "Geist",
-                                          "fontSize": 12
+                                          "fontSize": 12,
+                                          "fontWeight": "normal"
                                         }
                                       ]
                                     }
@@ -3876,7 +3884,8 @@
                                           "fill": "#71717A",
                                           "content": "Return is authorized",
                                           "fontFamily": "Geist",
-                                          "fontSize": 12
+                                          "fontSize": 12,
+                                          "fontWeight": "normal"
                                         }
                                       ]
                                     },
@@ -3941,7 +3950,8 @@
                                           "fill": "#71717A",
                                           "content": "Request is declined",
                                           "fontFamily": "Geist",
-                                          "fontSize": 12
+                                          "fontSize": 12,
+                                          "fontWeight": "normal"
                                         }
                                       ]
                                     }
@@ -3996,7 +4006,8 @@
                                           "fill": "#71717A",
                                           "content": "Return workflow is closed",
                                           "fontFamily": "Geist",
-                                          "fontSize": 12
+                                          "fontSize": 12,
+                                          "fontWeight": "normal"
                                         }
                                       ]
                                     }
@@ -4840,8 +4851,7 @@
       "x": 4080,
       "y": 0,
       "name": "Component - Toast Notifications",
-      "width": 760,
-      "height": 392,
+      "width": 711,
       "fill": "#FFFFFF",
       "cornerRadius": 12,
       "stroke": "#E4E4E7",
@@ -4886,7 +4896,8 @@
                   "width": "fill_container",
                   "content": "Sonner-style feedback messages for create, edit, failure, and validation flows.",
                   "fontFamily": "Geist",
-                  "fontSize": 13
+                  "fontSize": 13,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -4966,8 +4977,8 @@
                   "type": "frame",
                   "id": "TgOjP",
                   "name": "Toast Success icon container",
-                  "width": 34,
-                  "height": 34,
+                  "width": 32,
+                  "height": 32,
                   "fill": "#ECFDF5",
                   "cornerRadius": 999,
                   "justifyContent": "center",
@@ -4977,8 +4988,8 @@
                       "type": "icon",
                       "id": "GCuNV",
                       "name": "Toast Success icon",
-                      "width": 17,
-                      "height": 17,
+                      "width": 16,
+                      "height": 16,
                       "icon": "check",
                       "library": "lucide",
                       "fill": "#047857"
@@ -5000,7 +5011,7 @@
                       "fill": "#09090B",
                       "textGrowth": "fixed-width",
                       "width": "fill_container",
-                      "content": "RMA saved",
+                      "content": "RMA Request created",
                       "fontFamily": "Geist",
                       "fontSize": 14,
                       "fontWeight": "600"
@@ -5012,39 +5023,109 @@
                       "fill": "#71717A",
                       "textGrowth": "fixed-width",
                       "width": "fill_container",
-                      "content": "The request was created or updated successfully.",
+                      "content": "The request RMA-2026-1048 was created successfully.",
                       "fontFamily": "Geist",
-                      "fontSize": 13
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "wYdmO",
-                  "name": "Toast Success usage badge",
-                  "fill": "#F4F4F5",
-                  "cornerRadius": 999,
-                  "padding": [
-                    4,
-                    8
-                  ],
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "a9BiHW",
-                      "name": "Toast Success usage label",
-                      "fill": "#52525B",
-                      "content": "create/edit",
-                      "fontFamily": "Geist",
-                      "fontSize": 11,
-                      "fontWeight": "500"
+                      "fontSize": 13,
+                      "fontWeight": "normal"
                     }
                   ]
                 },
                 {
                   "type": "icon",
                   "id": "J0ZGy9",
+                  "name": "Toast Success close",
+                  "width": 16,
+                  "height": 16,
+                  "icon": "x",
+                  "library": "lucide",
+                  "fill": "#A1A1AA"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "e2aHq0",
+              "name": "Toast - Success",
+              "width": "fill_container",
+              "fill": "#FFFFFF",
+              "cornerRadius": 10,
+              "stroke": "#E4E4E7",
+              "strokeWidth": 1,
+              "strokeAlignment": "inner",
+              "effect": {
+                "type": "shadow",
+                "shadowType": "outer",
+                "color": "#0000000D",
+                "offset": {
+                  "x": 0,
+                  "y": 6
+                },
+                "blur": 18
+              },
+              "gap": 12,
+              "padding": 14,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "ZXQlB",
+                  "name": "Toast Success icon container",
+                  "width": 32,
+                  "height": 32,
+                  "fill": "#ECFDF5",
+                  "cornerRadius": 999,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "WcntH",
+                      "name": "Toast Success icon",
+                      "width": 16,
+                      "height": 16,
+                      "icon": "check",
+                      "library": "lucide",
+                      "fill": "#047857"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Z2FfoG",
+                  "name": "Toast Success copy",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 3,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "mHMqF",
+                      "name": "Toast Success title",
+                      "fill": "#09090B",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "RMA Request updated",
+                      "fontFamily": "Geist",
+                      "fontSize": 14,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "E9sj1",
+                      "name": "Toast Success description",
+                      "fill": "#71717A",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "The request RMA-2026-1048 updated successfully.",
+                      "fontFamily": "Geist",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "icon",
+                  "id": "VFKPg",
                   "name": "Toast Success close",
                   "width": 16,
                   "height": 16,
@@ -5082,8 +5163,8 @@
                   "type": "frame",
                   "id": "Y0rKl",
                   "name": "Toast Error icon container",
-                  "width": 34,
-                  "height": 34,
+                  "width": 32,
+                  "height": 32,
                   "fill": "#FEF2F2",
                   "cornerRadius": 999,
                   "justifyContent": "center",
@@ -5093,8 +5174,8 @@
                       "type": "icon",
                       "id": "G9VIA",
                       "name": "Toast Error icon",
-                      "width": 17,
-                      "height": 17,
+                      "width": 16,
+                      "height": 16,
                       "icon": "triangle-alert",
                       "library": "lucide",
                       "fill": "#B91C1C"
@@ -5130,31 +5211,8 @@
                       "width": "fill_container",
                       "content": "Something broke while saving. Try again or contact support.",
                       "fontFamily": "Geist",
-                      "fontSize": 13
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "gQ9rV",
-                  "name": "Toast Error usage badge",
-                  "fill": "#F4F4F5",
-                  "cornerRadius": 999,
-                  "padding": [
-                    4,
-                    8
-                  ],
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "VcmmC",
-                      "name": "Toast Error usage label",
-                      "fill": "#52525B",
-                      "content": "front/back",
-                      "fontFamily": "Geist",
-                      "fontSize": 11,
-                      "fontWeight": "500"
+                      "fontSize": 13,
+                      "fontWeight": "normal"
                     }
                   ]
                 },
@@ -5198,8 +5256,8 @@
                   "type": "frame",
                   "id": "PCzc1",
                   "name": "Toast Warning icon container",
-                  "width": 34,
-                  "height": 34,
+                  "width": 32,
+                  "height": 32,
                   "fill": "#FFFBEB",
                   "cornerRadius": 999,
                   "justifyContent": "center",
@@ -5209,8 +5267,8 @@
                       "type": "icon",
                       "id": "NBMfR",
                       "name": "Toast Warning icon",
-                      "width": 17,
-                      "height": 17,
+                      "width": 16,
+                      "height": 16,
                       "icon": "circle-alert",
                       "library": "lucide",
                       "fill": "#B45309"
@@ -5246,31 +5304,8 @@
                       "width": "fill_container",
                       "content": "Some information looks invalid. Review highlighted fields.",
                       "fontFamily": "Geist",
-                      "fontSize": 13
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "n4zKW",
-                  "name": "Toast Warning usage badge",
-                  "fill": "#F4F4F5",
-                  "cornerRadius": 999,
-                  "padding": [
-                    4,
-                    8
-                  ],
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "EGg1l",
-                      "name": "Toast Warning usage label",
-                      "fill": "#52525B",
-                      "content": "validation",
-                      "fontFamily": "Geist",
-                      "fontSize": 11,
-                      "fontWeight": "500"
+                      "fontSize": 13,
+                      "fontWeight": "normal"
                     }
                   ]
                 },
@@ -5324,7 +5359,8 @@
               "width": "fill_container",
               "content": "Recommended Toaster placement: top-right. Toast enters with a subtle slide/fade and exits on timeout or close.",
               "fontFamily": "Geist",
-              "fontSize": 12
+              "fontSize": 12,
+              "fontWeight": "normal"
             }
           ]
         }
