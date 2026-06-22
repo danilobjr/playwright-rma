@@ -105,7 +105,8 @@ export default {
           chore: {
             emoji: '🚧',
             title: 'Chores',
-            description: "Other changes that don't modify src or test files",
+            description:
+              'Little tasks inside a major context, including design.',
           },
           docs: {
             emoji: '📝',
