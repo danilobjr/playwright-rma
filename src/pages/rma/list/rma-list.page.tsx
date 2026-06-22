@@ -308,14 +308,11 @@ function RmaListPage({
             }}
             tabIndex={0}
           >
-            <span className="font-medium text-muted-foreground">
-              Total RMAs
-            </span>
             <span className="text-[28px] font-bold text-[#09090B] tabular-nums dark:text-white">
               {requests.length}
             </span>
-            <span className="text-muted-foreground">
-              All active RMA Requests
+            <span className="font-medium text-muted-foreground">
+              Total RMAs
             </span>
           </div>
           {RMA_STATUS_ORDER.filter((s) => s !== 'Rejected').map((status) => {
@@ -336,14 +333,11 @@ function RmaListPage({
                 }}
                 tabIndex={0}
               >
-                <span className="font-medium text-muted-foreground">
-                  {presentation.label}
-                </span>
                 <span className="text-[28px] font-bold tabular-nums">
                   {statusCounts[status]}
                 </span>
-                <span className="text-muted-foreground">
-                  {presentation.description}
+                <span className="font-medium text-muted-foreground">
+                  {presentation.label}
                 </span>
               </div>
             )

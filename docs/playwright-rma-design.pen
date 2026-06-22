@@ -495,16 +495,6 @@
               "children": [
                 {
                   "type": "text",
-                  "id": "A0q43j",
-                  "name": "CardTitle - Total RMAs",
-                  "fill": "#71717A",
-                  "content": "Total RMAs",
-                  "fontFamily": "Geist",
-                  "fontSize": 13,
-                  "fontWeight": "500"
-                },
-                {
-                  "type": "text",
                   "id": "dA3bC",
                   "name": "CardMetric - Total RMAs",
                   "fill": "#09090B",
@@ -515,13 +505,13 @@
                 },
                 {
                   "type": "text",
-                  "id": "s97ym",
-                  "name": "CardDescription - Total RMAs",
+                  "id": "A0q43j",
+                  "name": "CardTitle - Total RMAs",
                   "fill": "#71717A",
-                  "content": "12 awaiting review",
+                  "content": "Total RMAs",
                   "fontFamily": "Geist",
                   "fontSize": 13,
-                  "fontWeight": "normal"
+                  "fontWeight": "500"
                 }
               ]
             },
@@ -541,16 +531,6 @@
               "children": [
                 {
                   "type": "text",
-                  "id": "o0nXrL",
-                  "name": "CardTitle - Approved",
-                  "fill": "#71717A",
-                  "content": "Approved",
-                  "fontFamily": "Geist",
-                  "fontSize": 13,
-                  "fontWeight": "500"
-                },
-                {
-                  "type": "text",
                   "id": "QpXS5",
                   "name": "CardMetric - Approved",
                   "fill": "#09090B",
@@ -561,13 +541,13 @@
                 },
                 {
                   "type": "text",
-                  "id": "lAMH6",
-                  "name": "CardDescription - Approved",
+                  "id": "o0nXrL",
+                  "name": "CardTitle - Approved",
                   "fill": "#71717A",
-                  "content": "8 this week",
+                  "content": "Approved",
                   "fontFamily": "Geist",
                   "fontSize": 13,
-                  "fontWeight": "normal"
+                  "fontWeight": "500"
                 }
               ]
             },
@@ -587,16 +567,6 @@
               "children": [
                 {
                   "type": "text",
-                  "id": "T17yE4",
-                  "name": "CardTitle - Pending",
-                  "fill": "#71717A",
-                  "content": "Pending",
-                  "fontFamily": "Geist",
-                  "fontSize": 13,
-                  "fontWeight": "500"
-                },
-                {
-                  "type": "text",
                   "id": "Vj8Vg",
                   "name": "CardMetric - Pending",
                   "fill": "#09090B",
@@ -607,13 +577,13 @@
                 },
                 {
                   "type": "text",
-                  "id": "k0XXE",
-                  "name": "CardDescription - Pending",
+                  "id": "T17yE4",
+                  "name": "CardTitle - Pending",
                   "fill": "#71717A",
-                  "content": "Needs action",
+                  "content": "Pending",
                   "fontFamily": "Geist",
                   "fontSize": 13,
-                  "fontWeight": "normal"
+                  "fontWeight": "500"
                 }
               ]
             },
@@ -633,16 +603,6 @@
               "children": [
                 {
                   "type": "text",
-                  "id": "j9jMO",
-                  "name": "CardTitle - Completed",
-                  "fill": "#71717A",
-                  "content": "Completed",
-                  "fontFamily": "Geist",
-                  "fontSize": 13,
-                  "fontWeight": "500"
-                },
-                {
-                  "type": "text",
                   "id": "T7AVFt",
                   "name": "CardMetric - Completed",
                   "fill": "#09090B",
@@ -653,13 +613,13 @@
                 },
                 {
                   "type": "text",
-                  "id": "svd8w",
-                  "name": "CardDescription - Completed",
+                  "id": "j9jMO",
+                  "name": "CardTitle - Completed",
                   "fill": "#71717A",
-                  "content": "Return closed",
+                  "content": "Completed",
                   "fontFamily": "Geist",
                   "fontSize": 13,
-                  "fontWeight": "normal"
+                  "fontWeight": "500"
                 }
               ]
             }
