@@ -277,7 +277,7 @@ function RmaListPage({
         <TooltipTrigger asChild>
           <Button
             aria-label="Delete request"
-            size="sm"
+            size="icon-sm"
             type="button"
             variant="destructive"
             onClick={() => setRequestPendingDelete(request)}
