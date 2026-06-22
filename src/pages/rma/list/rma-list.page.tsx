@@ -296,7 +296,7 @@ function RmaListPage({
       <div className="grid gap-4">
         <section
           aria-label="RMA status summary"
-          className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4"
+          className="hidden gap-3 lg:grid lg:grid-cols-4"
         >
           <div
             aria-label="Total RMAs summary"

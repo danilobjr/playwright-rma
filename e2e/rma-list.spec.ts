@@ -115,18 +115,6 @@ test('updates RMA status summary after creating a Pending request', async ({
   await expectSummaryCard(page, 'Completed', '0')
 })
 
-test('keeps RMA status summary usable on mobile', async ({ page }) => {
-  await page.setViewportSize({ width: 375, height: 812 })
-  await page.goto('/#/rma')
-
-  await expectSummaryOrder(page.getByRole('article', { name: /summary$/ }))
-  await expectSummaryCard(page, 'Total RMAs', '2')
-  await expectSummaryCard(page, 'Pending', '1')
-  await expectSummaryCard(page, 'Approved', '1')
-  await expectSummaryCard(page, 'Completed', '0')
-  await expectNoHorizontalOverflow(page)
-})
-
 test('shows stacked RMA Request cards on mobile', async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 })
   await page.goto('/#/rma')
