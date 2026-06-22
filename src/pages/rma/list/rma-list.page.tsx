@@ -110,7 +110,7 @@ const defaultFilters: RmaListFilters = {
 }
 
 const tableLinkClassName =
-  'rounded-sm text-foreground no-underline transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
+  'rounded-sm text-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
 
 function normalizeFilterText(value: string) {
   return value.trim().replace(/\s+/g, ' ').toLocaleLowerCase()
