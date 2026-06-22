@@ -174,11 +174,6 @@ test('shows real RMA status summary counts', () => {
     ),
   ).toBeInTheDocument()
   expect(
-    within(screen.getByRole('article', { name: 'Rejected summary' })).getByText(
-      '2',
-    ),
-  ).toBeInTheDocument()
-  expect(
     within(
       screen.getByRole('article', { name: 'Completed summary' }),
     ).getByText('2'),
@@ -191,8 +186,8 @@ test('orders RMA status summary cards by workflow', () => {
   expect(
     screen
       .getAllByRole('article', { name: /summary$/ })
-      .map((card) => within(card).getByRole('heading').textContent),
-  ).toEqual(['Total RMAs', 'Pending', 'Approved', 'Rejected', 'Completed'])
+      .map((card) => card.getAttribute('aria-label')?.replace(' summary', '')),
+  ).toEqual(['Total RMAs', 'Pending', 'Approved', 'Completed'])
 })
 
 test('does not use Dashboard terminology on the RMA List screen', () => {
@@ -516,7 +511,7 @@ test('resets pagination when filters or summary cards change', () => {
 
   fireEvent.click(screen.getByRole('button', { name: 'Reset' }))
   fireEvent.click(screen.getByRole('button', { name: 'Go to next page' }))
-  fireEvent.click(screen.getByRole('button', { name: 'Pending summary' }))
+  fireEvent.click(screen.getByRole('article', { name: 'Pending summary' }))
   expect(screen.getByText('Showing 1-5 of 5')).toBeInTheDocument()
 })
 
@@ -530,7 +525,7 @@ test('summary cards clear filters, submit, and sync the Status field', () => {
   fireEvent.click(
     screen.getByRole('button', { name: 'Wednesday, March 4th, 2026' }),
   )
-  fireEvent.click(screen.getByRole('button', { name: 'Pending summary' }))
+  fireEvent.click(screen.getByRole('article', { name: 'Pending summary' }))
 
   expect(screen.getByRole('textbox', { name: 'Search' })).toHaveValue('')
   expect(screen.getByRole('combobox', { name: 'Status' })).toHaveTextContent(
@@ -547,7 +542,7 @@ test('summary cards clear filters, submit, and sync the Status field', () => {
     'RMA-2026-1001',
   ])
 
-  fireEvent.click(screen.getByRole('button', { name: 'Total RMAs summary' }))
+  fireEvent.click(screen.getByRole('article', { name: 'Total RMAs summary' }))
 
   expect(screen.getByRole('textbox', { name: 'Search' })).toHaveValue('')
   expect(screen.getByRole('combobox', { name: 'Status' })).toHaveTextContent(
