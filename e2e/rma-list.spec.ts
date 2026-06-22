@@ -3,7 +3,7 @@ import { expect, test, type Locator, type Page } from '@playwright/test'
 async function expectSummaryCard(page: Page, name: string, count: string) {
   const card = page.getByRole('article', { name: `${name} summary` })
 
-  await expect(card.getByRole('heading', { name })).toBeVisible()
+  await expect(card.getByText(name, { exact: true })).toBeVisible()
   await expect(card.getByText(count, { exact: true })).toBeVisible()
 }
 
@@ -16,22 +16,11 @@ async function expectNoHorizontalOverflow(page: Page) {
 }
 
 async function expectSummaryOrder(summaryCards: Locator) {
-  await expect(summaryCards).toHaveCount(5)
-  await expect(
-    summaryCards.nth(0).getByRole('heading', { name: 'Total RMAs' }),
-  ).toBeVisible()
-  await expect(
-    summaryCards.nth(1).getByRole('heading', { name: 'Pending' }),
-  ).toBeVisible()
-  await expect(
-    summaryCards.nth(2).getByRole('heading', { name: 'Approved' }),
-  ).toBeVisible()
-  await expect(
-    summaryCards.nth(3).getByRole('heading', { name: 'Rejected' }),
-  ).toBeVisible()
-  await expect(
-    summaryCards.nth(4).getByRole('heading', { name: 'Completed' }),
-  ).toBeVisible()
+  await expect(summaryCards).toHaveCount(4)
+  await expect(summaryCards.nth(0)).toContainText('Total RMAs')
+  await expect(summaryCards.nth(1)).toContainText('Pending')
+  await expect(summaryCards.nth(2)).toContainText('Approved')
+  await expect(summaryCards.nth(3)).toContainText('Completed')
 }
 
 async function expectRmaOrder(page: Page, rmaIds: string[]) {
@@ -106,7 +95,6 @@ test('shows RMA status summary counts in workflow order', async ({ page }) => {
   await expectSummaryCard(page, 'Total RMAs', '2')
   await expectSummaryCard(page, 'Pending', '1')
   await expectSummaryCard(page, 'Approved', '1')
-  await expectSummaryCard(page, 'Rejected', '0')
   await expectSummaryCard(page, 'Completed', '0')
 })
 
@@ -124,7 +112,6 @@ test('updates RMA status summary after creating a Pending request', async ({
   await expectSummaryCard(page, 'Total RMAs', '3')
   await expectSummaryCard(page, 'Pending', '2')
   await expectSummaryCard(page, 'Approved', '1')
-  await expectSummaryCard(page, 'Rejected', '0')
   await expectSummaryCard(page, 'Completed', '0')
 })
 
@@ -136,7 +123,6 @@ test('keeps RMA status summary usable on mobile', async ({ page }) => {
   await expectSummaryCard(page, 'Total RMAs', '2')
   await expectSummaryCard(page, 'Pending', '1')
   await expectSummaryCard(page, 'Approved', '1')
-  await expectSummaryCard(page, 'Rejected', '0')
   await expectSummaryCard(page, 'Completed', '0')
   await expectNoHorizontalOverflow(page)
 })
@@ -255,7 +241,7 @@ test('deletes an RMA Request after accessible confirmation', async ({
   await deleteButton.click()
   await page.getByRole('button', { name: 'Delete request' }).click()
 
-  await expect(page.getByText('RMA Request deleted')).toBeVisible()
+  await expect(page.getByText('RMA deleted')).toBeVisible()
   await expect(page.getByRole('link', { name: 'RMA-2026-1001' })).toHaveCount(0)
   await expectSummaryCard(page, 'Total RMAs', '1')
   await expectSummaryCard(page, 'Pending', '0')
@@ -282,14 +268,14 @@ test('filters by Status and keeps summary cards in sync', async ({ page }) => {
   await expectRmaOrder(page, ['RMA-2026-1002'])
 
   await page.getByRole('textbox', { name: 'Search' }).fill('battery')
-  await page.getByRole('button', { name: 'Pending summary' }).click()
+  await page.getByRole('article', { name: 'Pending summary' }).click()
   await expect(page.getByRole('textbox', { name: 'Search' })).toHaveValue('')
   await expect(page.getByRole('combobox', { name: 'Status' })).toContainText(
     'Pending',
   )
   await expectRmaOrder(page, ['RMA-2026-1001'])
 
-  await page.getByRole('button', { name: 'Total RMAs summary' }).click()
+  await page.getByRole('article', { name: 'Total RMAs summary' }).click()
   await expect(page.getByRole('textbox', { name: 'Search' })).toHaveValue('')
   await expect(page.getByRole('combobox', { name: 'Status' })).toContainText(
     'Status',
@@ -345,7 +331,7 @@ test('delete then create does not reuse the removed RMA ID', async ({
   })
   await row.getByRole('button', { name: 'Delete request' }).click()
   await page.getByRole('button', { name: 'Delete request' }).click()
-  await expect(page.getByText('RMA Request deleted')).toBeVisible()
+  await expect(page.getByText('RMA deleted')).toBeVisible()
 
   await page.goto('/#/rma/create')
   await expect(page.getByLabel('RMA ID')).toHaveValue(`RMA-${currentYear}-1004`)

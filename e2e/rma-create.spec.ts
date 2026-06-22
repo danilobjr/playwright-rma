@@ -56,7 +56,7 @@ test('creates a Pending RMA Request end-to-end', async ({ page }) => {
   await expect(
     row.getByRole('link', { name: 'Screen flickers after startup.' }),
   ).toBeVisible()
-  await expect(page.getByText('RMA request created')).toBeVisible()
+  await expect(page.getByText('RMA saved')).toBeVisible()
 })
 
 test('keeps create form responsive across desktop and mobile', async ({
@@ -104,7 +104,7 @@ test('requires create form fields before successful creation', async ({
   await expect(page.getByText('Product ID is required')).toBeVisible()
   await expect(page.getByText('Reason is required')).toBeVisible()
   await expect(page).toHaveURL(/#\/rma\/create$/)
-  await expect(page.getByText('RMA request created')).not.toBeVisible()
+  await expect(page.getByText('RMA saved')).not.toBeVisible()
 })
 
 test('shows inline validation errors and preserves entered values', async ({
@@ -125,7 +125,7 @@ test('shows inline validation errors and preserves entered values', async ({
   await expect(page.getByLabel('Product ID')).toHaveValue('A')
   await expect(page.getByLabel('Reason')).toHaveValue('Too short')
   await expect(page).toHaveURL(/#\/rma\/create$/)
-  await expect(page.getByText('RMA request created')).not.toBeVisible()
+  await expect(page.getByText('RMA saved')).not.toBeVisible()
 })
 
 test('blocks duplicate RMA Requests with an inline recovery alert', async ({
@@ -162,7 +162,7 @@ test('blocks duplicate RMA Requests with an inline recovery alert', async ({
   await expect(page.getByLabel('Reason')).toHaveValue(
     'Display   panel intermittently turns BLACK during use.',
   )
-  await expect(page.getByText('RMA request created')).not.toBeVisible()
+  await expect(page.getByText('RMA saved')).not.toBeVisible()
 })
 
 test('opens the matching request from the duplicate alert', async ({

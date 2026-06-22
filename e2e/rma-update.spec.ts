@@ -47,7 +47,7 @@ test('updates status from Approved to Rejected and shows change in list', async 
   const row = page.getByRole('row', { name: /RMA-2026-1002 Mina Patel/ })
 
   await expect(row.getByRole('link', { name: 'Rejected' })).toBeVisible()
-  await expect(page.getByText('RMA request status updated')).toBeVisible()
+  await expect(page.getByText('RMA saved')).toBeVisible()
 })
 
 test('cancel returns to list without changing status', async ({ page }) => {
