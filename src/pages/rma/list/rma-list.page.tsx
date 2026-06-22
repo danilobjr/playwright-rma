@@ -682,7 +682,12 @@ function RmaListPage({
                             </Link>
                           </TableCell>
                           <TableCell>
-                            {formatSubmittedDate(new Date(request.createdAt))}
+                            <Link
+                              className={tableLinkClassName}
+                              {...updateLink}
+                            >
+                              {formatSubmittedDate(new Date(request.createdAt))}
+                            </Link>
                           </TableCell>
                           <TableCell>
                             <div className="flex gap-2">
