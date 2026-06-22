@@ -689,14 +689,7 @@ function RmaListPage({
                               {formatSubmittedDate(new Date(request.createdAt))}
                             </Link>
                           </TableCell>
-                          <TableCell>
-                            <div className="flex gap-2">
-                              <Button asChild size="sm" variant="outline">
-                                <Link {...updateLink}>Update</Link>
-                              </Button>
-                              {renderDeleteAction(request)}
-                            </div>
-                          </TableCell>
+                          <TableCell>{renderDeleteAction(request)}</TableCell>
                         </TableRow>
                       )
                     })}
