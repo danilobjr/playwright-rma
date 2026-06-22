@@ -326,8 +326,7 @@ function RmaListPage({
                 key={status}
                 aria-label={`${status} summary`}
                 className={cn(
-                  'flex flex-col gap-2 rounded-xl border p-[18px] ring-1 ring-foreground/10',
-                  presentation.className,
+                  'flex flex-col gap-2 rounded-xl border bg-card p-[18px] text-sm ring-1 ring-foreground/10',
                 )}
                 role="article"
                 onClick={() => applyStatusSummaryFilter(status)}
