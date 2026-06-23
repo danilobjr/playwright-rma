@@ -436,12 +436,13 @@
                   "type": "frame",
                   "id": "nur5x",
                   "name": "New RMA button",
+                  "height": 36,
                   "fill": "#18181B",
                   "cornerRadius": 8,
                   "gap": 8,
                   "padding": [
-                    10,
-                    16
+                    8,
+                    12
                   ],
                   "justifyContent": "center",
                   "alignItems": "center",
@@ -517,42 +518,6 @@
             },
             {
               "type": "frame",
-              "id": "l1cCJg",
-              "name": "Card - Approved",
-              "width": "fill_container",
-              "fill": "#FFFFFF",
-              "cornerRadius": 12,
-              "stroke": "#E4E4E7",
-              "strokeWidth": 1,
-              "strokeAlignment": "inner",
-              "layout": "vertical",
-              "gap": 8,
-              "padding": 18,
-              "children": [
-                {
-                  "type": "text",
-                  "id": "QpXS5",
-                  "name": "CardMetric - Approved",
-                  "fill": "#09090B",
-                  "content": "42",
-                  "fontFamily": "Geist",
-                  "fontSize": 28,
-                  "fontWeight": "700"
-                },
-                {
-                  "type": "text",
-                  "id": "o0nXrL",
-                  "name": "CardTitle - Approved",
-                  "fill": "#71717A",
-                  "content": "Approved",
-                  "fontFamily": "Geist",
-                  "fontSize": 13,
-                  "fontWeight": "500"
-                }
-              ]
-            },
-            {
-              "type": "frame",
               "id": "eEoAa",
               "name": "Card - Pending",
               "width": "fill_container",
@@ -581,6 +546,42 @@
                   "name": "CardTitle - Pending",
                   "fill": "#71717A",
                   "content": "Pending",
+                  "fontFamily": "Geist",
+                  "fontSize": 13,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "l1cCJg",
+              "name": "Card - Approved",
+              "width": "fill_container",
+              "fill": "#FFFFFF",
+              "cornerRadius": 12,
+              "stroke": "#E4E4E7",
+              "strokeWidth": 1,
+              "strokeAlignment": "inner",
+              "layout": "vertical",
+              "gap": 8,
+              "padding": 18,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "QpXS5",
+                  "name": "CardMetric - Approved",
+                  "fill": "#09090B",
+                  "content": "42",
+                  "fontFamily": "Geist",
+                  "fontSize": 28,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "o0nXrL",
+                  "name": "CardTitle - Approved",
+                  "fill": "#71717A",
+                  "content": "Approved",
                   "fontFamily": "Geist",
                   "fontSize": 13,
                   "fontWeight": "500"
@@ -722,7 +723,7 @@
                           "id": "u1sRiV",
                           "name": "Customer search FieldLabel",
                           "fill": "#18181B",
-                          "content": "Customer name",
+                          "content": "Search",
                           "fontFamily": "Geist",
                           "fontSize": 13,
                           "fontWeight": "500"
@@ -732,7 +733,7 @@
                           "id": "XZpXl",
                           "name": "Customer search InputGroupInput",
                           "width": "fill_container",
-                          "height": 40,
+                          "height": 36,
                           "fill": "#FFFFFF",
                           "cornerRadius": 8,
                           "stroke": "#D4D4D8",
@@ -762,7 +763,7 @@
                               "fill": "#71717A",
                               "textGrowth": "fixed-width",
                               "width": "fill_container",
-                              "content": "Search customers",
+                              "content": "Search RMA Requests",
                               "fontFamily": "Geist",
                               "fontSize": 14,
                               "fontWeight": "normal"
@@ -794,7 +795,7 @@
                           "id": "PbNyx",
                           "name": "Status filter SelectTrigger",
                           "width": "fill_container",
-                          "height": 40,
+                          "height": 36,
                           "fill": "#FFFFFF",
                           "cornerRadius": 8,
                           "stroke": "#D4D4D8",
@@ -813,7 +814,7 @@
                               "id": "jWrQW",
                               "name": "Status filter value",
                               "fill": "#18181B",
-                              "content": "All",
+                              "content": "Status",
                               "fontFamily": "Geist",
                               "fontSize": 14,
                               "fontWeight": "normal"
@@ -855,7 +856,7 @@
                           "id": "MwhGi",
                           "name": "Submitted date DatePickerTrigger",
                           "width": "fill_container",
-                          "height": 40,
+                          "height": 36,
                           "fill": "#FFFFFF",
                           "cornerRadius": 8,
                           "stroke": "#D4D4D8",
@@ -905,8 +906,8 @@
                       "type": "frame",
                       "id": "s1VRD",
                       "name": "Search filters icon button",
-                      "width": 40,
-                      "height": 40,
+                      "width": 36,
+                      "height": 36,
                       "fill": "#18181B",
                       "cornerRadius": 8,
                       "justifyContent": "center",
@@ -928,8 +929,8 @@
                       "type": "frame",
                       "id": "f7siM1",
                       "name": "Reset filters icon button",
-                      "width": 40,
-                      "height": 40,
+                      "width": 36,
+                      "height": 36,
                       "fill": "#FFFFFF",
                       "cornerRadius": 8,
                       "stroke": "#E4E4E7",
@@ -2326,158 +2327,6 @@
                       "fontWeight": "500"
                     }
                   ]
-                },
-                {
-                  "type": "frame",
-                  "id": "vPJUp",
-                  "layoutPosition": "absolute",
-                  "x": 1055,
-                  "y": 83,
-                  "name": "Tooltip - Delete RMA row 2",
-                  "fill": "#18181B",
-                  "cornerRadius": 6,
-                  "effect": {
-                    "type": "shadow",
-                    "shadowType": "outer",
-                    "color": "#0000001A",
-                    "offset": {
-                      "x": 0,
-                      "y": 6
-                    },
-                    "blur": 16
-                  },
-                  "padding": [
-                    6,
-                    9
-                  ],
-                  "justifyContent": "center",
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "RNP4l",
-                      "name": "Tooltip - Delete RMA row 2 label",
-                      "fill": "#FAFAFA",
-                      "content": "Delete RMA",
-                      "fontFamily": "Geist",
-                      "fontSize": 12,
-                      "fontWeight": "500"
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "n6N9zR",
-                  "layoutPosition": "absolute",
-                  "x": 1055,
-                  "y": 139,
-                  "name": "Tooltip - Delete RMA row 3",
-                  "fill": "#18181B",
-                  "cornerRadius": 6,
-                  "effect": {
-                    "type": "shadow",
-                    "shadowType": "outer",
-                    "color": "#0000001A",
-                    "offset": {
-                      "x": 0,
-                      "y": 6
-                    },
-                    "blur": 16
-                  },
-                  "padding": [
-                    6,
-                    9
-                  ],
-                  "justifyContent": "center",
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "a9o8l",
-                      "name": "Tooltip - Delete RMA row 3 label",
-                      "fill": "#FAFAFA",
-                      "content": "Delete RMA",
-                      "fontFamily": "Geist",
-                      "fontSize": 12,
-                      "fontWeight": "500"
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "Sq5Pl",
-                  "layoutPosition": "absolute",
-                  "x": 1055,
-                  "y": 195,
-                  "name": "Tooltip - Delete RMA row 4",
-                  "fill": "#18181B",
-                  "cornerRadius": 6,
-                  "effect": {
-                    "type": "shadow",
-                    "shadowType": "outer",
-                    "color": "#0000001A",
-                    "offset": {
-                      "x": 0,
-                      "y": 6
-                    },
-                    "blur": 16
-                  },
-                  "padding": [
-                    6,
-                    9
-                  ],
-                  "justifyContent": "center",
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "bpoAI",
-                      "name": "Tooltip - Delete RMA row 4 label",
-                      "fill": "#FAFAFA",
-                      "content": "Delete RMA",
-                      "fontFamily": "Geist",
-                      "fontSize": 12,
-                      "fontWeight": "500"
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "jXBIc",
-                  "layoutPosition": "absolute",
-                  "x": 1055,
-                  "y": 251,
-                  "name": "Tooltip - Delete RMA row 5",
-                  "fill": "#18181B",
-                  "cornerRadius": 6,
-                  "effect": {
-                    "type": "shadow",
-                    "shadowType": "outer",
-                    "color": "#0000001A",
-                    "offset": {
-                      "x": 0,
-                      "y": 6
-                    },
-                    "blur": 16
-                  },
-                  "padding": [
-                    6,
-                    9
-                  ],
-                  "justifyContent": "center",
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "Y6xxTe",
-                      "name": "Tooltip - Delete RMA row 5 label",
-                      "fill": "#FAFAFA",
-                      "content": "Delete RMA",
-                      "fontFamily": "Geist",
-                      "fontSize": 12,
-                      "fontWeight": "500"
-                    }
-                  ]
                 }
               ]
             },
@@ -2515,6 +2364,7 @@
                       "type": "frame",
                       "id": "swR1o",
                       "name": "Pagination previous",
+                      "height": 36,
                       "fill": "#FFFFFF",
                       "cornerRadius": 8,
                       "stroke": "#E4E4E7",
@@ -2522,8 +2372,8 @@
                       "strokeAlignment": "inner",
                       "gap": 8,
                       "padding": [
-                        10,
-                        16
+                        8,
+                        12
                       ],
                       "justifyContent": "center",
                       "alignItems": "center",
@@ -2544,12 +2394,16 @@
                       "type": "frame",
                       "id": "g8QoVB",
                       "name": "Pagination page 1",
+                      "width": 36,
+                      "height": 36,
                       "fill": "#18181B",
                       "cornerRadius": 8,
                       "padding": [
                         8,
                         12
                       ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
                       "children": [
                         {
                           "type": "text",
@@ -2559,7 +2413,7 @@
                           "content": "1",
                           "fontFamily": "Geist",
                           "fontSize": 13,
-                          "fontWeight": "500"
+                          "fontWeight": "700"
                         }
                       ]
                     },
@@ -2567,6 +2421,7 @@
                       "type": "frame",
                       "id": "mSeMb",
                       "name": "Pagination next",
+                      "height": 36,
                       "fill": "#FFFFFF",
                       "cornerRadius": 8,
                       "stroke": "#E4E4E7",
@@ -2574,8 +2429,8 @@
                       "strokeAlignment": "inner",
                       "gap": 8,
                       "padding": [
-                        10,
-                        16
+                        8,
+                        12
                       ],
                       "justifyContent": "center",
                       "alignItems": "center",
@@ -2668,6 +2523,7 @@
               "type": "frame",
               "id": "VVtUb",
               "name": "Back to list button",
+              "height": 36,
               "fill": "#FFFFFF",
               "cornerRadius": 8,
               "stroke": "#E4E4E7",
@@ -2675,8 +2531,8 @@
               "strokeAlignment": "inner",
               "gap": 8,
               "padding": [
-                10,
-                16
+                8,
+                12
               ],
               "justifyContent": "center",
               "alignItems": "center",
@@ -2832,7 +2688,7 @@
                                   "name": "RMA ID Input",
                                   "opacity": 0.9,
                                   "width": "fill_container",
-                                  "height": 40,
+                                  "height": 36,
                                   "fill": "#F4F4F5",
                                   "cornerRadius": 8,
                                   "stroke": "#D4D4D8",
@@ -2913,7 +2769,7 @@
                                   "id": "V5V4x1",
                                   "name": "Customer Name Input",
                                   "width": "fill_container",
-                                  "height": 40,
+                                  "height": 36,
                                   "fill": "#FFFFFF",
                                   "cornerRadius": 8,
                                   "stroke": "#D4D4D8",
@@ -2985,7 +2841,7 @@
                                   "id": "JehAy",
                                   "name": "Product ID Input",
                                   "width": "fill_container",
-                                  "height": 40,
+                                  "height": 36,
                                   "fill": "#FFFFFF",
                                   "cornerRadius": 8,
                                   "stroke": "#D4D4D8",
@@ -3109,6 +2965,7 @@
                       "type": "frame",
                       "id": "kwNmV",
                       "name": "Cancel create button",
+                      "height": 36,
                       "fill": "#FFFFFF",
                       "cornerRadius": 8,
                       "stroke": "#E4E4E7",
@@ -3116,8 +2973,8 @@
                       "strokeAlignment": "inner",
                       "gap": 8,
                       "padding": [
-                        10,
-                        16
+                        8,
+                        12
                       ],
                       "justifyContent": "center",
                       "alignItems": "center",
@@ -3138,12 +2995,13 @@
                       "type": "frame",
                       "id": "PlbPl",
                       "name": "Submit create button",
+                      "height": 36,
                       "fill": "#18181B",
                       "cornerRadius": 8,
                       "gap": 8,
                       "padding": [
-                        10,
-                        16
+                        8,
+                        12
                       ],
                       "justifyContent": "center",
                       "alignItems": "center",
@@ -3246,6 +3104,7 @@
               "type": "frame",
               "id": "Qi5jm",
               "name": "Back button",
+              "height": 36,
               "fill": "#FFFFFF",
               "cornerRadius": 8,
               "stroke": "#E4E4E7",
@@ -3253,8 +3112,8 @@
               "strokeAlignment": "inner",
               "gap": 8,
               "padding": [
-                10,
-                16
+                8,
+                12
               ],
               "justifyContent": "center",
               "alignItems": "center",
@@ -3663,7 +3522,7 @@
                               "id": "mujeX",
                               "name": "Status SelectTrigger",
                               "width": "fill_container",
-                              "height": 40,
+                              "height": 36,
                               "fill": "#FFFFFF",
                               "cornerRadius": 8,
                               "stroke": "#D4D4D8",
@@ -4000,6 +3859,7 @@
                       "type": "frame",
                       "id": "vMVuZ",
                       "name": "Cancel update button",
+                      "height": 36,
                       "fill": "#FFFFFF",
                       "cornerRadius": 8,
                       "stroke": "#E4E4E7",
@@ -4007,8 +3867,8 @@
                       "strokeAlignment": "inner",
                       "gap": 8,
                       "padding": [
-                        10,
-                        16
+                        8,
+                        12
                       ],
                       "justifyContent": "center",
                       "alignItems": "center",
@@ -4029,12 +3889,13 @@
                       "type": "frame",
                       "id": "vRsuN",
                       "name": "Save status button",
+                      "height": 36,
                       "fill": "#18181B",
                       "cornerRadius": 8,
                       "gap": 8,
                       "padding": [
-                        10,
-                        16
+                        8,
+                        12
                       ],
                       "justifyContent": "center",
                       "alignItems": "center",
