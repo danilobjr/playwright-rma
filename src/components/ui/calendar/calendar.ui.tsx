@@ -1,5 +1,3 @@
-'use client'
-
 import { useEffect, useRef, type ComponentProps } from 'react'
 import {
   ChevronDownIcon,
@@ -13,7 +11,8 @@ import {
   type Locale,
 } from 'react-day-picker'
 
-import { Button, buttonVariants } from '@/components/ui/button'
+import { Button } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button/button.styles'
 import { cn } from '@/utils/styles/cn.util'
 
 function Calendar({

@@ -1,3 +1,9 @@
+export type {
+  SelectProps,
+  SelectTriggerProps,
+  SelectItemProps,
+} from './select.ui'
+
 export {
   Select,
   SelectContent,

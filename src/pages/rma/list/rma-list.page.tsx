@@ -2,8 +2,6 @@ import { useState } from 'react'
 import { Link } from '@tanstack/react-router'
 import {
   CalendarIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
   Plus,
   RotateCcwIcon,
   SearchIcon,
@@ -28,13 +26,9 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
+import { DataTablePagination } from '@/components/ui/data-table'
+import { usePagination } from '@/components/ui/data-table/use-pagination'
 import {
   Empty,
   EmptyContent,
@@ -44,13 +38,6 @@ import {
 } from '@/components/ui/empty'
 import { Field, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-} from '@/components/ui/pagination'
 import {
   Popover,
   PopoverContent,
@@ -185,7 +172,6 @@ function RmaListPage({
     useState<RmaListFilters>(defaultFilters)
   const [appliedFilters, setAppliedFilters] =
     useState<RmaListFilters>(defaultFilters)
-  const [currentPage, setCurrentPage] = useState(1)
   const [requestPendingDelete, setRequestPendingDelete] = useState<
     RmaRequest | undefined
   >()
@@ -206,19 +192,16 @@ function RmaListPage({
     1,
     Math.ceil(displayedRequests.length / ROWS_PER_PAGE),
   )
-  const safeCurrentPage = Math.min(currentPage, pageCount)
+  const safeCurrentPage = Math.min(1, pageCount)
   const paginatedRequests = displayedRequests.slice(
     (safeCurrentPage - 1) * ROWS_PER_PAGE,
     safeCurrentPage * ROWS_PER_PAGE,
   )
-  const visibleRangeStart =
-    displayedRequests.length === 0
-      ? 0
-      : (safeCurrentPage - 1) * ROWS_PER_PAGE + 1
-  const visibleRangeEnd = Math.min(
-    safeCurrentPage * ROWS_PER_PAGE,
-    displayedRequests.length,
-  )
+  const {
+    currentPage,
+    setCurrentPage,
+    goFirst: goFirstPage,
+  } = usePagination({ currentPage: safeCurrentPage, totalPages: pageCount })
   const defaultCalendarMonth = sortedRequests[0]
     ? new Date(sortedRequests[0].createdAt)
     : new Date()
@@ -232,19 +215,19 @@ function RmaListPage({
 
   function applyFilters() {
     setAppliedFilters(draftFilters)
-    setCurrentPage(1)
+    goFirstPage()
   }
 
   function resetFilters() {
     setDraftFilters(defaultFilters)
     setAppliedFilters(defaultFilters)
-    setCurrentPage(1)
+    goFirstPage()
   }
 
   function applyTotalSummaryFilter() {
     setDraftFilters(defaultFilters)
     setAppliedFilters(defaultFilters)
-    setCurrentPage(1)
+    goFirstPage()
   }
 
   function applyStatusSummaryFilter(status: RmaStatus) {
@@ -255,7 +238,7 @@ function RmaListPage({
 
     setDraftFilters(nextFilters)
     setAppliedFilters(nextFilters)
-    setCurrentPage(1)
+    goFirstPage()
   }
 
   async function confirmDeleteRequest() {
@@ -300,7 +283,7 @@ function RmaListPage({
         >
           <div
             aria-label="Total RMAs summary"
-            className="flex flex-col gap-2 rounded-xl border bg-card p-[18px] text-sm ring-1 ring-foreground/10"
+            className="flex flex-col gap-3.5 rounded-xl border bg-card p-4.5 text-sm"
             role="article"
             onClick={applyTotalSummaryFilter}
             onKeyDown={(e) => {
@@ -308,10 +291,10 @@ function RmaListPage({
             }}
             tabIndex={0}
           >
-            <span className="text-[28px] font-bold text-[#09090B] tabular-nums dark:text-white">
+            <span className="text-[1.75rem] leading-none font-bold tabular-nums">
               {requests.length}
             </span>
-            <span className="font-medium text-muted-foreground">
+            <span className="text-[0.8125rem] leading-none font-medium text-muted-foreground">
               Total RMAs
             </span>
           </div>
@@ -323,9 +306,10 @@ function RmaListPage({
                 key={status}
                 aria-label={`${status} summary`}
                 className={cn(
-                  'flex flex-col gap-2 rounded-xl border bg-card p-[18px] text-sm ring-1 ring-foreground/10',
+                  'flex flex-col gap-3.5 rounded-xl border bg-card p-4.5 text-sm',
                 )}
                 role="article"
+                // TODO remove click behavior
                 onClick={() => applyStatusSummaryFilter(status)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ')
@@ -333,10 +317,10 @@ function RmaListPage({
                 }}
                 tabIndex={0}
               >
-                <span className="text-[28px] font-bold tabular-nums">
+                <span className="text-[1.75rem] leading-none font-bold tabular-nums">
                   {statusCounts[status]}
                 </span>
-                <span className="font-medium text-muted-foreground">
+                <span className="text-[0.8125rem] leading-none font-medium text-muted-foreground">
                   {presentation.label}
                 </span>
               </div>
@@ -351,19 +335,27 @@ function RmaListPage({
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>RMA ID</TableHead>
-                      <TableHead>Customer name</TableHead>
-                      <TableHead>Product ID</TableHead>
-                      <TableHead>Reason</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Submitted date</TableHead>
-                      <TableHead>Actions</TableHead>
+                      <TableHead className="pl-(--card-spacing)">
+                        RMA ID
+                      </TableHead>
+                      <TableHead className="bg-muted/50">
+                        Customer name
+                      </TableHead>
+                      <TableHead className="bg-muted/50">Product ID</TableHead>
+                      <TableHead className="bg-muted/50">Reason</TableHead>
+                      <TableHead className="bg-muted/50">Status</TableHead>
+                      <TableHead className="bg-muted/50">
+                        Submitted date
+                      </TableHead>
+                      <TableHead className="bg-muted/50 pr-(--card-spacing)">
+                        Actions
+                      </TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {Array.from({ length: 10 }).map((_, index) => (
                       <TableRow key={index}>
-                        <TableCell>
+                        <TableCell className="pl-(--card-spacing)">
                           <Skeleton
                             className="h-4 w-28"
                             data-testid="rma-list-skeleton"
@@ -384,7 +376,7 @@ function RmaListPage({
                         <TableCell>
                           <Skeleton className="h-4 w-24" />
                         </TableCell>
-                        <TableCell>
+                        <TableCell className="pr-(--card-spacing)">
                           <Skeleton className="h-8 w-24" />
                         </TableCell>
                       </TableRow>
@@ -452,13 +444,10 @@ function RmaListPage({
             </Empty>
           )
         ) : (
-          <Card>
-            <CardHeader>
-              <CardTitle>Requests</CardTitle>
-            </CardHeader>
-            <div className="border-b px-(--card-spacing) pb-(--card-spacing)">
+          <>
+            <div className="p-(--card-spacing)">
               <FieldGroup>
-                <div className="grid gap-4 lg:grid-cols-[minmax(220px,1fr)_220px_240px_auto] lg:items-end">
+                <div className="grid gap-3 lg:grid-cols-4 lg:items-end">
                   <Field>
                     <FieldLabel htmlFor="rma-search">Search</FieldLabel>
                     <div className="relative">
@@ -467,7 +456,7 @@ function RmaListPage({
                         className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
                       />
                       <Input
-                        className="h-10 pl-9"
+                        className="bg-card pl-9"
                         id="rma-search"
                         placeholder="Search RMA Requests"
                         value={draftFilters.search}
@@ -490,7 +479,7 @@ function RmaListPage({
                       <SelectTrigger
                         id="rma-status-filter"
                         aria-label="Status"
-                        className="!h-10 w-full"
+                        className="w-full bg-card"
                       >
                         {draftFilters.status ? (
                           <span className="flex items-center gap-2">
@@ -511,7 +500,7 @@ function RmaListPage({
                             })()}
                           </span>
                         ) : (
-                          <SelectValue placeholder="Status" />
+                          <SelectValue placeholder="All" />
                         )}
                       </SelectTrigger>
                       <SelectContent>
@@ -526,13 +515,15 @@ function RmaListPage({
                                 textValue={presentation.label}
                                 value={status}
                               >
-                                <Icon aria-hidden="true" />
-                                <span className="grid gap-0.5">
-                                  <span>{presentation.label}</span>
-                                  <span className="text-xs text-muted-foreground">
-                                    {presentation.description}
+                                <div className="flex gap-2">
+                                  <Icon className="mt-0.5" aria-hidden="true" />
+                                  <span className="grid gap-0.5">
+                                    <span>{presentation.label}</span>
+                                    <span className="text-xs text-muted-foreground">
+                                      {presentation.description}
+                                    </span>
                                   </span>
-                                </span>
+                                </div>
                               </SelectItem>
                             )
                           })}
@@ -547,16 +538,19 @@ function RmaListPage({
                         <Button
                           aria-label="Submitted date"
                           className={cn(
-                            'h-10 w-full justify-start text-left font-normal',
-                            !draftFilters.submittedDate &&
-                              'text-muted-foreground',
+                            'w-full justify-start bg-card text-left font-normal hover:bg-card aria-expanded:bg-card',
                           )}
                           variant="outline"
                         >
-                          <CalendarIcon aria-hidden="true" />
-                          {draftFilters.submittedDate
-                            ? formatSubmittedDate(draftFilters.submittedDate)
-                            : 'Submitted date'}
+                          <CalendarIcon
+                            className="text-muted-foreground"
+                            aria-hidden="true"
+                          />
+                          {draftFilters.submittedDate ? (
+                            formatSubmittedDate(draftFilters.submittedDate)
+                          ) : (
+                            <span className="text-muted-foreground">All</span>
+                          )}
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0" align="start">
@@ -571,98 +565,201 @@ function RmaListPage({
                       </PopoverContent>
                     </Popover>
                   </Field>
-                  <div className="flex gap-2">
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          aria-label="Reset"
-                          className="h-10 flex-1 gap-2 lg:size-10 lg:flex-none lg:px-0"
-                          type="button"
-                          variant="outline"
-                          onClick={resetFilters}
-                        >
-                          <RotateCcwIcon aria-hidden="true" />
-                          <span className="lg:sr-only">Reset</span>
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>Reset</TooltipContent>
-                    </Tooltip>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          aria-label="Search"
-                          className="h-10 flex-1 gap-2 lg:size-10 lg:flex-none lg:px-0"
-                          type="button"
-                          onClick={applyFilters}
-                        >
-                          <SearchIcon aria-hidden="true" />
-                          <span className="lg:sr-only">Search</span>
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>Search</TooltipContent>
-                    </Tooltip>
+                  <div className="flex justify-end gap-2">
+                    <Button
+                      aria-label="Reset"
+                      className="gap-2 bg-card"
+                      type="button"
+                      variant="outline"
+                      onClick={resetFilters}
+                    >
+                      <RotateCcwIcon aria-hidden="true" />
+                      <span>Reset</span>
+                    </Button>
+
+                    <Button
+                      aria-label="Search"
+                      type="button"
+                      onClick={applyFilters}
+                    >
+                      <SearchIcon aria-hidden="true" />
+                      <span>Search</span>
+                    </Button>
                   </div>
                 </div>
               </FieldGroup>
             </div>
-            <CardContent className="grid gap-4">
-              <div className="hidden md:block">
-                <Table aria-label="RMA Requests">
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>RMA ID</TableHead>
-                      <TableHead>Customer name</TableHead>
-                      <TableHead>Product ID</TableHead>
-                      <TableHead>Reason</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Submitted date</TableHead>
-                      <TableHead>Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {paginatedRequests.map((request) => {
-                      const presentation =
-                        RMA_STATUS_PRESENTATION[request.status]
-                      const updateLink = {
-                        params: { rmaId: request.rmaId },
-                        to: '/rma/$rmaId' as const,
-                      }
+            <Card className="gap-0 p-0">
+              <CardContent className="grid gap-4 py-(--card-spacing) md:p-0">
+                <div className="hidden md:block">
+                  <Table aria-label="RMA Requests">
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="bg-muted/50 pl-(--card-spacing) text-[0.8125rem] text-muted-foreground">
+                          RMA ID
+                        </TableHead>
+                        <TableHead className="bg-muted/50 text-[0.8125rem] text-muted-foreground">
+                          Customer name
+                        </TableHead>
+                        <TableHead className="bg-muted/50 text-[0.8125rem] text-muted-foreground">
+                          Product ID
+                        </TableHead>
+                        <TableHead className="bg-muted/50 text-[0.8125rem] text-muted-foreground">
+                          Reason
+                        </TableHead>
+                        <TableHead className="bg-muted/50 text-[0.8125rem] text-muted-foreground">
+                          Status
+                        </TableHead>
+                        <TableHead className="bg-muted/50 text-[0.8125rem] text-muted-foreground">
+                          Submitted date
+                        </TableHead>
+                        <TableHead className="bg-muted/50 pr-(--card-spacing) text-[0.8125rem] text-muted-foreground">
+                          Actions
+                        </TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {paginatedRequests.map((request) => {
+                        const presentation =
+                          RMA_STATUS_PRESENTATION[request.status]
+                        const updateLink = {
+                          params: { rmaId: request.rmaId },
+                          to: '/rma/$rmaId' as const,
+                        }
 
-                      return (
-                        <TableRow key={request.rmaId}>
-                          <TableCell className="font-medium">
+                        return (
+                          <TableRow key={request.rmaId}>
+                            <TableCell className="pl-(--card-spacing)">
+                              <Link
+                                className={tableLinkClassName}
+                                {...updateLink}
+                              >
+                                {request.rmaId}
+                              </Link>
+                            </TableCell>
+                            <TableCell>
+                              <Link
+                                className={tableLinkClassName}
+                                {...updateLink}
+                              >
+                                {request.customerName}
+                              </Link>
+                            </TableCell>
+                            <TableCell>
+                              <Link
+                                className={tableLinkClassName}
+                                {...updateLink}
+                              >
+                                {request.productId}
+                              </Link>
+                            </TableCell>
+                            <TableCell className="max-w-80 whitespace-normal">
+                              <Link
+                                className={tableLinkClassName}
+                                {...updateLink}
+                              >
+                                {request.reason}
+                              </Link>
+                            </TableCell>
+                            <TableCell>
+                              <Link
+                                className={tableLinkClassName}
+                                {...updateLink}
+                              >
+                                <Badge
+                                  className={presentation.className}
+                                  variant="outline"
+                                >
+                                  {presentation.label}
+                                </Badge>
+                              </Link>
+                            </TableCell>
+                            <TableCell>
+                              <Link
+                                className={tableLinkClassName}
+                                {...updateLink}
+                              >
+                                {formatSubmittedDate(
+                                  new Date(request.createdAt),
+                                )}
+                              </Link>
+                            </TableCell>
+                            <TableCell className="pr-(--card-spacing)">
+                              {renderDeleteAction(request)}
+                            </TableCell>
+                          </TableRow>
+                        )
+                      })}
+                    </TableBody>
+                  </Table>
+                </div>
+                <div aria-label="RMA Requests" className="grid gap-3 md:hidden">
+                  {paginatedRequests.map((request) => {
+                    const presentation = RMA_STATUS_PRESENTATION[request.status]
+                    const submittedDate = formatSubmittedDate(
+                      new Date(request.createdAt),
+                    )
+                    const updateLink = {
+                      params: { rmaId: request.rmaId },
+                      to: '/rma/$rmaId' as const,
+                    }
+
+                    return (
+                      <Card
+                        key={request.rmaId}
+                        aria-label={`RMA Request ${request.rmaId}`}
+                        role="article"
+                        size="sm"
+                      >
+                        <CardContent className="grid gap-3 pt-(--card-spacing)">
+                          <div className="grid gap-1">
+                            <span className="text-xs font-medium text-muted-foreground">
+                              RMA ID
+                            </span>
                             <Link
-                              className={tableLinkClassName}
+                              className={cn(tableLinkClassName, 'font-medium')}
                               {...updateLink}
                             >
                               {request.rmaId}
                             </Link>
-                          </TableCell>
-                          <TableCell>
+                          </div>
+                          <div className="grid gap-1">
+                            <span className="text-xs font-medium text-muted-foreground">
+                              Customer name
+                            </span>
                             <Link
                               className={tableLinkClassName}
                               {...updateLink}
                             >
                               {request.customerName}
                             </Link>
-                          </TableCell>
-                          <TableCell>
+                          </div>
+                          <div className="grid gap-1">
+                            <span className="text-xs font-medium text-muted-foreground">
+                              Product ID
+                            </span>
                             <Link
                               className={tableLinkClassName}
                               {...updateLink}
                             >
                               {request.productId}
                             </Link>
-                          </TableCell>
-                          <TableCell className="max-w-80 whitespace-normal">
+                          </div>
+                          <div className="grid gap-1">
+                            <span className="text-xs font-medium text-muted-foreground">
+                              Reason
+                            </span>
                             <Link
                               className={tableLinkClassName}
                               {...updateLink}
                             >
                               {request.reason}
                             </Link>
-                          </TableCell>
-                          <TableCell>
+                          </div>
+                          <div className="grid gap-1">
+                            <span className="text-xs font-medium text-muted-foreground">
+                              Status
+                            </span>
                             <Link
                               className={tableLinkClassName}
                               {...updateLink}
@@ -674,183 +771,35 @@ function RmaListPage({
                                 {presentation.label}
                               </Badge>
                             </Link>
-                          </TableCell>
-                          <TableCell>
-                            <Link
-                              className={tableLinkClassName}
-                              {...updateLink}
-                            >
-                              {formatSubmittedDate(new Date(request.createdAt))}
-                            </Link>
-                          </TableCell>
-                          <TableCell>{renderDeleteAction(request)}</TableCell>
-                        </TableRow>
-                      )
-                    })}
-                  </TableBody>
-                </Table>
-              </div>
-              <div aria-label="RMA Requests" className="grid gap-3 md:hidden">
-                {paginatedRequests.map((request) => {
-                  const presentation = RMA_STATUS_PRESENTATION[request.status]
-                  const submittedDate = formatSubmittedDate(
-                    new Date(request.createdAt),
-                  )
-                  const updateLink = {
-                    params: { rmaId: request.rmaId },
-                    to: '/rma/$rmaId' as const,
-                  }
-
-                  return (
-                    <Card
-                      key={request.rmaId}
-                      aria-label={`RMA Request ${request.rmaId}`}
-                      role="article"
-                      size="sm"
-                    >
-                      <CardContent className="grid gap-3 pt-(--card-spacing)">
-                        <div className="grid gap-1">
-                          <span className="text-xs font-medium text-muted-foreground">
-                            RMA ID
-                          </span>
-                          <Link
-                            className={cn(tableLinkClassName, 'font-medium')}
-                            {...updateLink}
-                          >
-                            {request.rmaId}
-                          </Link>
-                        </div>
-                        <div className="grid gap-1">
-                          <span className="text-xs font-medium text-muted-foreground">
-                            Customer name
-                          </span>
-                          <Link className={tableLinkClassName} {...updateLink}>
-                            {request.customerName}
-                          </Link>
-                        </div>
-                        <div className="grid gap-1">
-                          <span className="text-xs font-medium text-muted-foreground">
-                            Product ID
-                          </span>
-                          <Link className={tableLinkClassName} {...updateLink}>
-                            {request.productId}
-                          </Link>
-                        </div>
-                        <div className="grid gap-1">
-                          <span className="text-xs font-medium text-muted-foreground">
-                            Reason
-                          </span>
-                          <Link className={tableLinkClassName} {...updateLink}>
-                            {request.reason}
-                          </Link>
-                        </div>
-                        <div className="grid gap-1">
-                          <span className="text-xs font-medium text-muted-foreground">
-                            Status
-                          </span>
-                          <Link className={tableLinkClassName} {...updateLink}>
-                            <Badge
-                              className={presentation.className}
-                              variant="outline"
-                            >
-                              {presentation.label}
-                            </Badge>
-                          </Link>
-                        </div>
-                        <div className="grid gap-1">
-                          <span className="text-xs font-medium text-muted-foreground">
-                            Submitted date
-                          </span>
-                          <span>{submittedDate}</span>
-                        </div>
-                        <div className="grid gap-1">
-                          <span className="text-xs font-medium text-muted-foreground">
-                            Actions
-                          </span>
-                          <div className="flex gap-2">
-                            <Button asChild size="sm" variant="outline">
-                              <Link {...updateLink}>Update</Link>
-                            </Button>
+                          </div>
+                          <div className="grid gap-1">
+                            <span className="text-xs font-medium text-muted-foreground">
+                              Submitted date
+                            </span>
+                            <span>{submittedDate}</span>
+                          </div>
+                          <div className="grid gap-1">
+                            <span className="text-xs font-medium text-muted-foreground">
+                              Actions
+                            </span>
                             {renderDeleteAction(request)}
                           </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  )
-                })}
-              </div>
-            </CardContent>
-            <CardFooter className="flex items-center justify-between">
-              <p className="text-sm text-muted-foreground">
-                Showing {visibleRangeStart}-{visibleRangeEnd} of{' '}
-                {displayedRequests.length}
-              </p>
-              <Pagination className="mx-0 w-auto justify-end">
-                <PaginationContent>
-                  <PaginationItem>
-                    <Button
-                      aria-label="Go to previous page"
-                      disabled={safeCurrentPage === 1}
-                      size="sm"
-                      type="button"
-                      variant="outline"
-                      onClick={() => setCurrentPage(safeCurrentPage - 1)}
-                    >
-                      <ChevronLeftIcon />
-                      Previous
-                    </Button>
-                  </PaginationItem>
-                  {(() => {
-                    const pages: (number | 'ellipsis')[] = []
-
-                    if (pageCount <= 5) {
-                      for (let i = 1; i <= pageCount; i++) pages.push(i)
-                    } else {
-                      pages.push(1)
-                      if (safeCurrentPage > 3) pages.push('ellipsis')
-                      const start = Math.max(2, safeCurrentPage - 1)
-                      const end = Math.min(pageCount - 1, safeCurrentPage + 1)
-                      for (let i = start; i <= end; i++) pages.push(i)
-                      if (safeCurrentPage < pageCount - 2)
-                        pages.push('ellipsis')
-                      pages.push(pageCount)
-                    }
-
-                    return pages.map((page, index) =>
-                      page === 'ellipsis' ? (
-                        <PaginationItem key={`ellipsis-${index}`}>
-                          <PaginationEllipsis />
-                        </PaginationItem>
-                      ) : (
-                        <PaginationItem key={page}>
-                          <PaginationLink
-                            isActive={page === safeCurrentPage}
-                            onClick={() => setCurrentPage(page)}
-                            size="sm"
-                          >
-                            {page}
-                          </PaginationLink>
-                        </PaginationItem>
-                      ),
+                        </CardContent>
+                      </Card>
                     )
-                  })()}
-                  <PaginationItem>
-                    <Button
-                      aria-label="Go to next page"
-                      disabled={safeCurrentPage === pageCount}
-                      size="sm"
-                      type="button"
-                      variant="outline"
-                      onClick={() => setCurrentPage(safeCurrentPage + 1)}
-                    >
-                      Next
-                      <ChevronRightIcon />
-                    </Button>
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
-            </CardFooter>
-          </Card>
+                  })}
+                </div>
+              </CardContent>
+            </Card>
+
+            <DataTablePagination
+              pageCount={pageCount}
+              pageIndex={currentPage - 1}
+              pageSize={10}
+              rowCount={displayedRequests.length}
+              onChangePageIndex={(index) => setCurrentPage(index + 1)}
+            />
+          </>
         )}
       </div>
       <AlertDialog

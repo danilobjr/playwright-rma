@@ -1,165 +1,288 @@
-import { type ComponentProps } from 'react'
+import type { ComponentProps, ReactNode } from 'react'
+import { Slot } from '@radix-ui/react-slot'
 import {
+  ChevronFirstIcon,
+  ChevronLastIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
   MoreHorizontalIcon,
 } from 'lucide-react'
 
-import { Button } from '@/components/ui/button'
+import { AppSelect, type AppSelectProps } from '@/components/app/app-select.app'
+import { Button, type ButtonProps } from '@/components/ui/button'
+import { Separator } from '@/components/ui/separator'
 import { cn } from '@/utils/styles/cn.util'
 
-type PaginationProps = ComponentProps<'nav'>
-type PaginationContentProps = ComponentProps<'ul'>
-type PaginationItemProps = ComponentProps<'li'>
-type PaginationLinkProps = {
-  isActive?: boolean
-} & Pick<ComponentProps<typeof Button>, 'size'> &
-  ComponentProps<'a'>
-type PaginationPreviousProps = PaginationLinkProps & {
-  text?: string
-}
-type PaginationNextProps = PaginationLinkProps & {
-  text?: string
-}
-type PaginationEllipsisProps = ComponentProps<'span'>
+import * as styles from './pagination.styles'
 
-function Pagination({ className, ...otherProps }: PaginationProps) {
+type PaginationProps = ComponentProps<'div'>
+function Pagination({ className = '', ...otherProps }: PaginationProps) {
+  return (
+    <div
+      className={cn(styles.root(), className)}
+      data-slot="pagination"
+      aria-label="pagination"
+      {...otherProps}
+    />
+  )
+}
+
+type PaginationPageSelectorProps = ComponentProps<'nav'> & {
+  classNameList?: string
+}
+function PaginationPageSelector({
+  children = null,
+  classNameList = '',
+  ...otherProps
+}: PaginationPageSelectorProps) {
   return (
     <nav
-      aria-label="pagination"
-      className={cn('mx-auto flex w-full justify-center', className)}
-      data-slot="pagination"
+      data-slot="pagination-page-selector"
+      aria-label="page selector"
       role="navigation"
       {...otherProps}
-    />
+    >
+      <ul className={cn(styles.pageSelector.list(), classNameList)}>
+        {children}
+      </ul>
+    </nav>
   )
 }
 
-function PaginationContent({
-  className,
-  ...otherProps
-}: PaginationContentProps) {
-  return (
-    <ul
-      className={cn('flex items-center gap-0.5', className)}
-      data-slot="pagination-content"
-      {...otherProps}
-    />
-  )
+type PaginationItemProps = ComponentProps<'li'>
+function PaginationItem(props: PaginationItemProps) {
+  return <li data-slot="pagination-item" {...props} />
 }
 
-function PaginationItem(otherProps: PaginationItemProps) {
-  return <li data-slot="pagination-item" {...otherProps} />
+type PaginationButtonProps = ButtonProps & {
+  active?: boolean
 }
-
-function PaginationLink({
-  children,
-  className,
-  isActive = false,
-  size = 'icon',
+function PaginationButton({
+  className = '',
+  active,
+  size = 'icon-sm',
   ...otherProps
-}: PaginationLinkProps) {
+}: PaginationButtonProps) {
   return (
     <Button
-      asChild
-      className={cn(className)}
+      className={cn(styles.button(), className)}
+      data-active={active}
+      aria-current={active ? 'page' : undefined}
       size={size}
-      variant={isActive ? 'outline' : 'ghost'}
-    >
-      <a
-        aria-current={isActive ? 'page' : undefined}
-        data-active={isActive}
-        data-slot="pagination-link"
-        {...otherProps}
-      >
-        {children}
-      </a>
-    </Button>
+      variant={active ? 'outline' : 'ghost'}
+      {...otherProps}
+    />
   )
 }
 
-function PaginationPrevious({
-  children,
-  className,
-  text = 'Previous',
+type PaginationDotsProps = ComponentProps<'div'>
+function PaginationDots({
+  className = '',
   ...otherProps
-}: PaginationPreviousProps) {
+}: PaginationDotsProps) {
   return (
-    <PaginationLink
-      aria-label="Go to previous page"
-      className={cn('pl-1.5!', className)}
-      size="default"
+    <div
+      className={cn(styles.dots(), className)}
+      data-slot="pagination-dots"
       {...otherProps}
     >
-      {children ?? (
-        <>
-          <ChevronLeftIcon data-icon="inline-start" />
-          <span className="hidden sm:block">{text}</span>
-        </>
-      )}
-    </PaginationLink>
+      <MoreHorizontalIcon />
+    </div>
   )
 }
 
-function PaginationNext({
-  children,
-  className,
-  text = 'Next',
+type PaginationButtonWithTextProps = Omit<PaginationButtonProps, 'children'> & {
+  icon: ReactNode
+  childrenPosition?: 'icon-left' | 'icon-right'
+  text?: string
+}
+function PaginationButtonWithText({
+  className = '',
+  childrenPosition = 'icon-left',
+  icon,
+  text = '',
   ...otherProps
-}: PaginationNextProps) {
+}: PaginationButtonWithTextProps) {
   return (
-    <PaginationLink
-      aria-label="Go to next page"
-      className={cn('pr-1.5!', className)}
-      size="default"
+    <PaginationButton
+      className={cn(styles.buttonWithText.root(), className)}
+      data-has-text={!!text}
+      data-children-position={childrenPosition}
+      size={text ? 'sm' : 'icon-sm'}
       {...otherProps}
     >
-      {children ?? (
-        <>
-          <span className="hidden sm:block">{text}</span>
-          <ChevronRightIcon data-icon="inline-end" />
-        </>
-      )}
-    </PaginationLink>
+      <Slot className={cn(styles.buttonWithText.iconSlot())}>{icon}</Slot>
+      {text}
+    </PaginationButton>
   )
 }
 
+type PaginationButtonFirstProps = Omit<
+  PaginationButtonWithTextProps,
+  'icon' | 'childrenPosition'
+>
+function PaginationButtonFirst(props: PaginationButtonFirstProps) {
+  return (
+    <PaginationButtonWithText
+      icon={<ChevronFirstIcon />}
+      aria-label="go to first page"
+      {...props}
+    />
+  )
+}
+
+type PaginationButtonLastProps = Omit<
+  PaginationButtonWithTextProps,
+  'icon' | 'childrenPosition'
+>
+function PaginationButtonLast(props: PaginationButtonLastProps) {
+  return (
+    <PaginationButtonWithText
+      childrenPosition="icon-right"
+      icon={<ChevronLastIcon />}
+      aria-label="go to last page"
+      {...props}
+    />
+  )
+}
+
+type PaginationButtonPreviousProps = Omit<
+  PaginationButtonWithTextProps,
+  'icon' | 'childrenPosition'
+>
+function PaginationButtonPrevious(props: PaginationButtonPreviousProps) {
+  return (
+    <PaginationButtonWithText
+      icon={<ChevronLeftIcon />}
+      aria-label="go to previous page"
+      {...props}
+    />
+  )
+}
+
+type PaginationButtonNextProps = Omit<
+  PaginationButtonWithTextProps,
+  'icon' | 'childrenPosition'
+>
+function PaginationButtonNext(props: PaginationButtonNextProps) {
+  return (
+    <PaginationButtonWithText
+      childrenPosition="icon-right"
+      icon={<ChevronRightIcon />}
+      aria-label="go to next page"
+      {...props}
+    />
+  )
+}
+
+type PaginationEllipsisProps = ComponentProps<'span'>
 function PaginationEllipsis({
-  className,
+  className = '',
   ...otherProps
 }: PaginationEllipsisProps) {
   return (
     <span
-      aria-hidden="true"
-      className={cn(
-        "flex size-8 items-center justify-center [&_svg:not([class*='size-'])]:size-4",
-        className,
-      )}
+      className={cn(styles.ellipsis(), className)}
       data-slot="pagination-ellipsis"
+      aria-hidden
       {...otherProps}
     >
-      <MoreHorizontalIcon />
+      <MoreHorizontalIcon size={16} />
       <span className="sr-only">More pages</span>
     </span>
   )
 }
 
-export type {
-  PaginationContentProps,
-  PaginationEllipsisProps,
-  PaginationItemProps,
-  PaginationLinkProps,
-  PaginationNextProps,
-  PaginationPreviousProps,
-  PaginationProps,
+type PaginationRowCountProps = ComponentProps<'div'> & {
+  firstRowNumberOnCurrentPage: string | number
+  lastRowNumberOnCurrentPage: string | number
+  totalRows: number
+}
+function PaginationRowCount({
+  className = '',
+  firstRowNumberOnCurrentPage,
+  lastRowNumberOnCurrentPage,
+  totalRows,
+  ...otherProps
+}: PaginationRowCountProps) {
+  return (
+    <div
+      className={cn(styles.rowCount.root(), className)}
+      data-slot="pagination-row-count"
+      {...otherProps}
+    >
+      {firstRowNumberOnCurrentPage}-{lastRowNumberOnCurrentPage}{' '}
+      <span className={styles.rowCount.words.of()}>of</span> {totalRows}{' '}
+      <span className={styles.rowCount.words.items()}>
+        {totalRows !== 1 ? 'pages' : 'page'}
+      </span>
+    </div>
+  )
+}
+
+type PaginationPageSizeSelectorProps = AppSelectProps
+function PaginationPageSizeSelector({
+  className = '',
+  value = '',
+  ...otherProps
+}: PaginationPageSizeSelectorProps) {
+  return (
+    <AppSelect
+      className={cn(styles.pageSizeSelector.root(), className)}
+      size="xs"
+      value={value}
+      renderDisplay={(v) => (
+        <span className="flex items-end gap-1">
+          <span>{v}</span>
+          <span className={styles.pageSizeSelector.displayText()}>
+            per page
+          </span>
+        </span>
+      )}
+      {...otherProps}
+    />
+  )
+}
+
+type PaginationSeparatorProps = ComponentProps<typeof Separator>
+function PaginationSeparator({
+  className = '',
+  ...otherProps
+}: PaginationSeparatorProps) {
+  return (
+    <Separator
+      className={cn(styles.separator(), className)}
+      orientation="vertical"
+      {...otherProps}
+    />
+  )
 }
 
 export {
   Pagination,
-  PaginationContent,
-  PaginationEllipsis,
+  PaginationPageSelector,
   PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
+  PaginationDots,
+  PaginationButton,
+  PaginationButtonFirst,
+  PaginationButtonLast,
+  PaginationButtonPrevious,
+  PaginationButtonNext,
+  PaginationEllipsis,
+  PaginationRowCount,
+  PaginationPageSizeSelector,
+  PaginationSeparator,
+  type PaginationProps,
+  type PaginationPageSelectorProps,
+  type PaginationItemProps,
+  type PaginationDotsProps,
+  type PaginationButtonProps,
+  type PaginationButtonFirstProps,
+  type PaginationButtonLastProps,
+  type PaginationButtonPreviousProps,
+  type PaginationButtonNextProps,
+  type PaginationEllipsisProps,
+  type PaginationRowCountProps,
+  type PaginationPageSizeSelectorProps,
+  type PaginationSeparatorProps,
 }

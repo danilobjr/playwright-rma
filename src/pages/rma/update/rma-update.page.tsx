@@ -15,6 +15,10 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
+  type CardContentProps,
+  type CardFooterProps,
+  type CardHeaderProps,
+  type CardProps,
 } from '@/components/ui/card'
 import { Field, FieldGroup, FieldLabel } from '@/components/ui/field'
 import {
@@ -55,23 +59,46 @@ function formatSubmittedDate(date: Date) {
   }).format(date)
 }
 
-function RmaUpdateSkeleton() {
+function RmaPageCard(props: CardProps) {
   return (
     <Card
-      aria-label="Loading RMA Request"
+      className="mx-auto w-full max-w-190 gap-6 overflow-hidden rounded-xl p-0"
       role="article"
-      className="mx-auto w-full max-w-3xl"
-    >
-      <CardHeader className="border-b">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      {...props}
+    />
+  )
+}
+
+function RmaPageCardHeader(props: CardHeaderProps) {
+  return <CardHeader className="border-b p-6" {...props} />
+}
+
+function RmaPageCardContent(props: CardContentProps) {
+  return <CardContent className="grid gap-6 px-6" {...props} />
+}
+
+function RmaPageCardFooter(props: CardFooterProps) {
+  return (
+    <CardFooter
+      className="flex-col-reverse items-stretch justify-end gap-3 border-t p-6 sm:flex-row sm:items-center sm:gap-4"
+      {...props}
+    />
+  )
+}
+
+function RmaUpdateSkeleton() {
+  return (
+    <RmaPageCard aria-label="Loading RMA Request">
+      <RmaPageCardHeader>
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="grid gap-2">
             <Skeleton className="h-7 w-44" data-testid="rma-update-skeleton" />
             <Skeleton className="h-4 w-36" />
           </div>
           <Skeleton className="h-5 w-20" />
         </div>
-      </CardHeader>
-      <CardContent className="grid gap-6 pt-(--card-spacing)">
+      </RmaPageCardHeader>
+      <RmaPageCardContent>
         <div className="grid gap-4">
           {Array.from({ length: 5 }).map((_, index) => (
             <div
@@ -90,12 +117,12 @@ function RmaUpdateSkeleton() {
             <Skeleton className="h-10 w-full" />
           </Field>
         </FieldGroup>
-      </CardContent>
-      <CardFooter className="justify-end border-t">
+      </RmaPageCardContent>
+      <RmaPageCardFooter>
         <Skeleton className="h-10 w-20" />
         <Skeleton className="h-10 w-20" />
-      </CardFooter>
-    </Card>
+      </RmaPageCardFooter>
+    </RmaPageCard>
   )
 }
 
@@ -127,11 +154,7 @@ function RmaUpdatePage({
 
   if (isError) {
     return (
-      <Card
-        aria-label="Unable to load RMA request"
-        role="article"
-        className="mx-auto w-full max-w-3xl"
-      >
+      <RmaPageCard aria-label="Unable to load RMA request">
         <CardContent className="flex flex-col items-center gap-4 py-16 text-center">
           <h2 className="font-heading text-sm font-medium tracking-tight">
             Unable to load RMA request
@@ -146,17 +169,13 @@ function RmaUpdatePage({
             </Button>
           </div>
         </CardContent>
-      </Card>
+      </RmaPageCard>
     )
   }
 
   if (!request) {
     return (
-      <Card
-        aria-label="RMA request not found"
-        role="article"
-        className="mx-auto w-full max-w-3xl"
-      >
+      <RmaPageCard aria-label="RMA request not found">
         <CardContent className="flex flex-col items-center gap-4 py-16 text-center">
           <h2 className="font-heading text-sm font-medium tracking-tight">
             RMA request not found
@@ -168,7 +187,7 @@ function RmaUpdatePage({
             <Link to="/rma">Back to requests</Link>
           </Button>
         </CardContent>
-      </Card>
+      </RmaPageCard>
     )
   }
 
@@ -179,12 +198,8 @@ function RmaUpdatePage({
   const DraftIcon = draftPresentation.icon
 
   return (
-    <Card
-      aria-label={`RMA Request ${request.rmaId}`}
-      role="article"
-      className="mx-auto w-full max-w-3xl"
-    >
-      <CardHeader className="border-b">
+    <RmaPageCard aria-label={`RMA Request ${request.rmaId}`}>
+      <RmaPageCardHeader className="border-b p-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="grid gap-1.5">
             <CardTitle>
@@ -199,8 +214,8 @@ function RmaUpdatePage({
             {persistedPresentation.label}
           </Badge>
         </div>
-      </CardHeader>
-      <CardContent className="grid gap-6 pt-(--card-spacing)">
+      </RmaPageCardHeader>
+      <RmaPageCardContent>
         {saveError && (
           <Alert variant="destructive">
             <AlertDescription>{saveError}</AlertDescription>
@@ -224,7 +239,7 @@ function RmaUpdatePage({
               <SelectTrigger
                 id="rma-status"
                 aria-label="Status"
-                className="!h-10 w-full"
+                className="w-full"
               >
                 <span className="flex items-center gap-2">
                   <DraftIcon
@@ -246,13 +261,15 @@ function RmaUpdatePage({
                         textValue={presentation.label}
                         value={status}
                       >
-                        <Icon aria-hidden="true" />
-                        <span className="grid gap-0.5">
-                          <span>{presentation.label}</span>
-                          <span className="text-xs text-muted-foreground">
-                            {presentation.description}
+                        <div className="flex gap-2">
+                          <Icon className="mt-0.5" aria-hidden="true" />
+                          <span className="grid gap-0.5">
+                            <span>{presentation.label}</span>
+                            <span className="text-xs text-muted-foreground">
+                              {presentation.description}
+                            </span>
                           </span>
-                        </span>
+                        </div>
                       </SelectItem>
                     )
                   })}
@@ -261,8 +278,8 @@ function RmaUpdatePage({
             </Select>
           </Field>
         </FieldGroup>
-      </CardContent>
-      <CardFooter className="justify-end border-t">
+      </RmaPageCardContent>
+      <RmaPageCardFooter>
         <Button variant="outline" onClick={onCancel}>
           Cancel
         </Button>
@@ -270,8 +287,8 @@ function RmaUpdatePage({
           <SaveIcon aria-hidden="true" />
           Save
         </Button>
-      </CardFooter>
-    </Card>
+      </RmaPageCardFooter>
+    </RmaPageCard>
   )
 }
 

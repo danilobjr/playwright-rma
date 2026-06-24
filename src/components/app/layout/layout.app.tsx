@@ -21,7 +21,7 @@ function Layout({ children }: LayoutProps) {
               {breadcrumbs.length > 0 ? (
                 <nav
                   aria-label="Breadcrumb"
-                  className="flex items-center gap-2 text-sm font-medium"
+                  className="flex items-center gap-2 text-[0.8125rem] leading-4.25 font-medium"
                 >
                   {breadcrumbs.map((breadcrumb, index) => (
                     <span className="contents" key={`${breadcrumb}-${index}`}>

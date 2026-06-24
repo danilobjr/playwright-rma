@@ -42,7 +42,6 @@ const buttonVariants = cva(
         `,
         outline: `
           border-border
-          bg-background
           hover:bg-muted
           hover:text-foreground
           aria-expanded:bg-muted

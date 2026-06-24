@@ -91,8 +91,8 @@ function RmaCreatePage({
 
   return (
     <section className="flex min-w-0 justify-center">
-      <Card className="w-full max-w-[760px] overflow-hidden rounded-xl">
-        <CardHeader className="border-b">
+      <Card className="w-full max-w-190 overflow-hidden rounded-xl">
+        <CardHeader className="border-b px-6">
           <CardTitle>
             <h2 className="text-2xl font-semibold tracking-tight">
               Request details
@@ -102,7 +102,7 @@ function RmaCreatePage({
         </CardHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
           <CardContent className="p-6">
-            <FieldGroup className="gap-[18px]">
+            <FieldGroup className="gap-4.5">
               <div className="grid gap-4 md:grid-cols-2">
                 <Field>
                   <div className="flex items-center justify-between gap-3">
@@ -252,7 +252,7 @@ function RmaCreatePage({
               ) : null}
             </FieldGroup>
           </CardContent>
-          <CardFooter className="flex-col-reverse items-stretch justify-end gap-3 border-t p-6 sm:flex-row sm:items-center">
+          <CardFooter className="flex-col-reverse items-stretch justify-end gap-3 border-t p-6 sm:flex-row sm:items-center sm:gap-4">
             {cancelAction}
             <Button disabled={isSubmitting} type="submit">
               <CheckIcon aria-hidden="true" />
