@@ -1,5 +1,5 @@
 {
-  "version": "2.13",
+  "version": "2.14",
   "children": [
     {
       "type": "frame",
@@ -904,29 +904,6 @@
                   "children": [
                     {
                       "type": "frame",
-                      "id": "s1VRD",
-                      "name": "Search filters icon button",
-                      "width": 36,
-                      "height": 36,
-                      "fill": "#18181B",
-                      "cornerRadius": 8,
-                      "justifyContent": "center",
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "icon",
-                          "id": "G3bUk",
-                          "name": "Search filters icon",
-                          "width": 16,
-                          "height": 16,
-                          "icon": "search",
-                          "library": "lucide",
-                          "fill": "#FAFAFA"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "frame",
                       "id": "f7siM1",
                       "name": "Reset filters icon button",
                       "width": 36,
@@ -951,82 +928,29 @@
                           "fill": "#18181B"
                         }
                       ]
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "Ose2T",
-                  "layoutPosition": "absolute",
-                  "x": 1103,
-                  "y": 8,
-                  "name": "Tooltip - Search filters",
-                  "fill": "#18181B",
-                  "cornerRadius": 6,
-                  "effect": {
-                    "type": "shadow",
-                    "shadowType": "outer",
-                    "color": "#0000001A",
-                    "offset": {
-                      "x": 0,
-                      "y": 6
                     },
-                    "blur": 16
-                  },
-                  "padding": [
-                    6,
-                    9
-                  ],
-                  "justifyContent": "center",
-                  "alignItems": "center",
-                  "children": [
                     {
-                      "type": "text",
-                      "id": "gRZYc",
-                      "name": "Tooltip - Search filters label",
-                      "fill": "#FAFAFA",
-                      "content": "Search",
-                      "fontFamily": "Geist",
-                      "fontSize": 12,
-                      "fontWeight": "500"
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "p1gGWE",
-                  "layoutPosition": "absolute",
-                  "x": 1157,
-                  "y": 8,
-                  "name": "Tooltip - Reset filters",
-                  "fill": "#18181B",
-                  "cornerRadius": 6,
-                  "effect": {
-                    "type": "shadow",
-                    "shadowType": "outer",
-                    "color": "#0000001A",
-                    "offset": {
-                      "x": 0,
-                      "y": 6
-                    },
-                    "blur": 16
-                  },
-                  "padding": [
-                    6,
-                    9
-                  ],
-                  "justifyContent": "center",
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "j3uSb3",
-                      "name": "Tooltip - Reset filters label",
-                      "fill": "#FAFAFA",
-                      "content": "Reset",
-                      "fontFamily": "Geist",
-                      "fontSize": 12,
-                      "fontWeight": "500"
+                      "type": "frame",
+                      "id": "s1VRD",
+                      "name": "Search filters icon button",
+                      "width": 36,
+                      "height": 36,
+                      "fill": "#18181B",
+                      "cornerRadius": 8,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "G3bUk",
+                          "name": "Search filters icon",
+                          "width": 16,
+                          "height": 16,
+                          "icon": "search",
+                          "library": "lucide",
+                          "fill": "#FAFAFA"
+                        }
+                      ]
                     }
                   ]
                 }
@@ -2289,44 +2213,6 @@
                       ]
                     }
                   ]
-                },
-                {
-                  "type": "frame",
-                  "id": "R3Gzvw",
-                  "layoutPosition": "absolute",
-                  "x": 1055,
-                  "y": 27,
-                  "name": "Tooltip - Delete RMA row 1",
-                  "fill": "#18181B",
-                  "cornerRadius": 6,
-                  "effect": {
-                    "type": "shadow",
-                    "shadowType": "outer",
-                    "color": "#0000001A",
-                    "offset": {
-                      "x": 0,
-                      "y": 6
-                    },
-                    "blur": 16
-                  },
-                  "padding": [
-                    6,
-                    9
-                  ],
-                  "justifyContent": "center",
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "kL62Y",
-                      "name": "Tooltip - Delete RMA row 1 label",
-                      "fill": "#FAFAFA",
-                      "content": "Delete RMA",
-                      "fontFamily": "Geist",
-                      "fontSize": 12,
-                      "fontWeight": "500"
-                    }
-                  ]
                 }
               ]
             },
@@ -3012,7 +2898,7 @@
                           "name": "Submit create button icon",
                           "width": 16,
                           "height": 16,
-                          "icon": "check",
+                          "icon": "send",
                           "library": "lucide",
                           "fill": "#FAFAFA"
                         },
@@ -6049,5 +5935,6 @@
         }
       ]
     }
-  }
+  },
+  "fileToken": "a136d78e-dcf2-4bf0-97c5-2799d66d5478"
 }
