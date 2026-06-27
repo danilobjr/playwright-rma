@@ -125,7 +125,7 @@ src/components/ui/component-name
 └── index.ts
 ```
 
-Use `component-name.ui.tsx` for the component or component family. Use `component-name.styles.ts` for `cva`, variant maps, long Tailwind class strings, slot styling, reusable style constants, and style-derived types. Component families should define one variant builder per exported component or subcomponent, e.g. `cardVariants`, `cardHeaderVariants`, and `cardTitleVariants`. Format Tailwind values with multiple classes as multiline template literals with one class per line. Keep single-class values inline. Style files may export style builders/constants and related types only. They must not export React components, hooks, services, or app logic.
+Use `component-name.ui.tsx` for the component or component family. Use `component-name.styles.ts` for `cva`, variant maps, long Tailwind class strings, slot styling, reusable style constants, and style-derived types. Component families should define one variant builder per exported component or subcomponent, e.g. `cardVariants`, `cardHeaderVariants`, and `cardTitleVariants`. Format Tailwind values with multiple classes as multiline template literals with one class per line. Keep single-class values inline. If a constant contains only Tailwind utility classes (no `cva`), wrap the template literal with `tw()` from `@/utils/styles/tw.util.ts`. Style files may export style builders/constants and related types only. They must not export React components, hooks, services, or app logic.
 
 Example:
 
@@ -152,7 +152,35 @@ export type { ButtonVariants }
 export { buttonVariants }
 ```
 
-Folder `index.ts` is the public import surface and should contain named re-exports only. Consumers import from the folder path, e.g. `@/components/ui/component-name`. Internal files import relatively, e.g. `./component-name.styles`.
+Constants with only Tailwind classes use `tw()`:
+
+```ts
+import { tw } from '@/utils/styles/tw.util'
+
+// Don't:
+const styles = `
+  mx-auto
+  flex
+  items-center
+`
+
+// Do:
+const styles = tw(`
+  mx-auto
+  flex
+  items-center
+`)
+```
+
+Folder `index.ts` is the public import surface. Use wildcard re-exports with `export type *` and `export *` from the UI file. Do not list individual exports.
+
+```ts
+export type * from './component-name.ui'
+
+export * from './component-name.ui'
+```
+
+Consumers import from the folder path, e.g. `@/components/ui/component-name`. Internal files import relatively, e.g. `./component-name.styles`.
 
 If shadcn generates a flat file, normalize any touched component to this folder convention after generation. If the user asks to migrate existing UI components, update the requested components to this shape; otherwise do not migrate unrelated components during focused work.
 
