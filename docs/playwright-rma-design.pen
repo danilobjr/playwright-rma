@@ -4110,110 +4110,11 @@
               "alignItems": "center",
               "children": [
                 {
-                  "type": "text",
-                  "id": "fwjzZ",
-                  "name": "Selected rows text",
-                  "fill": "#71717A",
-                  "content": "0 of 12 row(s) selected.",
-                  "fontFamily": "Geist",
-                  "fontSize": 13,
-                  "fontWeight": "normal"
-                },
-                {
-                  "type": "frame",
-                  "id": "AbaFf",
-                  "name": "Pagination",
-                  "gap": 8,
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "frame",
-                      "id": "swR1o",
-                      "name": "Pagination previous",
-                      "height": 36,
-                      "fill": "#FFFFFF",
-                      "cornerRadius": 8,
-                      "stroke": "#E4E4E7",
-                      "strokeWidth": 1,
-                      "strokeAlignment": "inner",
-                      "gap": 8,
-                      "padding": [
-                        8,
-                        12
-                      ],
-                      "justifyContent": "center",
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "aH0et",
-                          "name": "Pagination previous label",
-                          "fill": "#18181B",
-                          "content": "Previous",
-                          "fontFamily": "Geist",
-                          "fontSize": 14,
-                          "fontWeight": "500"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "frame",
-                      "id": "g8QoVB",
-                      "name": "Pagination page 1",
-                      "width": 36,
-                      "height": 36,
-                      "fill": "#18181B",
-                      "cornerRadius": 8,
-                      "padding": [
-                        8,
-                        12
-                      ],
-                      "justifyContent": "center",
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "EAgCF",
-                          "name": "Pagination page label",
-                          "fill": "#FAFAFA",
-                          "content": "1",
-                          "fontFamily": "Geist",
-                          "fontSize": 13,
-                          "fontWeight": "700"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "frame",
-                      "id": "mSeMb",
-                      "name": "Pagination next",
-                      "height": 36,
-                      "fill": "#FFFFFF",
-                      "cornerRadius": 8,
-                      "stroke": "#E4E4E7",
-                      "strokeWidth": 1,
-                      "strokeAlignment": "inner",
-                      "gap": 8,
-                      "padding": [
-                        8,
-                        12
-                      ],
-                      "justifyContent": "center",
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "dC1nj",
-                          "name": "Pagination next label",
-                          "fill": "#18181B",
-                          "content": "Next",
-                          "fontFamily": "Geist",
-                          "fontSize": 14,
-                          "fontWeight": "500"
-                        }
-                      ]
-                    }
-                  ]
+                  "id": "I9wS7w",
+                  "type": "ref",
+                  "ref": "r3QRA",
+                  "name": "DataTablePagination instance",
+                  "width": "fill_container"
                 }
               ]
             }
@@ -5070,6 +4971,349 @@
           "fontFamily": "Geist",
           "fontSize": 13,
           "fontWeight": "normal"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "r3QRA",
+      "x": 0,
+      "y": 1240,
+      "name": "DataTablePagination",
+      "reusable": true,
+      "width": 620,
+      "fill": "#FFFFFF00",
+      "gap": 16,
+      "alignItems": "center",
+      "children": [
+        {
+          "type": "frame",
+          "id": "RKn2b",
+          "name": "PaginationPageSizeSelector",
+          "height": 32,
+          "fill": "#FFFFFF",
+          "cornerRadius": 8,
+          "stroke": "#E4E4E7",
+          "strokeWidth": 1,
+          "strokeAlignment": "inner",
+          "gap": 6,
+          "padding": [
+            6,
+            10
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "ZQYh7",
+              "name": "Page size value",
+              "fill": "#18181B",
+              "content": "10",
+              "fontFamily": "Geist",
+              "fontSize": 13,
+              "fontWeight": "500"
+            },
+            {
+              "type": "text",
+              "id": "xCOQb",
+              "name": "Page size suffix",
+              "fill": "#71717A",
+              "content": "per page",
+              "fontFamily": "Geist",
+              "fontSize": 13,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "icon",
+              "id": "S0mvZn",
+              "name": "Page size chevron",
+              "width": 14,
+              "height": 14,
+              "icon": "chevron-down",
+              "library": "lucide",
+              "fill": "#71717A"
+            }
+          ]
+        },
+        {
+          "type": "rectangle",
+          "id": "ZcexU",
+          "name": "PaginationSeparator",
+          "fill": "#E4E4E7",
+          "width": 1,
+          "height": 16
+        },
+        {
+          "type": "frame",
+          "id": "Z4b3KF",
+          "name": "PaginationRowCount",
+          "gap": 4,
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "xyVwW",
+              "name": "Row count range",
+              "fill": "#18181B",
+              "content": "1-10",
+              "fontFamily": "Geist",
+              "fontSize": 13,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "NoVY6",
+              "name": "Row count of",
+              "fill": "#71717A",
+              "content": "of",
+              "fontFamily": "Geist",
+              "fontSize": 13,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "VTh3r",
+              "name": "Row count total",
+              "fill": "#18181B",
+              "content": "128",
+              "fontFamily": "Geist",
+              "fontSize": 13,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "iygzy",
+              "name": "Row count unit",
+              "fill": "#71717A",
+              "content": "pages",
+              "fontFamily": "Geist",
+              "fontSize": 13,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "TsfVo",
+          "name": "Pagination spacer",
+          "width": "fill_container",
+          "height": 1
+        },
+        {
+          "type": "frame",
+          "id": "A76Ai",
+          "name": "PaginationPageSelector",
+          "gap": 4,
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "y7hdwI",
+              "name": "Pagination first",
+              "opacity": 0.45,
+              "width": 32,
+              "height": 32,
+              "fill": "#FFFFFF",
+              "cornerRadius": 8,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "VapK6",
+                  "name": "Pagination first icon",
+                  "width": 16,
+                  "height": 16,
+                  "icon": "chevrons-left",
+                  "library": "lucide",
+                  "fill": "#71717A"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "jZate",
+              "name": "Pagination previous",
+              "opacity": 0.45,
+              "width": 32,
+              "height": 32,
+              "fill": "#FFFFFF",
+              "cornerRadius": 8,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "ZEm7i",
+                  "name": "Pagination previous icon",
+                  "width": 16,
+                  "height": 16,
+                  "icon": "chevron-left",
+                  "library": "lucide",
+                  "fill": "#71717A"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "G6lgg",
+              "name": "Pagination page 1",
+              "width": 32,
+              "height": 32,
+              "fill": "#F4F4F5",
+              "cornerRadius": 8,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "vJKEC",
+                  "name": "Pagination page 1 label",
+                  "fill": "#18181B",
+                  "content": "1",
+                  "fontFamily": "Geist",
+                  "fontSize": 13,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "RCkb6",
+              "name": "Pagination page 2",
+              "width": 32,
+              "height": 32,
+              "fill": "#FFFFFF",
+              "cornerRadius": 8,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "AbtnH",
+                  "name": "Pagination page 2 label",
+                  "fill": "#18181B",
+                  "content": "2",
+                  "fontFamily": "Geist",
+                  "fontSize": 13,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "BiqMr",
+              "name": "Pagination page 3",
+              "width": 32,
+              "height": 32,
+              "fill": "#FFFFFF",
+              "cornerRadius": 8,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "vWBLx",
+                  "name": "Pagination page 3 label",
+                  "fill": "#18181B",
+                  "content": "3",
+                  "fontFamily": "Geist",
+                  "fontSize": 13,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "GlbxF",
+              "name": "Pagination page 4",
+              "width": 32,
+              "height": 32,
+              "fill": "#FFFFFF",
+              "cornerRadius": 8,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "Zd0kL",
+                  "name": "Pagination page 4 label",
+                  "fill": "#18181B",
+                  "content": "4",
+                  "fontFamily": "Geist",
+                  "fontSize": 13,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "tw94q",
+              "name": "PaginationDots",
+              "width": 32,
+              "height": 32,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "wsBzn",
+                  "name": "Pagination dots icon",
+                  "width": 16,
+                  "height": 16,
+                  "icon": "ellipsis",
+                  "library": "lucide",
+                  "fill": "#71717A"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "wevcO",
+              "name": "Pagination next",
+              "width": 32,
+              "height": 32,
+              "fill": "#FFFFFF",
+              "cornerRadius": 8,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "g0Oet",
+                  "name": "Pagination next icon",
+                  "width": 16,
+                  "height": 16,
+                  "icon": "chevron-right",
+                  "library": "lucide",
+                  "fill": "#18181B"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "Bgx82",
+              "name": "Pagination last",
+              "width": 32,
+              "height": 32,
+              "fill": "#FFFFFF",
+              "cornerRadius": 8,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "B8Mmzt",
+                  "name": "Pagination last icon",
+                  "width": 16,
+                  "height": 16,
+                  "icon": "chevrons-right",
+                  "library": "lucide",
+                  "fill": "#18181B"
+                }
+              ]
+            }
+          ]
         }
       ]
     }
