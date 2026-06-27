@@ -165,8 +165,8 @@ function RmaListPage({
   error,
   isError,
   isPending,
-  onDeleteRequest,
   requests,
+  onDeleteRequest,
 }: RmaListPageProps) {
   const [draftFilters, setDraftFilters] =
     useState<RmaListFilters>(defaultFilters)
