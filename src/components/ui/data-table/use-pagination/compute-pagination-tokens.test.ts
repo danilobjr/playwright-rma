@@ -3,6 +3,8 @@ import { describe, expect, it } from 'vitest'
 import { computePaginationTokens, DOTS } from './compute-pagination-tokens.util'
 
 describe('computePaginationTokens()', () => {
+  // ── P0 — Boundary transitions ─────────────────────────────
+
   it('returns full range when totalPages equals totalPageNumbers threshold (no DOTS)', () => {
     const tokens = computePaginationTokens({
       totalPages: 7,
@@ -14,6 +16,17 @@ describe('computePaginationTokens()', () => {
     expect(tokens).toEqual([1, 2, 3, 4, 5, 6, 7])
   })
 
+  it('shows RIGHT DOTS only one page past the no-dots threshold (totalPages = 8)', () => {
+    const tokens = computePaginationTokens({
+      totalPages: 8,
+      currentPage: 4,
+      siblings: 1,
+      boundaries: 1,
+    })
+
+    expect(tokens).toEqual([1, 2, 3, 4, 5, DOTS, 8])
+  })
+
   it('returns full range when totalPages smaller than threshold (no DOTS)', () => {
     const tokens = computePaginationTokens({
       totalPages: 3,
@@ -23,6 +36,24 @@ describe('computePaginationTokens()', () => {
     expect(tokens).toEqual([1, 2, 3])
   })
 
+  it('returns full range for single page', () => {
+    const tokens = computePaginationTokens({
+      totalPages: 1,
+      currentPage: 1,
+    })
+
+    expect(tokens).toEqual([1])
+  })
+
+  it('returns full range for minimum multi-page (totalPages = 2)', () => {
+    const tokens = computePaginationTokens({
+      totalPages: 2,
+      currentPage: 1,
+    })
+
+    expect(tokens).toEqual([1, 2])
+  })
+
   it('returns empty range when totalPages is 0', () => {
     const tokens = computePaginationTokens({
       totalPages: 0,
@@ -30,6 +61,17 @@ describe('computePaginationTokens()', () => {
     })
 
     expect(tokens).toEqual([])
+  })
+
+  it('shows RIGHT DOTS only for the very first page', () => {
+    const tokens = computePaginationTokens({
+      totalPages: 20,
+      currentPage: 1,
+      siblings: 1,
+      boundaries: 1,
+    })
+
+    expect(tokens).toEqual([1, 2, 3, 4, 5, DOTS, 20])
   })
 
   it('shows RIGHT DOTS only when current is near left edge', () => {
@@ -61,10 +103,32 @@ describe('computePaginationTokens()', () => {
     expect(tokens).toEqual(expected)
   })
 
+  it('shows BOTH DOTS at the exact page where LEFT DOTS first appear (currentPage=5)', () => {
+    const tokens = computePaginationTokens({
+      totalPages: 20,
+      currentPage: 5,
+      siblings: 1,
+      boundaries: 1,
+    })
+
+    expect(tokens).toEqual([1, DOTS, 4, 5, 6, DOTS, 20])
+  })
+
   it('shows LEFT DOTS only when current is near right edge', () => {
     const tokens = computePaginationTokens({
       totalPages: 20,
       currentPage: 19,
+      siblings: 1,
+      boundaries: 1,
+    })
+
+    expect(tokens).toEqual([1, DOTS, 16, 17, 18, 19, 20])
+  })
+
+  it('shows LEFT DOTS only for the very last page', () => {
+    const tokens = computePaginationTokens({
+      totalPages: 20,
+      currentPage: 20,
       siblings: 1,
       boundaries: 1,
     })
@@ -81,6 +145,17 @@ describe('computePaginationTokens()', () => {
     })
 
     expect(tokens).toEqual([1, 2, DOTS, 18, 19, 20, 21, 22, 23, 24, 25])
+  })
+
+  it('shows BOTH DOTS at the last page where RIGHT DOTS are still visible (currentPage=16)', () => {
+    const tokens = computePaginationTokens({
+      totalPages: 20,
+      currentPage: 16,
+      siblings: 1,
+      boundaries: 1,
+    })
+
+    expect(tokens).toEqual([1, DOTS, 15, 16, 17, DOTS, 20])
   })
 
   it('shows BOTH DOTS when current is in middle', () => {
@@ -166,6 +241,28 @@ describe('computePaginationTokens()', () => {
         expect(s[i]).toBeGreaterThan(s[i - 1])
       }
     })
+  })
+
+  it('handles boundaries = 0 at the first page (exact shape)', () => {
+    const tokens = computePaginationTokens({
+      totalPages: 10,
+      currentPage: 1,
+      siblings: 1,
+      boundaries: 0,
+    })
+
+    expect(tokens).toEqual([1, 2, 3, 4, DOTS])
+  })
+
+  it('handles siblings = 0 and boundaries = 0 with totalPages that fits in threshold (no DOTS)', () => {
+    const tokens = computePaginationTokens({
+      totalPages: 3,
+      currentPage: 2,
+      siblings: 0,
+      boundaries: 0,
+    })
+
+    expect(tokens).toEqual([1, 2, 3])
   })
 
   it('siblings larger than totalPages results in full range', () => {
