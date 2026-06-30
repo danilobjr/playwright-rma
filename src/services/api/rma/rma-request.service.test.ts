@@ -6,10 +6,22 @@ import {
   getRmaRequestById,
   listRmaRequests,
   peekNextRmaId,
+  rmaListDefaultPagination,
   updateRmaRequest,
+  type RmaListBody,
 } from './rma-request.service'
 
 const RMA_STORAGE_KEY = 'playwright-rma:rma-requests:v1'
+const RMA_LIST_BODY: RmaListBody = {
+  filters: { search: '', status: '', submittedDate: undefined },
+  pagination: { ...rmaListDefaultPagination, pageSize: 100 },
+}
+
+const UNIQUE_CREATE_INPUT = {
+  customerName: 'Taylor Reed',
+  productId: 'PRD-C3D4',
+  reason: 'Device overheats during normal use.',
+}
 
 async function waitForRmaApiResponse<T>(response: Promise<T>) {
   let result: T | undefined
@@ -47,9 +59,9 @@ describe('RMA request service', () => {
   })
 
   it('lists seeded RMA Requests when browser storage is empty', async () => {
-    const requests = await waitForRmaApiResponse(listRmaRequests())
+    const requests = await waitForRmaApiResponse(listRmaRequests(RMA_LIST_BODY))
 
-    expect(requests).toEqual(
+    expect(requests.data).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
           rmaId: 'RMA-2026-1001',
@@ -104,7 +116,7 @@ describe('RMA request service', () => {
   })
 
   it('keeps exported responses pending before the simulated delay completes', async () => {
-    const response = listRmaRequests()
+    const response = listRmaRequests(RMA_LIST_BODY)
     let settled = false
 
     response.then(() => {
@@ -123,31 +135,28 @@ describe('RMA request service', () => {
   it('creates a Pending RMA Request with the next current-year RMA ID', async () => {
     const request = await waitForRmaApiResponse(
       createRmaRequest({
-        customerName: ' Jordan  Lee ',
-        productId: 'prd-a1b2',
-        reason: '  Screen flickers after startup.  ',
+        customerName: ' Taylor  Reed ',
+        productId: 'prd-c3d4',
+        reason: '  Device overheats during normal use.  ',
       }),
     )
 
     expect(request).toEqual({
-      rmaId: 'RMA-2026-1003',
+      rmaId: 'RMA-2026-1013',
       status: 'Pending',
-      customerName: 'Jordan Lee',
-      productId: 'PRD-A1B2',
-      reason: 'Screen flickers after startup.',
+      customerName: 'Taylor Reed',
+      productId: 'PRD-C3D4',
+      reason: 'Device overheats during normal use.',
       createdAt: '2026-03-04T10:30:00.000Z',
     })
 
-    await expect(waitForRmaApiResponse(listRmaRequests())).resolves.toEqual(
-      expect.arrayContaining([request]),
-    )
+    const requests = await waitForRmaApiResponse(listRmaRequests(RMA_LIST_BODY))
+    expect(requests.data).toEqual(expect.arrayContaining([request]))
   })
 
   it('creates no request before the simulated delay completes', async () => {
     const response = createRmaRequest({
-      customerName: 'Jordan Lee',
-      productId: 'PRD-A1B2',
-      reason: 'Screen flickers after startup.',
+      ...UNIQUE_CREATE_INPUT,
     })
 
     await vi.advanceTimersByTimeAsync(999)
@@ -155,14 +164,13 @@ describe('RMA request service', () => {
 
     const request = await waitForRmaApiResponse(response)
 
-    await expect(waitForRmaApiResponse(listRmaRequests())).resolves.toEqual(
-      expect.arrayContaining([request]),
-    )
+    const requests = await waitForRmaApiResponse(listRmaRequests(RMA_LIST_BODY))
+    expect(requests.data).toEqual(expect.arrayContaining([request]))
   })
 
   it('previews the next RMA ID without creating a request', async () => {
     await expect(waitForRmaApiResponse(peekNextRmaId())).resolves.toBe(
-      'RMA-2026-1003',
+      'RMA-2026-1013',
     )
   })
 
@@ -174,7 +182,8 @@ describe('RMA request service', () => {
       customerName: 'Avery Stone',
     })
 
-    await expect(waitForRmaApiResponse(listRmaRequests())).resolves.not.toEqual(
+    const requests = await waitForRmaApiResponse(listRmaRequests(RMA_LIST_BODY))
+    expect(requests.data).not.toEqual(
       expect.arrayContaining([
         expect.objectContaining({ rmaId: 'RMA-2026-1001' }),
       ]),
@@ -189,7 +198,8 @@ describe('RMA request service', () => {
 
     await waitForRmaApiResponse(response)
 
-    await expect(waitForRmaApiResponse(listRmaRequests())).resolves.not.toEqual(
+    const requests = await waitForRmaApiResponse(listRmaRequests(RMA_LIST_BODY))
+    expect(requests.data).not.toEqual(
       expect.arrayContaining([
         expect.objectContaining({ rmaId: 'RMA-2026-1001' }),
       ]),
@@ -200,13 +210,12 @@ describe('RMA request service', () => {
     await waitForRmaApiResponse(deleteRmaRequest('RMA-2026-1001'))
     await waitForRmaApiResponse(
       createRmaRequest({
-        customerName: 'Jordan Lee',
-        productId: 'PRD-A1B2',
-        reason: 'Screen flickers after startup.',
+        ...UNIQUE_CREATE_INPUT,
       }),
     )
 
-    await expect(waitForRmaApiResponse(listRmaRequests())).resolves.not.toEqual(
+    const requests = await waitForRmaApiResponse(listRmaRequests(RMA_LIST_BODY))
+    expect(requests.data).not.toEqual(
       expect.arrayContaining([
         expect.objectContaining({ rmaId: 'RMA-2026-1001' }),
       ]),
@@ -216,15 +225,14 @@ describe('RMA request service', () => {
   it('hard-deletes a created RMA Request from the active list', async () => {
     const request = await waitForRmaApiResponse(
       createRmaRequest({
-        customerName: 'Jordan Lee',
-        productId: 'PRD-A1B2',
-        reason: 'Screen flickers after startup.',
+        ...UNIQUE_CREATE_INPUT,
       }),
     )
 
     await waitForRmaApiResponse(deleteRmaRequest(request.rmaId))
 
-    await expect(waitForRmaApiResponse(listRmaRequests())).resolves.not.toEqual(
+    const requests = await waitForRmaApiResponse(listRmaRequests(RMA_LIST_BODY))
+    expect(requests.data).not.toEqual(
       expect.arrayContaining([
         expect.objectContaining({ rmaId: request.rmaId }),
       ]),
@@ -316,7 +324,8 @@ describe('RMA request service', () => {
       matchingStatus: 'Pending',
     })
 
-    await expect(waitForRmaApiResponse(listRmaRequests())).resolves.toEqual(
+    const requests = await waitForRmaApiResponse(listRmaRequests(RMA_LIST_BODY))
+    expect(requests.data).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
           rmaId: 'RMA-2026-1001',
@@ -363,55 +372,49 @@ describe('RMA request service', () => {
   it('does not reuse RMA ID after hard-deleting the highest active request', async () => {
     const first = await waitForRmaApiResponse(
       createRmaRequest({
-        customerName: 'Jordan Lee',
-        productId: 'PRD-A1B2',
-        reason: 'Screen flickers after startup.',
+        ...UNIQUE_CREATE_INPUT,
       }),
     )
 
-    expect(first.rmaId).toBe('RMA-2026-1003')
+    expect(first.rmaId).toBe('RMA-2026-1013')
 
     await waitForRmaApiResponse(deleteRmaRequest(first.rmaId))
 
     const second = await waitForRmaApiResponse(
       createRmaRequest({
-        customerName: 'Taylor Reed',
-        productId: 'PRD-C3D4',
-        reason: 'Device overheats during normal use.',
+        customerName: 'Robin Hale',
+        productId: 'PRD-D4E5',
+        reason: 'Device shuts down during normal use.',
       }),
     )
 
-    expect(second.rmaId).toBe('RMA-2026-1004')
+    expect(second.rmaId).toBe('RMA-2026-1014')
   })
 
   it('previews monotonic next RMA ID after delete of highest request', async () => {
     const first = await waitForRmaApiResponse(
       createRmaRequest({
-        customerName: 'Jordan Lee',
-        productId: 'PRD-A1B2',
-        reason: 'Screen flickers after startup.',
+        ...UNIQUE_CREATE_INPUT,
       }),
     )
 
-    expect(first.rmaId).toBe('RMA-2026-1003')
+    expect(first.rmaId).toBe('RMA-2026-1013')
 
     await expect(waitForRmaApiResponse(peekNextRmaId())).resolves.toBe(
-      'RMA-2026-1004',
+      'RMA-2026-1014',
     )
 
     await waitForRmaApiResponse(deleteRmaRequest(first.rmaId))
 
     await expect(waitForRmaApiResponse(peekNextRmaId())).resolves.toBe(
-      'RMA-2026-1004',
+      'RMA-2026-1014',
     )
   })
 
-  it('preserves sequence counter when all active requests are deleted', async () => {
+  it('preserves sequence counter when created highest request is deleted', async () => {
     const first = await waitForRmaApiResponse(
       createRmaRequest({
-        customerName: 'Jordan Lee',
-        productId: 'PRD-A1B2',
-        reason: 'Screen flickers after startup.',
+        ...UNIQUE_CREATE_INPUT,
       }),
     )
 
@@ -421,13 +424,13 @@ describe('RMA request service', () => {
 
     const second = await waitForRmaApiResponse(
       createRmaRequest({
-        customerName: 'Taylor Reed',
-        productId: 'PRD-C3D4',
-        reason: 'Device overheats during normal use.',
+        customerName: 'Robin Hale',
+        productId: 'PRD-D4E5',
+        reason: 'Device shuts down during normal use.',
       }),
     )
 
-    expect(second.rmaId).toBe('RMA-2026-1004')
+    expect(second.rmaId).toBe('RMA-2026-1014')
   })
 
   it('updates RMA Request status and returns the updated request', async () => {
@@ -438,8 +441,8 @@ describe('RMA request service', () => {
     expect(updated.status).toBe('Rejected')
     expect(updated.rmaId).toBe('RMA-2026-1002')
 
-    const requests = await waitForRmaApiResponse(listRmaRequests())
-    const reloaded = requests.find((r) => r.rmaId === 'RMA-2026-1002')
+    const requests = await waitForRmaApiResponse(listRmaRequests(RMA_LIST_BODY))
+    const reloaded = requests.data.find((r) => r.rmaId === 'RMA-2026-1002')
 
     expect(reloaded?.status).toBe('Rejected')
   })
@@ -472,9 +475,7 @@ describe('RMA request service', () => {
   it('resets RMA ID sequence to start value for a new year', async () => {
     await waitForRmaApiResponse(
       createRmaRequest({
-        customerName: 'Jordan Lee',
-        productId: 'PRD-A1B2',
-        reason: 'Screen flickers after startup.',
+        ...UNIQUE_CREATE_INPUT,
       }),
     )
 
@@ -482,9 +483,9 @@ describe('RMA request service', () => {
 
     const request = await waitForRmaApiResponse(
       createRmaRequest({
-        customerName: 'Taylor Reed',
-        productId: 'PRD-C3D4',
-        reason: 'Device overheats during normal use.',
+        customerName: 'Robin Hale',
+        productId: 'PRD-D4E5',
+        reason: 'Device shuts down during normal use.',
       }),
     )
 

@@ -1,19 +1,21 @@
-import { queryOptions, useQuery } from '@tanstack/react-query'
+import { keepPreviousData, queryOptions, useQuery } from '@tanstack/react-query'
 
+import { rmaListDefaultFormFilterValues } from '@/pages/rma/list/components/form/rma-list-filters-default'
 import {
   getRmaRequestById,
   listRmaRequests,
   peekNextRmaId,
+  rmaListDefaultPagination,
+  type RmaListBody,
 } from '@/services/api/rma/rma-request.service'
 
 const rmaRequestsQueryKey = ['rma-requests'] as const
+const rmaRequestsWithPaginationQueryKey = (
+  filters?: RmaListBody['filters'],
+  pagination?: RmaListBody['pagination'],
+) => ['rma-requests', { filters, pagination }] as const
 const nextRmaIdQueryKey = ['rma-requests', 'next-rma-id'] as const
 const rmaRequestQueryKey = (rmaId: string) => ['rma-requests', rmaId] as const
-
-const rmaRequestsQueryOptions = queryOptions({
-  queryKey: rmaRequestsQueryKey,
-  queryFn: listRmaRequests,
-})
 
 const nextRmaIdQueryOptions = queryOptions({
   queryKey: nextRmaIdQueryKey,
@@ -29,8 +31,15 @@ const rmaRequestQueryOptions = (rmaId: string) =>
     },
   })
 
-function useRmaRequests() {
-  return useQuery(rmaRequestsQueryOptions)
+function useRmaRequests(
+  filters = rmaListDefaultFormFilterValues,
+  pagination = rmaListDefaultPagination,
+) {
+  return useQuery({
+    queryKey: rmaRequestsWithPaginationQueryKey(filters, pagination),
+    queryFn: () => listRmaRequests({ filters, pagination }),
+    placeholderData: keepPreviousData,
+  })
 }
 
 function useNextRmaId() {
@@ -45,6 +54,7 @@ export {
   nextRmaIdQueryKey,
   rmaRequestQueryKey,
   rmaRequestsQueryKey,
+  rmaRequestsWithPaginationQueryKey,
   useNextRmaId,
   useRmaRequest,
   useRmaRequests,

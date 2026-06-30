@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Link } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
 
@@ -6,12 +7,28 @@ import { successToast } from '@/components/app/toast.util'
 import { Button } from '@/components/ui/button'
 import { useDeleteRmaRequest } from '@/hooks/api/rma/use-delete-rma-request.hook'
 import { useRmaRequests } from '@/hooks/api/rma/use-rma-requests.hook'
+import { type RmaListPagination } from '@/services/api/rma/rma-request.service'
 
-import { RmaListPage } from './rma-list.page'
+import { rmaListDefaultFormFilterValues } from './components/form/rma-list-filters-default'
+import { RmaListPage, type RmaListFilters } from './rma-list.page'
 
 function RmaListContainer() {
-  const rmaRequestsQuery = useRmaRequests()
+  const [filters, setFilters] = useState<RmaListFilters>(
+    rmaListDefaultFormFilterValues,
+  )
+  const [pagination, setPagination] = useState<RmaListPagination>()
+  const rmaRequestsQuery = useRmaRequests(filters, pagination)
   const deleteRmaRequestMutation = useDeleteRmaRequest()
+
+  useEffect(() => {
+    const queryData = rmaRequestsQuery.data
+
+    if (queryData && !pagination) {
+      const { data: _, ...p } = queryData
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setPagination(p)
+    }
+  }, [rmaRequestsQuery.data, pagination])
 
   useLayout(
     {
@@ -36,13 +53,25 @@ function RmaListContainer() {
     successToast('RMA deleted', 'The request was removed.')
   }
 
+  function handleFiltersFormSubmit(updatedFilters: RmaListFilters) {
+    setFilters((oldValue) => ({ ...oldValue, ...updatedFilters }))
+  }
+
+  function handlePaginationChange(updatedPagination: RmaListPagination) {
+    setPagination((oldValue) => ({ ...oldValue, ...updatedPagination }))
+  }
+
   return (
     <RmaListPage
       error={rmaRequestsQuery.error}
       isError={rmaRequestsQuery.isError}
-      isPending={rmaRequestsQuery.isPending}
-      requests={rmaRequestsQuery.data ?? []}
+      isPending={rmaRequestsQuery.isFetching}
+      filters={filters}
+      pagination={pagination}
+      requests={rmaRequestsQuery.data?.data}
       onDeleteRequest={deleteRequest}
+      onPaginationChange={handlePaginationChange}
+      onFiltersFormSubmit={handleFiltersFormSubmit}
     />
   )
 }

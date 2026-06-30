@@ -9,8 +9,7 @@ import {
 } from '@testing-library/react'
 import { beforeEach, expect, test, vi } from 'vitest'
 
-import type { RmaRequest } from '@/services/api/rma/rma-request.model'
-
+import type { RmaRequest } from '../../../models/rma-request.model'
 import { RmaListContainer } from './rma-list.container'
 
 const seedRequests: RmaRequest[] = [
@@ -32,18 +31,30 @@ const seedRequests: RmaRequest[] = [
   },
 ]
 
-const { listRmaRequests, peekNextRmaId, toastSuccess, deleteRmaRequest } =
-  vi.hoisted(() => ({
-    listRmaRequests: vi.fn(),
-    peekNextRmaId: vi.fn(),
-    toastSuccess: vi.fn(),
-    deleteRmaRequest: vi.fn(),
-  }))
+const {
+  listRmaRequests,
+  peekNextRmaId,
+  toastSuccess,
+  deleteRmaRequest,
+  rmaListDefaultPagination,
+} = vi.hoisted(() => ({
+  listRmaRequests: vi.fn(),
+  peekNextRmaId: vi.fn(),
+  toastSuccess: vi.fn(),
+  deleteRmaRequest: vi.fn(),
+  rmaListDefaultPagination: {
+    sortProp: 'createdAt',
+    direction: 'desc',
+    pageIndex: 0,
+    pageSize: 10,
+  } as const,
+}))
 
 vi.mock('@/services/api/rma/rma-request.service', () => ({
   deleteRmaRequest,
   listRmaRequests,
   peekNextRmaId,
+  rmaListDefaultPagination,
 }))
 
 vi.mock('@/components/app/toast.util', () => ({
@@ -83,9 +94,15 @@ function renderWithQueryClient(children: ReactNode) {
 }
 
 beforeEach(() => {
-  listRmaRequests.mockReturnValue(seedRequests)
-  peekNextRmaId.mockReturnValue('RMA-2026-1003')
+  listRmaRequests.mockResolvedValue({
+    data: seedRequests,
+    totalRows: seedRequests.length,
+    ...rmaListDefaultPagination,
+  })
+  deleteRmaRequest.mockResolvedValue(seedRequests[0])
+  peekNextRmaId.mockResolvedValue('RMA-2026-1003')
   toastSuccess.mockClear()
+  deleteRmaRequest.mockClear()
 })
 
 test('deletes an RMA Request, refreshes the list, and shows success toast', async () => {

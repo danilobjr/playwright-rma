@@ -1,11 +1,13 @@
-import { waitBetween } from '@/utils/timing/wait-between.util'
-
+import type { Pagination } from '@/components/ui/data-table/pagination.type'
+import type { PaginatedData } from '@/models/paginated-data.model'
 import type {
   CreateRmaRequestInput,
   RmaRequest,
   RmaStatus,
   UpdateRmaRequestInput,
-} from './rma-request.model'
+} from '@/models/rma-request.model'
+import { paginate } from '@/utils/pagination/paginate.util'
+import { waitBetween } from '@/utils/timing/wait-between.util'
 
 const RMA_STORAGE_KEY = 'playwright-rma:rma-requests:v1'
 const RMA_ID_SEQUENCE_KEY = 'playwright-rma:rma-id-sequence:v1'
@@ -47,6 +49,86 @@ const seedRmaRequests: RmaRequest[] = [
     productId: 'PRD-9C4D',
     reason: 'Battery does not hold charge longer than thirty minutes.',
     createdAt: '2026-02-08T09:12:00.000Z',
+  },
+  {
+    rmaId: 'RMA-2026-1003',
+    status: 'Approved',
+    customerName: 'Noah Kim',
+    productId: 'PRD-5E6F',
+    reason: 'Device overheats after 20 minutes of use.',
+    createdAt: '2026-03-01T11:00:00.000Z',
+  },
+  {
+    rmaId: 'RMA-2026-1004',
+    status: 'Rejected',
+    customerName: 'Jordan Lee',
+    productId: 'PRD-A1B2',
+    reason: 'Screen flickers after startup.',
+    createdAt: '2026-03-04T10:30:00.000Z',
+  },
+  {
+    rmaId: 'RMA-2026-1005',
+    status: 'Completed',
+    customerName: 'Sam Rivera',
+    productId: 'PRD-3C8D',
+    reason: 'USB port no longer detects any connected device.',
+    createdAt: '2026-03-10T08:45:00.000Z',
+  },
+  {
+    rmaId: 'RMA-2026-1006',
+    status: 'Pending',
+    customerName: 'Taylor Chen',
+    productId: 'PRD-2B4A',
+    reason: 'Headphone jack outputs static noise on left channel.',
+    createdAt: '2026-03-12T16:20:00.000Z',
+  },
+  {
+    rmaId: 'RMA-2026-1007',
+    status: 'Pending',
+    customerName: 'Morgan Wright',
+    productId: 'PRD-8F1C',
+    reason: 'Wi-Fi antenna disconnects randomly requiring reboot.',
+    createdAt: '2026-03-15T09:30:00.000Z',
+  },
+  {
+    rmaId: 'RMA-2026-1008',
+    status: 'Approved',
+    customerName: 'Casey Johnson',
+    productId: 'PRD-4D9E',
+    reason: 'Keyboard backlight stopped working after firmware update.',
+    createdAt: '2026-03-18T14:10:00.000Z',
+  },
+  {
+    rmaId: 'RMA-2026-1009',
+    status: 'Pending',
+    customerName: 'Riley Thompson',
+    productId: 'PRD-6A3B',
+    reason: 'Camera lens fails to focus on objects closer than one meter.',
+    createdAt: '2026-03-20T11:45:00.000Z',
+  },
+  {
+    rmaId: 'RMA-2026-1010',
+    status: 'Completed',
+    customerName: 'Jamie Davis',
+    productId: 'PRD-7C5D',
+    reason: 'Power button requires excessive force to register press.',
+    createdAt: '2026-03-22T15:00:00.000Z',
+  },
+  {
+    rmaId: 'RMA-2026-1011',
+    status: 'Approved',
+    customerName: 'Quinn Martinez',
+    productId: 'PRD-9E2A',
+    reason: 'Bluetooth pairing fails after device enters sleep mode.',
+    createdAt: '2026-03-25T10:20:00.000Z',
+  },
+  {
+    rmaId: 'RMA-2026-1012',
+    status: 'Pending',
+    customerName: 'Drew Anderson',
+    productId: 'PRD-1F8B',
+    reason: 'Volume rocker switches become unresponsive intermittently.',
+    createdAt: '2026-03-28T13:15:00.000Z',
   },
 ]
 
@@ -201,8 +283,63 @@ async function withRmaApiDelay<T>(operation: () => T | Promise<T>) {
   return operation()
 }
 
-async function listRmaRequests() {
-  return withRmaApiDelay(() => getAllRmaRequests())
+type RmaListPagination = Pagination<RmaRequest>
+type RmaListPaginated = PaginatedData<RmaRequest>
+type RmaListFilters = {
+  search: string
+  status: RmaStatus | ''
+  submittedDate?: Date
+}
+
+type RmaListBody = {
+  filters: RmaListFilters
+  pagination: RmaListPagination
+}
+
+const rmaListDefaultPagination: RmaListPagination = {
+  sortProp: 'createdAt',
+  direction: 'desc',
+  pageIndex: 0,
+  pageSize: 10,
+}
+
+async function listRmaRequests(body: RmaListBody): Promise<RmaListPaginated> {
+  const allRequests = await withRmaApiDelay(() => getAllRmaRequests())
+  const totalRows = allRequests.length
+
+  let requests = [...allRequests]
+
+  if (body.filters.search) {
+    const search = body.filters.search.toLowerCase()
+    requests = requests.filter((request) =>
+      Object.values(request).some((value) =>
+        String(value).toLowerCase().includes(search),
+      ),
+    )
+  }
+
+  if (body.filters.status) {
+    requests = requests.filter(
+      (request) => request.status === body.filters.status,
+    )
+  }
+
+  if (body.filters.submittedDate) {
+    const submittedDate = body.filters.submittedDate
+    requests = requests.filter((request) =>
+      hasSameLocalCalendarDay(new Date(request.createdAt), submittedDate),
+    )
+  }
+
+  const pagination = body.pagination
+
+  const data = paginate(requests, pagination)
+
+  return {
+    data,
+    totalRows,
+    ...pagination,
+  }
 }
 
 async function getRmaRequestById(rmaId: string) {
@@ -292,6 +429,8 @@ async function updateRmaRequest(rmaId: string, input: UpdateRmaRequestInput) {
   })
 }
 
+export type { RmaListFilters, RmaListPagination, RmaListPaginated, RmaListBody }
+
 export {
   createRmaRequest,
   deleteRmaRequest,
@@ -300,4 +439,5 @@ export {
   listRmaRequests,
   peekNextRmaId,
   updateRmaRequest,
+  rmaListDefaultPagination,
 }

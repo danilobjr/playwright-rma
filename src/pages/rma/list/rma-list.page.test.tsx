@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react'
+import { useState, type ComponentProps, type ReactNode } from 'react'
 import {
   fireEvent,
   render,
@@ -8,8 +8,11 @@ import {
 } from '@testing-library/react'
 import { beforeAll, expect, test, vi } from 'vitest'
 
-import type { RmaRequest } from '@/services/api/rma/rma-request.model'
-
+import type { RmaRequest } from '../../../models/rma-request.model'
+import {
+  rmaListDefaultPagination,
+  type RmaListPagination,
+} from '../../../services/api/rma/rma-request.service'
 import { RmaListPage } from './rma-list.page'
 
 vi.mock('@tanstack/react-router', () => ({
@@ -129,16 +132,16 @@ const requests: RmaRequest[] = [
 ]
 
 const firstPageRmaIds = [
+  'RMA-2026-1001',
   'RMA-2026-1002',
-  'RMA-2026-1012',
-  'RMA-2026-1011',
-  'RMA-2026-1010',
-  'RMA-2026-1009',
-  'RMA-2026-1008',
-  'RMA-2026-1007',
-  'RMA-2026-1006',
-  'RMA-2026-1005',
+  'RMA-2026-1003',
   'RMA-2026-1004',
+  'RMA-2026-1005',
+  'RMA-2026-1006',
+  'RMA-2026-1007',
+  'RMA-2026-1008',
+  'RMA-2026-1009',
+  'RMA-2026-1010',
 ]
 
 beforeAll(() => {
@@ -155,8 +158,41 @@ function getMobileRmaCard(rmaId: string) {
   return screen.getByRole('article', { name: `RMA Request ${rmaId}` })
 }
 
-test('shows real RMA status summary counts', () => {
-  render(<RmaListPage requests={requests} />)
+function getPaginationRowCount() {
+  const rowCount = screen.getByText('of', { selector: 'span' }).parentElement
+
+  expect(rowCount).not.toBeNull()
+
+  return rowCount as HTMLElement
+}
+
+function renderRmaListPage(
+  props: Partial<ComponentProps<typeof RmaListPage>> = {},
+) {
+  const pageRequests = props.requests ?? requests
+  const pagination: RmaListPagination = {
+    ...rmaListDefaultPagination,
+    totalRows: pageRequests.length,
+    ...props.pagination,
+  }
+
+  return render(
+    <RmaListPage
+      requests={pageRequests}
+      pagination={pagination}
+      onDeleteRequest={vi.fn()}
+      onFiltersFormSubmit={vi.fn()}
+      onPaginationChange={vi.fn()}
+      {...props}
+    />,
+  )
+}
+
+test('shows visible page RMA status summary counts', () => {
+  renderRmaListPage({
+    requests: requests.slice(0, 10),
+    pagination: { ...rmaListDefaultPagination, totalRows: 12 },
+  })
 
   expect(
     within(
@@ -165,12 +201,12 @@ test('shows real RMA status summary counts', () => {
   ).toBeInTheDocument()
   expect(
     within(screen.getByRole('article', { name: 'Pending summary' })).getByText(
-      '5',
+      '4',
     ),
   ).toBeInTheDocument()
   expect(
     within(screen.getByRole('article', { name: 'Approved summary' })).getByText(
-      '3',
+      '2',
     ),
   ).toBeInTheDocument()
   expect(
@@ -181,7 +217,7 @@ test('shows real RMA status summary counts', () => {
 })
 
 test('orders RMA status summary cards by workflow', () => {
-  render(<RmaListPage requests={requests} />)
+  renderRmaListPage()
 
   expect(
     screen
@@ -191,19 +227,19 @@ test('orders RMA status summary cards by workflow', () => {
 })
 
 test('does not use Dashboard terminology on the RMA List screen', () => {
-  render(<RmaListPage requests={requests} />)
+  renderRmaListPage()
 
   expect(screen.queryByText(/dashboard/i)).not.toBeInTheDocument()
 })
 
-test('sorts RMA Requests by Submitted date descending by default', () => {
-  render(<RmaListPage requests={requests} />)
+test('shows RMA Requests in the supplied page order', () => {
+  renderRmaListPage({ requests: requests.slice(0, 10) })
 
   expect(getRenderedRmaIds()).toEqual(firstPageRmaIds)
 })
 
 test('shows RMA Requests table columns', () => {
-  render(<RmaListPage requests={requests} />)
+  renderRmaListPage()
 
   expect(
     screen.getByRole('table', { name: 'RMA Requests' }),
@@ -232,7 +268,7 @@ test('shows RMA Requests table columns', () => {
 })
 
 test('links RMA row content and Status badge to the update screen', () => {
-  render(<RmaListPage requests={requests} />)
+  renderRmaListPage()
 
   const row = screen.getByRole('row', { name: /RMA-2026-1002 Jordan Lee/ })
 
@@ -257,7 +293,7 @@ test('links RMA row content and Status badge to the update screen', () => {
 })
 
 test('shows mobile RMA Request cards with table-equivalent labels', () => {
-  render(<RmaListPage requests={requests} />)
+  renderRmaListPage()
 
   const card = getMobileRmaCard('RMA-2026-1002')
 
@@ -279,8 +315,8 @@ test('shows mobile RMA Request cards with table-equivalent labels', () => {
   expect(within(card).getByText('Actions')).toBeInTheDocument()
 })
 
-test('links mobile RMA ID, Status badge, and action to the update screen', () => {
-  render(<RmaListPage requests={requests} />)
+test('links mobile RMA ID and Status badge to the update screen', () => {
+  renderRmaListPage()
 
   const card = getMobileRmaCard('RMA-2026-1002')
 
@@ -291,16 +327,12 @@ test('links mobile RMA ID, Status badge, and action to the update screen', () =>
     'href',
     '/rma/RMA-2026-1002',
   )
-  expect(within(card).getByRole('link', { name: 'Update' })).toHaveAttribute(
-    'href',
-    '/rma/RMA-2026-1002',
-  )
 })
 
 test('shows delete confirmation copy and cancels without deleting', () => {
   const onDeleteRequest = vi.fn()
 
-  render(<RmaListPage requests={requests} onDeleteRequest={onDeleteRequest} />)
+  renderRmaListPage({ onDeleteRequest })
 
   const row = screen.getByRole('row', { name: /RMA-2026-1002 Jordan Lee/ })
 
@@ -333,11 +365,17 @@ test('deletes visible RMA Request and updates active counts', async () => {
     return (
       <RmaListPage
         requests={activeRequests}
+        pagination={{
+          ...rmaListDefaultPagination,
+          totalRows: activeRequests.length,
+        }}
         onDeleteRequest={(rmaId) => {
           setActiveRequests((currentRequests) =>
             currentRequests.filter((request) => request.rmaId !== rmaId),
           )
         }}
+        onFiltersFormSubmit={vi.fn()}
+        onPaginationChange={vi.fn()}
       />
     )
   }
@@ -368,11 +406,11 @@ test('deletes visible RMA Request and updates active counts', async () => {
   expect(
     screen.queryByRole('link', { name: 'RMA-2026-1002' }),
   ).not.toBeInTheDocument()
-  expect(screen.getByText('Showing 1-10 of 11')).toBeInTheDocument()
+  expect(getPaginationRowCount()).toHaveTextContent('Showing 1-10 of 11')
 })
 
 test('exposes delete action for every Status', () => {
-  render(<RmaListPage requests={requests} onDeleteRequest={vi.fn()} />)
+  renderRmaListPage({ onDeleteRequest: vi.fn() })
 
   for (const rmaId of [
     'RMA-2026-1002',
@@ -389,23 +427,32 @@ test('exposes delete action for every Status', () => {
   }
 })
 
-test('paginates RMA Requests with visible range and total count', () => {
-  render(<RmaListPage requests={requests} />)
+test('shows pagination range and emits pagination changes', () => {
+  const onPaginationChange = vi.fn()
+  renderRmaListPage({
+    requests: requests.slice(0, 10),
+    pagination: { ...rmaListDefaultPagination, totalRows: 12 },
+    onPaginationChange,
+  })
 
   expect(getRenderedRmaIds()).toHaveLength(10)
-  expect(screen.getByText('Showing 1-10 of 12')).toBeInTheDocument()
+  expect(getPaginationRowCount()).toHaveTextContent('Showing 1-10 of 12')
   expect(
-    screen.queryByRole('link', { name: 'RMA-2026-1003' }),
-  ).not.toBeInTheDocument()
+    screen.getAllByRole('link', { name: 'RMA-2026-1003' }).length,
+  ).toBeGreaterThan(0)
 
   fireEvent.click(screen.getByRole('button', { name: 'Go to next page' }))
 
-  expect(getRenderedRmaIds()).toEqual(['RMA-2026-1003', 'RMA-2026-1001'])
-  expect(screen.getByText('Showing 11-12 of 12')).toBeInTheDocument()
+  expect(onPaginationChange).toHaveBeenCalledWith({
+    ...rmaListDefaultPagination,
+    totalRows: 12,
+    pageIndex: 1,
+  })
 })
 
 test('applies Search only after Search is clicked', () => {
-  render(<RmaListPage requests={requests} />)
+  const onFiltersFormSubmit = vi.fn()
+  renderRmaListPage({ onFiltersFormSubmit })
 
   fireEvent.change(screen.getByRole('textbox', { name: 'Search' }), {
     target: { value: '  screen   FLICKERS ' },
@@ -413,43 +460,36 @@ test('applies Search only after Search is clicked', () => {
 
   expect(screen.getAllByText('Sofia Rivera').length).toBeGreaterThan(0)
   expect(screen.getAllByText('Jordan Lee').length).toBeGreaterThan(0)
+  expect(onFiltersFormSubmit).not.toHaveBeenCalled()
 
   fireEvent.click(screen.getByRole('button', { name: 'Search' }))
 
-  expect(screen.queryByText('Sofia Rivera')).not.toBeInTheDocument()
-  expect(screen.getAllByText('Jordan Lee').length).toBeGreaterThan(0)
+  expect(onFiltersFormSubmit).toHaveBeenCalledWith({
+    search: '  screen   FLICKERS ',
+    status: '',
+    submittedDate: undefined,
+  })
 })
 
-test('searches RMA ID, Customer name, Product ID, and Reason', () => {
-  render(<RmaListPage requests={requests} />)
+test('submits Search text for server-side filtering', () => {
+  const onFiltersFormSubmit = vi.fn()
+  renderRmaListPage({ onFiltersFormSubmit })
 
   fireEvent.change(screen.getByRole('textbox', { name: 'Search' }), {
     target: { value: 'prd-1a2b' },
   })
   fireEvent.click(screen.getByRole('button', { name: 'Search' }))
-  expect(getRenderedRmaIds()).toEqual(['RMA-2026-1004'])
 
-  fireEvent.change(screen.getByRole('textbox', { name: 'Search' }), {
-    target: { value: 'lena ortiz' },
+  expect(onFiltersFormSubmit).toHaveBeenCalledWith({
+    search: 'prd-1a2b',
+    status: '',
+    submittedDate: undefined,
   })
-  fireEvent.click(screen.getByRole('button', { name: 'Search' }))
-  expect(getRenderedRmaIds()).toEqual(['RMA-2026-1005'])
-
-  fireEvent.change(screen.getByRole('textbox', { name: 'Search' }), {
-    target: { value: 'RMA-2026-1003' },
-  })
-  fireEvent.click(screen.getByRole('button', { name: 'Search' }))
-  expect(getRenderedRmaIds()).toEqual(['RMA-2026-1003'])
-
-  fireEvent.change(screen.getByRole('textbox', { name: 'Search' }), {
-    target: { value: 'outside warranty' },
-  })
-  fireEvent.click(screen.getByRole('button', { name: 'Search' }))
-  expect(getRenderedRmaIds()).toEqual(['RMA-2026-1004'])
 })
 
 test('filters by Status from the Status field', () => {
-  render(<RmaListPage requests={requests} />)
+  const onFiltersFormSubmit = vi.fn()
+  renderRmaListPage({ onFiltersFormSubmit })
 
   fireEvent.click(screen.getByRole('combobox', { name: 'Status' }))
   expect(screen.queryByRole('option', { name: /All/ })).not.toBeInTheDocument()
@@ -460,109 +500,89 @@ test('filters by Status from the Status field', () => {
   fireEvent.click(screen.getByRole('option', { name: /Approved/ }))
   fireEvent.click(screen.getByRole('button', { name: 'Search' }))
 
-  expect(getRenderedRmaIds()).toEqual([
-    'RMA-2026-1011',
-    'RMA-2026-1007',
-    'RMA-2026-1003',
-  ])
+  expect(onFiltersFormSubmit).toHaveBeenCalledWith({
+    search: '',
+    status: 'Approved',
+    submittedDate: undefined,
+  })
 })
 
 test('filters by exact Submitted date local calendar day', () => {
-  render(<RmaListPage requests={requests} />)
+  const onFiltersFormSubmit = vi.fn()
+  const submittedDate = new Date('2026-03-04T10:30:00.000Z')
+  renderRmaListPage({
+    filters: { search: '', status: '', submittedDate },
+    onFiltersFormSubmit,
+  })
 
-  fireEvent.click(screen.getByRole('button', { name: 'Submitted date' }))
-  fireEvent.click(
-    screen.getByRole('button', { name: 'Wednesday, March 4th, 2026' }),
-  )
   fireEvent.click(screen.getByRole('button', { name: 'Search' }))
 
-  expect(getRenderedRmaIds()).toEqual(['RMA-2026-1002'])
+  expect(onFiltersFormSubmit).toHaveBeenCalledWith({
+    search: '',
+    status: '',
+    submittedDate,
+  })
 })
 
-test('Reset clears draft filters, applied filters, and selected summary card', () => {
-  render(<RmaListPage requests={requests} />)
+test('Reset submits default filters', () => {
+  const onFiltersFormSubmit = vi.fn()
+  renderRmaListPage({ onFiltersFormSubmit })
 
   fireEvent.change(screen.getByRole('textbox', { name: 'Search' }), {
     target: { value: 'Jordan' },
   })
-  fireEvent.click(screen.getByRole('button', { name: 'Search' }))
-  expect(getRenderedRmaIds()).toEqual(['RMA-2026-1002'])
-
   fireEvent.click(screen.getByRole('button', { name: 'Reset' }))
 
-  expect(screen.getByRole('textbox', { name: 'Search' })).toHaveValue('')
-  expect(screen.getByRole('combobox', { name: 'Status' })).toHaveTextContent(
-    'Status',
-  )
-  expect(getRenderedRmaIds()).toEqual(firstPageRmaIds)
+  expect(onFiltersFormSubmit).toHaveBeenCalledWith({
+    search: '',
+    status: '',
+    submittedDate: undefined,
+  })
 })
 
-test('resets pagination when filters or summary cards change', () => {
-  render(<RmaListPage requests={requests} />)
-
-  fireEvent.click(screen.getByRole('button', { name: 'Go to next page' }))
-  expect(screen.getByText('Showing 11-12 of 12')).toBeInTheDocument()
-
-  fireEvent.change(screen.getByRole('textbox', { name: 'Search' }), {
-    target: { value: 'Jordan' },
+test('emits first page when pagination first button is clicked', () => {
+  const onPaginationChange = vi.fn()
+  renderRmaListPage({
+    requests: requests.slice(10),
+    pagination: { ...rmaListDefaultPagination, pageIndex: 1, totalRows: 12 },
+    onPaginationChange,
   })
-  fireEvent.click(screen.getByRole('button', { name: 'Search' }))
-  expect(screen.getByText('Showing 1-1 of 1')).toBeInTheDocument()
 
-  fireEvent.click(screen.getByRole('button', { name: 'Reset' }))
-  fireEvent.click(screen.getByRole('button', { name: 'Go to next page' }))
-  fireEvent.click(screen.getByRole('article', { name: 'Pending summary' }))
-  expect(screen.getByText('Showing 1-5 of 5')).toBeInTheDocument()
+  expect(getPaginationRowCount()).toHaveTextContent('Showing 11-12 of 12')
+  fireEvent.click(screen.getByRole('button', { name: 'Go to first page' }))
+
+  expect(onPaginationChange).toHaveBeenCalledWith({
+    ...rmaListDefaultPagination,
+    pageIndex: 0,
+    totalRows: 12,
+  })
 })
 
-test('summary cards clear filters, submit, and sync the Status field', () => {
-  render(<RmaListPage requests={requests} />)
-
-  fireEvent.change(screen.getByRole('textbox', { name: 'Search' }), {
-    target: { value: 'Mina' },
+test('shows supplied filter values in the form', () => {
+  renderRmaListPage({
+    filters: {
+      search: 'Mina',
+      status: 'Pending',
+      submittedDate: new Date('2026-03-04T10:30:00.000Z'),
+    },
   })
-  fireEvent.click(screen.getByRole('button', { name: 'Submitted date' }))
-  fireEvent.click(
-    screen.getByRole('button', { name: 'Wednesday, March 4th, 2026' }),
-  )
-  fireEvent.click(screen.getByRole('article', { name: 'Pending summary' }))
 
-  expect(screen.getByRole('textbox', { name: 'Search' })).toHaveValue('')
+  expect(screen.getByRole('textbox', { name: 'Search' })).toHaveValue('Mina')
   expect(screen.getByRole('combobox', { name: 'Status' })).toHaveTextContent(
     'Pending',
   )
   expect(
     screen.getByRole('button', { name: 'Submitted date' }),
-  ).toHaveTextContent('Submitted date')
-  expect(getRenderedRmaIds()).toEqual([
-    'RMA-2026-1002',
-    'RMA-2026-1012',
-    'RMA-2026-1010',
-    'RMA-2026-1006',
-    'RMA-2026-1001',
-  ])
-
-  fireEvent.click(screen.getByRole('article', { name: 'Total RMAs summary' }))
-
-  expect(screen.getByRole('textbox', { name: 'Search' })).toHaveValue('')
-  expect(screen.getByRole('combobox', { name: 'Status' })).toHaveTextContent(
-    'Status',
-  )
-  expect(
-    screen.getByRole('button', { name: 'Submitted date' }),
-  ).toHaveTextContent('Submitted date')
-  expect(getRenderedRmaIds()).toEqual(firstPageRmaIds)
+  ).toHaveTextContent('Mar 4, 2026')
 })
 
 test('shows error alert when loading fails', () => {
-  render(
-    <RmaListPage
-      requests={[]}
-      isPending={false}
-      isError={true}
-      error={new Error('Failed to fetch')}
-    />,
-  )
+  renderRmaListPage({
+    requests: [],
+    isPending: false,
+    isError: true,
+    error: new Error('Failed to fetch'),
+  })
 
   expect(screen.getByRole('alert')).toHaveTextContent(
     "Couldn't load RMA Requests",
@@ -570,12 +590,10 @@ test('shows error alert when loading fails', () => {
 })
 
 test('shows filtered-empty state with Reset when no results match filters', () => {
-  render(<RmaListPage requests={[requests[0]]} />)
-
-  fireEvent.change(screen.getByRole('textbox', { name: 'Search' }), {
-    target: { value: 'N0NE3ISTENT' },
+  renderRmaListPage({
+    requests: [],
+    pagination: { ...rmaListDefaultPagination, totalRows: 1 },
   })
-  fireEvent.click(screen.getByRole('button', { name: 'Search' }))
 
   expect(screen.getByText('No RMA Requests found')).toBeInTheDocument()
   expect(
@@ -587,7 +605,7 @@ test('shows filtered-empty state with Reset when no results match filters', () =
 })
 
 test('shows empty state with New RMA action when no requests exist', () => {
-  render(<RmaListPage requests={[]} />)
+  renderRmaListPage({ requests: [] })
 
   expect(screen.getByText('No RMA Requests')).toBeInTheDocument()
   expect(
@@ -600,7 +618,7 @@ test('shows empty state with New RMA action when no requests exist', () => {
 })
 
 test('shows skeleton rows when loading and hides empty state', () => {
-  render(<RmaListPage requests={[]} isPending={true} />)
+  renderRmaListPage({ requests: [], isPending: true })
 
   const skeletons = screen.getAllByTestId('rma-list-skeleton')
   expect(skeletons.length).toBeGreaterThan(0)
@@ -608,11 +626,11 @@ test('shows skeleton rows when loading and hides empty state', () => {
 })
 
 test('shows selected Status icon and label in the field', () => {
-  render(<RmaListPage requests={requests} />)
+  renderRmaListPage()
 
   const statusField = screen.getByRole('combobox', { name: 'Status' })
 
-  expect(statusField).toHaveTextContent('Status')
+  expect(statusField).toHaveTextContent('All')
 
   fireEvent.click(statusField)
   fireEvent.click(screen.getByRole('option', { name: /Approved/ }))
