@@ -2,8 +2,8 @@ import { Link } from '@tanstack/react-router'
 import { SaveIcon } from 'lucide-react'
 
 import {
+  RMA_STATUS_DISPLAY,
   RMA_STATUS_ORDER,
-  RMA_STATUS_PRESENTATION,
 } from '@/pages/rma/rma-status-presentation.model'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Badge } from '@/components/ui/badge'
@@ -30,10 +30,7 @@ import {
 } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
-import type {
-  RmaRequest,
-  RmaStatus,
-} from '@/services/api/rma/rma-request.model'
+import type { RmaRequest, RmaStatus } from '@/models/rma-request.model'
 import { cn } from '@/utils/styles/cn.util'
 
 type RmaUpdatePageProps = {
@@ -193,8 +190,8 @@ function RmaUpdatePage({
 
   const currentDraft = draftStatus ?? request.status
   const submittedDate = formatSubmittedDate(new Date(request.createdAt))
-  const persistedPresentation = RMA_STATUS_PRESENTATION[request.status]
-  const draftPresentation = RMA_STATUS_PRESENTATION[currentDraft]
+  const persistedPresentation = RMA_STATUS_DISPLAY[request.status]
+  const draftPresentation = RMA_STATUS_DISPLAY[currentDraft]
   const DraftIcon = draftPresentation.icon
 
   return (
@@ -252,7 +249,7 @@ function RmaUpdatePage({
               <SelectContent>
                 <SelectGroup>
                   {RMA_STATUS_ORDER.map((status) => {
-                    const presentation = RMA_STATUS_PRESENTATION[status]
+                    const presentation = RMA_STATUS_DISPLAY[status]
                     const Icon = presentation.icon
 
                     return (

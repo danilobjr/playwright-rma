@@ -35,7 +35,7 @@ import {
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import type { RmaStatus } from '@/services/api/rma/rma-request.model'
+import type { RmaStatus } from '@/models/rma-request.model'
 
 import {
   PRODUCT_ID_PREFIX,

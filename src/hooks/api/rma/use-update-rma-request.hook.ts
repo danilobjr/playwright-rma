@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-import type { UpdateRmaRequestInput } from '@/services/api/rma/rma-request.model'
 import { updateRmaRequest } from '@/services/api/rma/rma-request.service'
+import type { UpdateRmaRequestInput } from '@/models/rma-request.model'
 
 import {
   rmaRequestQueryKey,

@@ -6,7 +6,7 @@ import {
   type LucideIcon,
 } from 'lucide-react'
 
-import type { RmaStatus } from '@/services/api/rma/rma-request.model'
+import type { RmaStatus } from '@/models/rma-request.model'
 
 type RmaStatusPresentation = {
   label: RmaStatus
@@ -22,7 +22,7 @@ const RMA_STATUS_ORDER = [
   'Completed',
 ] as const satisfies RmaStatus[]
 
-const RMA_STATUS_PRESENTATION: Record<RmaStatus, RmaStatusPresentation> = {
+const RMA_STATUS_DISPLAY: Record<RmaStatus, RmaStatusPresentation> = {
   Pending: {
     label: 'Pending',
     description: 'Awaiting review',
@@ -53,5 +53,5 @@ const RMA_STATUS_PRESENTATION: Record<RmaStatus, RmaStatusPresentation> = {
   },
 }
 
-export { RMA_STATUS_ORDER, RMA_STATUS_PRESENTATION }
+export { RMA_STATUS_ORDER, RMA_STATUS_DISPLAY }
 export type { RmaStatusPresentation }

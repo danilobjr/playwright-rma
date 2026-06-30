@@ -2,7 +2,7 @@ import { type ReactNode } from 'react'
 import { fireEvent, render, screen, within } from '@testing-library/react'
 import { expect, test, vi } from 'vitest'
 
-import type { RmaRequest } from '@/services/api/rma/rma-request.model'
+import type { RmaRequest } from '@/models/rma-request.model'
 
 import { RmaUpdatePage } from './rma-update.page'
 

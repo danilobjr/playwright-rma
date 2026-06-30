@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { beforeEach, expect, test, vi } from 'vitest'
 
-import type { RmaRequest } from '@/services/api/rma/rma-request.model'
+import type { RmaRequest } from '@/models/rma-request.model'
 
 import { RmaUpdateContainer } from './rma-update.container'
 

@@ -7,7 +7,7 @@ import { successToast } from '@/components/app/toast.util'
 import { Button } from '@/components/ui/button'
 import { useRmaRequest } from '@/hooks/api/rma/use-rma-requests.hook'
 import { useUpdateRmaRequest } from '@/hooks/api/rma/use-update-rma-request.hook'
-import type { RmaStatus } from '@/services/api/rma/rma-request.model'
+import type { RmaStatus } from '@/models/rma-request.model'
 
 import { RmaUpdatePage } from './rma-update.page'
 
