@@ -62,7 +62,7 @@ function RmaListFiltersForm({
   return (
     <div className="p-(--card-spacing)">
       <FieldGroup>
-        <div className="grid gap-3 lg:grid-cols-4 lg:items-end">
+        <div className="grid grid-cols-4 items-end gap-3">
           <Field>
             <FieldLabel htmlFor="rma-search">Search</FieldLabel>
             <div className="relative">

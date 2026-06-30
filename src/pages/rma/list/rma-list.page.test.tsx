@@ -154,10 +154,6 @@ function getRenderedRmaIds() {
     .map((link) => link.textContent)
 }
 
-function getMobileRmaCard(rmaId: string) {
-  return screen.getByRole('article', { name: `RMA Request ${rmaId}` })
-}
-
 function getPaginationRowCount() {
   const rowCount = screen.getByText('of', { selector: 'span' }).parentElement
 
@@ -287,43 +283,6 @@ test('links RMA row content and Status badge to the update screen', () => {
     within(row).getByRole('link', { name: 'Screen flickers after startup.' }),
   ).toHaveAttribute('href', '/rma/RMA-2026-1002')
   expect(within(row).getByRole('link', { name: 'Pending' })).toHaveAttribute(
-    'href',
-    '/rma/RMA-2026-1002',
-  )
-})
-
-test('shows mobile RMA Request cards with table-equivalent labels', () => {
-  renderRmaListPage()
-
-  const card = getMobileRmaCard('RMA-2026-1002')
-
-  expect(within(card).getByText('RMA ID')).toBeInTheDocument()
-  expect(
-    within(card).getByRole('link', { name: 'RMA-2026-1002' }),
-  ).toHaveAttribute('href', '/rma/RMA-2026-1002')
-  expect(within(card).getByText('Customer name')).toBeInTheDocument()
-  expect(within(card).getByText('Jordan Lee')).toBeInTheDocument()
-  expect(within(card).getByText('Product ID')).toBeInTheDocument()
-  expect(within(card).getByText('PRD-A1B2')).toBeInTheDocument()
-  expect(within(card).getByText('Reason')).toBeInTheDocument()
-  expect(
-    within(card).getByText('Screen flickers after startup.'),
-  ).toBeInTheDocument()
-  expect(within(card).getByText('Status')).toBeInTheDocument()
-  expect(within(card).getByText('Submitted date')).toBeInTheDocument()
-  expect(within(card).getByText('Mar 4, 2026')).toBeInTheDocument()
-  expect(within(card).getByText('Actions')).toBeInTheDocument()
-})
-
-test('links mobile RMA ID and Status badge to the update screen', () => {
-  renderRmaListPage()
-
-  const card = getMobileRmaCard('RMA-2026-1002')
-
-  expect(
-    within(card).getByRole('link', { name: 'RMA-2026-1002' }),
-  ).toHaveAttribute('href', '/rma/RMA-2026-1002')
-  expect(within(card).getByRole('link', { name: 'Pending' })).toHaveAttribute(
     'href',
     '/rma/RMA-2026-1002',
   )

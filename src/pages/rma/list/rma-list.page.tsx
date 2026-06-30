@@ -50,7 +50,6 @@ import {
 } from '@/services/api/rma/rma-request.service'
 import type { RmaRequest } from '@/models/rma-request.model'
 import { formatDate } from '@/utils/date-time/format-date.util'
-import { cn } from '@/utils/styles/cn.util'
 
 import { rmaListDefaultFormFilterValues } from './components/form/rma-list-filters-default'
 import { RmaListFiltersForm } from './components/form/rma-list-filters-form.component'
@@ -139,7 +138,7 @@ function RmaListPage({
       <div className="grid gap-4">
         <section
           aria-label="RMA status summary"
-          className="hidden gap-3 lg:grid lg:grid-cols-4"
+          className="grid grid-cols-4 gap-3"
         >
           <div
             aria-label="Total RMAs summary"
@@ -160,9 +159,7 @@ function RmaListPage({
               <div
                 key={status}
                 aria-label={`${status} summary`}
-                className={cn(
-                  'flex flex-col gap-3.5 rounded-xl border bg-card p-4.5 text-sm',
-                )}
+                className="flex flex-col gap-3.5 rounded-xl border bg-card p-4.5 text-sm"
                 role="article"
               >
                 <span className="text-[1.75rem] leading-none font-bold tabular-nums">
@@ -179,7 +176,7 @@ function RmaListPage({
         {isPending ? (
           <Card>
             <CardContent className="grid gap-4 pt-(--card-spacing)">
-              <div aria-hidden="true" className="hidden md:block">
+              <div aria-hidden="true">
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -232,26 +229,6 @@ function RmaListPage({
                   </TableBody>
                 </Table>
               </div>
-              <div aria-hidden="true" className="grid gap-3 md:hidden">
-                {Array.from({ length: 10 }).map((_, index) => (
-                  <Card key={index} size="sm">
-                    <CardContent className="grid gap-3 pt-(--card-spacing)">
-                      <div className="grid gap-1">
-                        <Skeleton className="h-3 w-12" />
-                        <Skeleton className="h-4 w-28" />
-                      </div>
-                      <div className="grid gap-1">
-                        <Skeleton className="h-3 w-20" />
-                        <Skeleton className="h-4 w-36" />
-                      </div>
-                      <div className="grid gap-1">
-                        <Skeleton className="h-3 w-16" />
-                        <Skeleton className="h-4 w-20" />
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
             </CardContent>
           </Card>
         ) : isError ? (
@@ -297,8 +274,8 @@ function RmaListPage({
             />
 
             <Card className="gap-0 p-0">
-              <CardContent className="grid gap-4 py-(--card-spacing) md:p-0">
-                <div className="hidden md:block">
+              <CardContent className="grid gap-4 p-0">
+                <div>
                   <Table aria-label="RMA Requests">
                     <TableHeader>
                       <TableRow>
@@ -396,102 +373,6 @@ function RmaListPage({
                       })}
                     </TableBody>
                   </Table>
-                </div>
-                <div aria-label="RMA Requests" className="grid gap-3 md:hidden">
-                  {requests.map((request) => {
-                    const presentation = RMA_STATUS_DISPLAY[request.status]
-                    const submittedDate = formatDate(
-                      new Date(request.createdAt),
-                    )
-                    const updateLink = {
-                      params: { rmaId: request.rmaId },
-                      to: '/rma/$rmaId' as const,
-                    }
-
-                    return (
-                      <Card
-                        key={request.rmaId}
-                        aria-label={`RMA Request ${request.rmaId}`}
-                        role="article"
-                        size="sm"
-                      >
-                        <CardContent className="grid gap-3 pt-(--card-spacing)">
-                          <div className="grid gap-1">
-                            <span className="text-xs font-medium text-muted-foreground">
-                              RMA ID
-                            </span>
-                            <Link
-                              className={cn(tableLinkClassName, 'font-medium')}
-                              {...updateLink}
-                            >
-                              {request.rmaId}
-                            </Link>
-                          </div>
-                          <div className="grid gap-1">
-                            <span className="text-xs font-medium text-muted-foreground">
-                              Customer name
-                            </span>
-                            <Link
-                              className={tableLinkClassName}
-                              {...updateLink}
-                            >
-                              {request.customerName}
-                            </Link>
-                          </div>
-                          <div className="grid gap-1">
-                            <span className="text-xs font-medium text-muted-foreground">
-                              Product ID
-                            </span>
-                            <Link
-                              className={tableLinkClassName}
-                              {...updateLink}
-                            >
-                              {request.productId}
-                            </Link>
-                          </div>
-                          <div className="grid gap-1">
-                            <span className="text-xs font-medium text-muted-foreground">
-                              Reason
-                            </span>
-                            <Link
-                              className={tableLinkClassName}
-                              {...updateLink}
-                            >
-                              {request.reason}
-                            </Link>
-                          </div>
-                          <div className="grid gap-1">
-                            <span className="text-xs font-medium text-muted-foreground">
-                              Status
-                            </span>
-                            <Link
-                              className={tableLinkClassName}
-                              {...updateLink}
-                            >
-                              <Badge
-                                className={presentation.className}
-                                variant="outline"
-                              >
-                                {presentation.label}
-                              </Badge>
-                            </Link>
-                          </div>
-                          <div className="grid gap-1">
-                            <span className="text-xs font-medium text-muted-foreground">
-                              Submitted date
-                            </span>
-                            <span>{submittedDate}</span>
-                          </div>
-                          <div className="grid gap-1">
-                            <span className="text-xs font-medium text-muted-foreground">
-                              Actions
-                            </span>
-                            {renderDeleteAction(request)}
-                          </div>
-                        </CardContent>
-                      </Card>
-                    )
-                  })}
                 </div>
               </CardContent>
             </Card>

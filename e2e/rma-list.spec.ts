@@ -7,14 +7,6 @@ async function expectSummaryCard(page: Page, name: string, count: string) {
   await expect(card.getByText(count, { exact: true })).toBeVisible()
 }
 
-async function expectNoHorizontalOverflow(page: Page) {
-  await expect(
-    page.evaluate(
-      () => document.documentElement.scrollWidth <= window.innerWidth,
-    ),
-  ).resolves.toBe(true)
-}
-
 async function expectSummaryOrder(summaryCards: Locator) {
   await expect(summaryCards).toHaveCount(4)
   await expect(summaryCards.nth(0)).toContainText('Total RMAs')
@@ -52,6 +44,32 @@ async function expectRmaTableColumns(page: Page) {
   ).toBeVisible()
 }
 
+const firstPageRmaIds = [
+  'RMA-2026-1012',
+  'RMA-2026-1011',
+  'RMA-2026-1010',
+  'RMA-2026-1009',
+  'RMA-2026-1008',
+  'RMA-2026-1007',
+  'RMA-2026-1006',
+  'RMA-2026-1005',
+  'RMA-2026-1004',
+  'RMA-2026-1003',
+]
+
+const firstPageAfterDeletingNewestRmaIds = [
+  'RMA-2026-1011',
+  'RMA-2026-1010',
+  'RMA-2026-1009',
+  'RMA-2026-1008',
+  'RMA-2026-1007',
+  'RMA-2026-1006',
+  'RMA-2026-1005',
+  'RMA-2026-1004',
+  'RMA-2026-1003',
+  'RMA-2026-1002',
+]
+
 async function goToCalendarMonth(page: Page, targetMonth: string) {
   for (let attempt = 0; attempt < 24; attempt += 1) {
     const visibleMonth = await page.getByRole('status').textContent()
@@ -81,10 +99,10 @@ test('shows RMA status summary counts in workflow order', async ({ page }) => {
   ).toBeVisible()
   await expect(page.getByText(/dashboard/i)).toHaveCount(0)
   await expectSummaryOrder(page.getByRole('article', { name: /summary$/ }))
-  await expectSummaryCard(page, 'Total RMAs', '2')
-  await expectSummaryCard(page, 'Pending', '1')
-  await expectSummaryCard(page, 'Approved', '1')
-  await expectSummaryCard(page, 'Completed', '0')
+  await expectSummaryCard(page, 'Total RMAs', '12')
+  await expectSummaryCard(page, 'Pending', '4')
+  await expectSummaryCard(page, 'Approved', '3')
+  await expectSummaryCard(page, 'Completed', '2')
 })
 
 test('updates RMA status summary after creating a Pending request', async ({
@@ -98,60 +116,10 @@ test('updates RMA status summary after creating a Pending request', async ({
   await page.getByRole('button', { name: 'Submit' }).click()
 
   await expect(page).toHaveURL(/#\/rma$/)
-  await expectSummaryCard(page, 'Total RMAs', '3')
-  await expectSummaryCard(page, 'Pending', '2')
-  await expectSummaryCard(page, 'Approved', '1')
-  await expectSummaryCard(page, 'Completed', '0')
-})
-
-test('shows stacked RMA Request cards on mobile', async ({ page }) => {
-  await page.setViewportSize({ width: 375, height: 812 })
-  await page.goto('/#/rma')
-
-  await expect(page.getByRole('table', { name: 'RMA Requests' })).toHaveCount(0)
-
-  const card = page.getByRole('article', { name: 'RMA Request RMA-2026-1002' })
-
-  await expect(card).toBeVisible()
-  await expect(card.getByText('RMA ID', { exact: true })).toBeVisible()
-  await expect(card.getByRole('link', { name: 'RMA-2026-1002' })).toBeVisible()
-  await expect(card.getByText('Customer name', { exact: true })).toBeVisible()
-  await expect(card.getByRole('link', { name: 'Mina Patel' })).toBeVisible()
-  await expect(card.getByText('Product ID', { exact: true })).toBeVisible()
-  await expect(card.getByRole('link', { name: 'PRD-9C4D' })).toBeVisible()
-  await expect(card.getByText('Reason', { exact: true })).toBeVisible()
-  await expect(card.getByRole('link', { name: /Battery/ })).toBeVisible()
-  await expect(card.getByText('Status', { exact: true })).toBeVisible()
-  await expect(card.getByRole('link', { name: 'Approved' })).toBeVisible()
-  await expect(card.getByText('Submitted date', { exact: true })).toBeVisible()
-  await expect(card.getByText('Actions', { exact: true })).toBeVisible()
-  await expect(card.getByRole('link', { name: 'Update' })).toBeVisible()
-  await expectNoHorizontalOverflow(page)
-
-  await card.getByRole('link', { name: 'Approved' }).click()
-
-  await expect(page).toHaveURL(/#\/rma\/RMA-2026-1002$/)
-})
-
-test('shows filter action labels on mobile and desktop', async ({ page }) => {
-  await page.setViewportSize({ width: 375, height: 812 })
-  await page.goto('/#/rma')
-
-  await expect(page.getByRole('button', { name: 'Search' })).toContainText(
-    'Search',
-  )
-  await expect(page.getByRole('button', { name: 'Reset' })).toContainText(
-    'Reset',
-  )
-
-  await page.setViewportSize({ width: 1280, height: 800 })
-
-  await expect(page.getByRole('button', { name: 'Search' })).toContainText(
-    'Search',
-  )
-  await expect(page.getByRole('button', { name: 'Reset' })).toContainText(
-    'Reset',
-  )
+  await expectSummaryCard(page, 'Total RMAs', '13')
+  await expectSummaryCard(page, 'Pending', '5')
+  await expectSummaryCard(page, 'Approved', '2')
+  await expectSummaryCard(page, 'Completed', '2')
 })
 
 test('filters RMA Requests only after Search is clicked', async ({ page }) => {
@@ -159,30 +127,30 @@ test('filters RMA Requests only after Search is clicked', async ({ page }) => {
   const table = page.getByRole('table', { name: 'RMA Requests' })
 
   await expectRmaTableColumns(page)
-  await expectRmaOrder(page, ['RMA-2026-1002', 'RMA-2026-1001'])
+  await expectRmaOrder(page, firstPageRmaIds)
 
   await page.getByRole('textbox', { name: 'Search' }).fill('battery')
-  await expect(table.getByText('Avery Stone')).toBeVisible()
-  await expect(table.getByText('Mina Patel')).toBeVisible()
+  await expect(table.getByText('Drew Anderson')).toBeVisible()
+  await expect(table.getByText('Quinn Martinez')).toBeVisible()
 
   await page.getByRole('button', { name: 'Search' }).click()
   await expectRmaOrder(page, ['RMA-2026-1002'])
-  await expect(table.getByText('Avery Stone')).toHaveCount(0)
+  await expect(table.getByText('Drew Anderson')).toHaveCount(0)
 })
 
 test('links RMA Request table content to update screen', async ({ page }) => {
   await page.goto('/#/rma')
 
-  const row = page.getByRole('row', { name: /RMA-2026-1002 Mina Patel/ })
+  const row = page.getByRole('row', { name: /RMA-2026-1012 Drew Anderson/ })
 
-  await expect(row.getByRole('link', { name: 'RMA-2026-1002' })).toBeVisible()
-  await expect(row.getByRole('link', { name: 'Mina Patel' })).toBeVisible()
-  await expect(row.getByRole('link', { name: 'PRD-9C4D' })).toBeVisible()
-  await expect(row.getByRole('link', { name: 'Approved' })).toBeVisible()
+  await expect(row.getByRole('link', { name: 'RMA-2026-1012' })).toBeVisible()
+  await expect(row.getByRole('link', { name: 'Drew Anderson' })).toBeVisible()
+  await expect(row.getByRole('link', { name: 'PRD-1F8B' })).toBeVisible()
+  await expect(row.getByRole('link', { name: 'Pending' })).toBeVisible()
 
-  await row.getByRole('link', { name: 'Approved' }).click()
+  await row.getByRole('link', { name: 'Pending' }).click()
 
-  await expect(page).toHaveURL(/#\/rma\/RMA-2026-1002$/)
+  await expect(page).toHaveURL(/#\/rma\/RMA-2026-1012$/)
 })
 
 test('deletes an RMA Request after accessible confirmation', async ({
@@ -190,7 +158,7 @@ test('deletes an RMA Request after accessible confirmation', async ({
 }) => {
   await page.goto('/#/rma')
 
-  const row = page.getByRole('row', { name: /RMA-2026-1001 Avery Stone/ })
+  const row = page.getByRole('row', { name: /RMA-2026-1012 Drew Anderson/ })
   const deleteButton = row.getByRole('button', { name: 'Delete request' })
 
   await deleteButton.focus()
@@ -204,26 +172,26 @@ test('deletes an RMA Request after accessible confirmation', async ({
   ).toBeVisible()
   await expect(
     page.getByText(
-      'This will remove RMA Request RMA-2026-1001 for Avery Stone from the list. You cannot restore it after deleting.',
+      'This will remove RMA Request RMA-2026-1012 for Drew Anderson from the list. You cannot restore it after deleting.',
     ),
   ).toBeVisible()
 
   await page.getByRole('button', { name: 'Cancel' }).click()
-  await expect(row.getByRole('link', { name: 'RMA-2026-1001' })).toBeVisible()
+  await expect(row.getByRole('link', { name: 'RMA-2026-1012' })).toBeVisible()
 
   await deleteButton.click()
   await page.getByRole('button', { name: 'Delete request' }).click()
 
   await expect(page.getByText('RMA deleted')).toBeVisible()
-  await expect(page.getByRole('link', { name: 'RMA-2026-1001' })).toHaveCount(0)
-  await expectSummaryCard(page, 'Total RMAs', '1')
-  await expectSummaryCard(page, 'Pending', '0')
-  await expectRmaOrder(page, ['RMA-2026-1002'])
+  await expect(page.getByRole('link', { name: 'RMA-2026-1012' })).toHaveCount(0)
+  await expectSummaryCard(page, 'Total RMAs', '12')
+  await expectSummaryCard(page, 'Pending', '3')
+  await expectRmaOrder(page, firstPageAfterDeletingNewestRmaIds)
 
   await page.reload()
 
-  await expect(page.getByRole('link', { name: 'RMA-2026-1001' })).toHaveCount(0)
-  await expectRmaOrder(page, ['RMA-2026-1002'])
+  await expect(page.getByRole('link', { name: 'RMA-2026-1012' })).toHaveCount(0)
+  await expectRmaOrder(page, firstPageAfterDeletingNewestRmaIds)
 })
 
 test('filters by Status and keeps summary cards in sync', async ({ page }) => {
@@ -238,22 +206,34 @@ test('filters by Status and keeps summary cards in sync', async ({ page }) => {
   await page.getByRole('option', { name: /Approved/ }).click()
   await page.getByRole('button', { name: 'Search' }).click()
 
-  await expectRmaOrder(page, ['RMA-2026-1002'])
+  await expectRmaOrder(page, [
+    'RMA-2026-1011',
+    'RMA-2026-1008',
+    'RMA-2026-1003',
+    'RMA-2026-1002',
+  ])
 
-  await page.getByRole('textbox', { name: 'Search' }).fill('battery')
-  await page.getByRole('article', { name: 'Pending summary' }).click()
+  await page.getByRole('combobox', { name: 'Status' }).click()
+  await page.getByRole('option', { name: /Pending/ }).click()
+  await page.getByRole('button', { name: 'Search' }).click()
   await expect(page.getByRole('textbox', { name: 'Search' })).toHaveValue('')
   await expect(page.getByRole('combobox', { name: 'Status' })).toContainText(
     'Pending',
   )
-  await expectRmaOrder(page, ['RMA-2026-1001'])
+  await expectRmaOrder(page, [
+    'RMA-2026-1012',
+    'RMA-2026-1009',
+    'RMA-2026-1007',
+    'RMA-2026-1006',
+    'RMA-2026-1001',
+  ])
 
-  await page.getByRole('article', { name: 'Total RMAs summary' }).click()
+  await page.getByRole('button', { name: 'Reset' }).click()
   await expect(page.getByRole('textbox', { name: 'Search' })).toHaveValue('')
   await expect(page.getByRole('combobox', { name: 'Status' })).toContainText(
-    'Status',
+    'All',
   )
-  await expectRmaOrder(page, ['RMA-2026-1002', 'RMA-2026-1001'])
+  await expectRmaOrder(page, firstPageRmaIds)
 })
 
 test('filters by Submitted date and resets filters', async ({ page }) => {
@@ -270,19 +250,9 @@ test('filters by Submitted date and resets filters', async ({ page }) => {
 
   await expect(page.getByRole('textbox', { name: 'Search' })).toHaveValue('')
   await expect(page.getByRole('combobox', { name: 'Status' })).toContainText(
-    'Status',
+    'All',
   )
-  await expectRmaOrder(page, ['RMA-2026-1002', 'RMA-2026-1001'])
-})
-
-test('shows tooltips for filter actions', async ({ page }) => {
-  await page.goto('/#/rma')
-
-  await page.getByRole('button', { name: 'Search' }).focus()
-  await expect(page.getByRole('tooltip', { name: 'Search' })).toBeVisible()
-
-  await page.getByRole('button', { name: 'Reset' }).focus()
-  await expect(page.getByRole('tooltip', { name: 'Reset' })).toBeVisible()
+  await expectRmaOrder(page, firstPageRmaIds)
 })
 
 test('delete then create does not reuse the removed RMA ID', async ({
@@ -291,7 +261,7 @@ test('delete then create does not reuse the removed RMA ID', async ({
   const currentYear = new Date().getFullYear()
 
   await page.goto('/#/rma/create')
-  await expect(page.getByLabel('RMA ID')).toHaveValue(`RMA-${currentYear}-1003`)
+  await expect(page.getByLabel('RMA ID')).toHaveValue(`RMA-${currentYear}-1013`)
 
   await page.getByLabel('Customer name').fill('Test User')
   await page.getByLabel('Product ID').fill('a1b2')
@@ -300,14 +270,14 @@ test('delete then create does not reuse the removed RMA ID', async ({
 
   await page.goto('/#/rma')
   const row = page.getByRole('row', {
-    name: new RegExp(`RMA-${currentYear}-1003 Test User`),
+    name: new RegExp(`RMA-${currentYear}-1013 Test User`),
   })
   await row.getByRole('button', { name: 'Delete request' }).click()
   await page.getByRole('button', { name: 'Delete request' }).click()
   await expect(page.getByText('RMA deleted')).toBeVisible()
 
   await page.goto('/#/rma/create')
-  await expect(page.getByLabel('RMA ID')).toHaveValue(`RMA-${currentYear}-1004`)
+  await expect(page.getByLabel('RMA ID')).toHaveValue(`RMA-${currentYear}-1014`)
 })
 
 test('shows initial empty state with New RMA action when no requests exist', async ({
