@@ -1,5 +1,15 @@
 import { expect, test } from '@playwright/test'
 
+const targetRmaId = 'RMA-2026-1011'
+const targetCustomerName = 'Quinn Martinez'
+
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.removeItem('playwright-rma:rma-requests:v1')
+    localStorage.removeItem('playwright-rma:rma-id-sequence:v1')
+  })
+})
+
 async function expectNoHorizontalOverflow(
   page: import('@playwright/test').Page,
 ) {
@@ -12,10 +22,10 @@ async function expectNoHorizontalOverflow(
 
 async function navigateToUpdatePage(page: import('@playwright/test').Page) {
   await page.setViewportSize({ width: 1280, height: 1500 })
-  await page.goto('/#/rma/RMA-2026-1002')
+  await page.goto(`/#/rma/${targetRmaId}`)
 
   await expect(
-    page.getByRole('article', { name: 'RMA Request RMA-2026-1002' }),
+    page.getByRole('article', { name: `RMA Request ${targetRmaId}` }),
   ).toBeVisible()
 }
 
@@ -44,7 +54,9 @@ test('updates status from Approved to Rejected and shows change in list', async 
 
   await expect(page).toHaveURL(/#\/rma$/)
 
-  const row = page.getByRole('row', { name: /RMA-2026-1002 Mina Patel/ })
+  const row = page.getByRole('row', {
+    name: new RegExp(`${targetRmaId} ${targetCustomerName}`),
+  })
 
   await expect(row.getByRole('link', { name: 'Rejected' })).toBeVisible()
   await expect(page.getByText('RMA saved')).toBeVisible()
@@ -57,7 +69,9 @@ test('cancel returns to list without changing status', async ({ page }) => {
 
   await expect(page).toHaveURL(/#\/rma$/)
 
-  const row = page.getByRole('row', { name: /RMA-2026-1002 Mina Patel/ })
+  const row = page.getByRole('row', {
+    name: new RegExp(`${targetRmaId} ${targetCustomerName}`),
+  })
 
   await expect(row.getByRole('link', { name: 'Approved' })).toBeVisible()
 })
@@ -72,10 +86,10 @@ test('save is disabled when status matches persisted status', async ({
 
 test('save and cancel are usable on narrow screens', async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 })
-  await page.goto('/#/rma/RMA-2026-1002')
+  await page.goto(`/#/rma/${targetRmaId}`)
 
   await expect(
-    page.getByRole('article', { name: 'RMA Request RMA-2026-1002' }),
+    page.getByRole('article', { name: `RMA Request ${targetRmaId}` }),
   ).toBeVisible()
 
   await expect(page.getByRole('button', { name: 'Cancel' })).toBeVisible()
@@ -90,10 +104,14 @@ test('shows updated status on re-entry after save', async ({ page }) => {
 
   await expect(page).toHaveURL(/#\/rma$/)
 
-  await page.getByRole('link', { name: 'Rejected' }).click()
+  const row = page.getByRole('row', {
+    name: new RegExp(`${targetRmaId} ${targetCustomerName}`),
+  })
+
+  await row.getByRole('link', { name: 'Rejected' }).click()
 
   await expect(
-    page.getByRole('article', { name: 'RMA Request RMA-2026-1002' }),
+    page.getByRole('article', { name: `RMA Request ${targetRmaId}` }),
   ).toBeVisible()
   await expect(page.getByRole('combobox', { name: 'Status' })).toContainText(
     'Rejected',

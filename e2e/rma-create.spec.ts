@@ -1,5 +1,12 @@
 import { expect, test, type Locator } from '@playwright/test'
 
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.removeItem('playwright-rma:rma-requests:v1')
+    localStorage.removeItem('playwright-rma:rma-id-sequence:v1')
+  })
+})
+
 async function getRequiredBox(locator: Locator) {
   const box = await locator.boundingBox()
 
@@ -32,7 +39,7 @@ async function expectStackedBelow(
 
 test('creates a Pending RMA Request end-to-end', async ({ page }) => {
   const currentYear = new Date().getFullYear()
-  const nextRmaId = `RMA-${currentYear}-1003`
+  const nextRmaId = `RMA-${currentYear}-1013`
 
   await page.goto('/#/rma/create')
 
