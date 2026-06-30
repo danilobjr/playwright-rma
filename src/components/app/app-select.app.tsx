@@ -48,7 +48,6 @@ function AppSelect({
         id={id}
         name={name}
         size={size}
-        aria-label="Status"
       >
         {renderDisplay
           ? renderDisplay(value)
