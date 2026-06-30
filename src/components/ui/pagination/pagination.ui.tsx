@@ -16,14 +16,20 @@ import { cn } from '@/utils/styles/cn.util'
 import * as styles from './pagination.styles'
 
 type PaginationProps = ComponentProps<'div'>
-function Pagination({ className = '', ...otherProps }: PaginationProps) {
+function Pagination({
+  className = '',
+  children,
+  ...otherProps
+}: PaginationProps) {
   return (
     <div
       className={cn(styles.root(), className)}
       data-slot="pagination"
-      aria-label="pagination"
+      aria-label="Pagination"
       {...otherProps}
-    />
+    >
+      {children}
+    </div>
   )
 }
 
@@ -38,7 +44,7 @@ function PaginationPageSelector({
   return (
     <nav
       data-slot="pagination-page-selector"
-      aria-label="page selector"
+      aria-label="Page selector"
       role="navigation"
       {...otherProps}
     >
@@ -125,7 +131,7 @@ function PaginationButtonFirst(props: PaginationButtonFirstProps) {
   return (
     <PaginationButtonWithText
       icon={<ChevronFirstIcon />}
-      aria-label="go to first page"
+      aria-label="Go to first page"
       {...props}
     />
   )
@@ -140,7 +146,7 @@ function PaginationButtonLast(props: PaginationButtonLastProps) {
     <PaginationButtonWithText
       childrenPosition="icon-right"
       icon={<ChevronLastIcon />}
-      aria-label="go to last page"
+      aria-label="Go to last page"
       {...props}
     />
   )
@@ -154,7 +160,7 @@ function PaginationButtonPrevious(props: PaginationButtonPreviousProps) {
   return (
     <PaginationButtonWithText
       icon={<ChevronLeftIcon />}
-      aria-label="go to previous page"
+      aria-label="Go to previous page"
       {...props}
     />
   )
@@ -169,7 +175,7 @@ function PaginationButtonNext(props: PaginationButtonNextProps) {
     <PaginationButtonWithText
       childrenPosition="icon-right"
       icon={<ChevronRightIcon />}
-      aria-label="go to next page"
+      aria-label="Go to next page"
       {...props}
     />
   )
@@ -211,15 +217,21 @@ function PaginationRowCount({
       data-slot="pagination-row-count"
       {...otherProps}
     >
+      <span
+        className={cn(
+          styles.rowCount.words.base(),
+          styles.rowCount.words.first(),
+        )}
+      >
+        Showing
+      </span>{' '}
       {firstRowNumberOnCurrentPage}-{lastRowNumberOnCurrentPage}{' '}
-      <span className={styles.rowCount.words.of()}>of</span> {totalRows}{' '}
-      <span className={styles.rowCount.words.items()}>
-        {totalRows !== 1 ? 'pages' : 'page'}
-      </span>
+      <span className={styles.rowCount.words.base()}>of</span> {totalRows}{' '}
     </div>
   )
 }
 
+// FIXME ui component shouldn't depend on App component. Convert AppSelect component on InputSelect? Check Gip project
 type PaginationPageSizeSelectorProps = AppSelectProps
 function PaginationPageSizeSelector({
   className = '',

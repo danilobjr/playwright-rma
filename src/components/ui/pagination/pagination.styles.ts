@@ -53,13 +53,14 @@ export const ellipsis = tw(`
 
 export const rowCount = {
   root: tw(`
+    text-[0.8125rem]
     text-nowrap
   `),
   words: {
-    of: tw(`
+    base: tw(`
       text-muted-foreground
     `),
-    items: tw(`
+    first: tw(`
       hidden
       text-muted-foreground
       sm:inline

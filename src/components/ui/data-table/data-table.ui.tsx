@@ -20,38 +20,38 @@ import {
 import { cn } from '@/utils/styles/cn.util'
 
 import * as styles from './data-table.styles'
+import type {
+  PageSize,
+  PaginationTotals,
+  Pagination as PaginationType,
+} from './pagination.type'
 
-// <DataTablePagination className={classNamePagination} table={table} />
+type DataTablePaginationProps<SortingProp = unknown> =
+  PaginationType<SortingProp> &
+    PaginationTotals & {
+      className?: string
+      pageSizeChoices?: PageSize[]
+      onChangePagination?: (
+        pagination: Partial<PaginationType<SortingProp>>,
+      ) => void
+    }
 
-type PageSize = 5 | 10 | 20 | 35 | 50 | 100
-
-type DataTablePaginationProps = {
-  className?: string
-  pageCount: number
-  pageIndex: number
-  pageSize: number
-  rowCount: number
-  sizes?: PageSize[]
-  onChangePageIndex?: (index: number) => void
-  onChangePageSize?: (size: PageSize) => void
-}
-function DataTablePagination({
+function DataTablePagination<SortingProp = unknown>({
   className = '',
-  pageCount = 1,
   pageIndex = 0,
   pageSize = 10,
-  rowCount = 0,
-  sizes = [5, 10, 20, 35, 50, 100],
-  onChangePageIndex = () => {},
-  onChangePageSize = () => {},
-}: DataTablePaginationProps) {
+  pageSizeChoices = [5, 10, 20, 35, 50, 100],
+  totalPages = 0,
+  totalRows = 0,
+  onChangePagination = () => {},
+}: DataTablePaginationProps<SortingProp>) {
   const firstRowNumberOnCurrentPage = pageIndex * pageSize + 1
   const lastRowNumberOnCurrentPage = (() => {
     const rowNumber = pageIndex * pageSize + pageSize
-    return rowNumber <= rowCount ? rowNumber : rowCount
+    return Math.min(rowNumber, totalRows || Number.MAX_SAFE_INTEGER)
   })()
 
-  const options: Option[] = sizes.map<Option>((s) => ({
+  const options: Option[] = pageSizeChoices.map<Option>((s) => ({
     text: s.toString(),
     value: s.toString(),
   }))
@@ -63,7 +63,7 @@ function DataTablePagination({
         options={options}
         value={rowsPerPageValue}
         onValueChange={(value) => {
-          onChangePageSize(Number(value) as PageSize)
+          onChangePagination({ pageSize: Number(value) as PageSize })
         }}
       >
         {rowsPerPageValue}{' '}
@@ -75,15 +75,17 @@ function DataTablePagination({
       <PaginationRowCount
         firstRowNumberOnCurrentPage={firstRowNumberOnCurrentPage}
         lastRowNumberOnCurrentPage={lastRowNumberOnCurrentPage}
-        totalRows={rowCount}
+        totalRows={totalRows}
       />
 
       <DataTablePaginationPageSelector
         className="ml-auto"
         currentPage={pageIndex + 1}
-        totalPages={pageCount}
+        totalPages={totalPages || Math.ceil(totalRows / pageSize)}
         boundaries={0}
-        onChangeCurrentPage={(page) => onChangePageIndex(page - 1)}
+        onChangeCurrentPage={(newCurrentPage) =>
+          onChangePagination({ pageIndex: newCurrentPage - 1 })
+        }
       />
     </Pagination>
   )

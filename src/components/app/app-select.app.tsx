@@ -29,6 +29,7 @@ type AppSelectProps = SelectProps &
     renderDisplay?: (value?: string) => ReactNode
   }
 
+// TODO convert this to InputSelect
 function AppSelect({
   children,
   className,
