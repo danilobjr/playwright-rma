@@ -20,6 +20,7 @@
       "gh pr status *": "allow",
       "gh pr view *": "allow",
       "git *": "ask",
+      "git branch --show-current": "allow",
       "git diff *": "allow",
       "git log *": "allow",
       "git status *": "allow",
