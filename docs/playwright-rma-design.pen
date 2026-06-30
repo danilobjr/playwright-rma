@@ -14,12 +14,13 @@
       "layout": "vertical",
       "gap": 28,
       "padding": 32,
+      "alignItems": "center",
       "children": [
         {
           "type": "frame",
           "id": "GvsHQ",
           "name": "Update Header",
-          "width": "fill_container",
+          "width": 1024,
           "justifyContent": "space_between",
           "alignItems": "center",
           "children": [
@@ -111,15 +112,16 @@
           "type": "frame",
           "id": "L68Nqw",
           "name": "Update Body",
-          "width": "fill_container",
-          "gap": 24,
+          "width": 1024,
+          "gap": 20,
           "justifyContent": "center",
           "children": [
             {
               "type": "frame",
               "id": "fqFgF",
               "name": "Card - Update Status",
-              "width": 780,
+              "clip": true,
+              "width": 724,
               "fill": "#FFFFFF",
               "cornerRadius": 12,
               "stroke": "#E4E4E7",
@@ -137,7 +139,7 @@
                     "bottom": 1
                   },
                   "strokeAlignment": "inner",
-                  "padding": 24,
+                  "padding": 20,
                   "justifyContent": "space_between",
                   "alignItems": "center",
                   "children": [
@@ -271,7 +273,6 @@
                   "width": "fill_container",
                   "layout": "vertical",
                   "gap": 24,
-                  "padding": 24,
                   "children": [
                     {
                       "type": "frame",
@@ -279,14 +280,19 @@
                       "name": "RMA Details Definition List",
                       "width": "fill_container",
                       "layout": "vertical",
-                      "gap": 14,
                       "children": [
                         {
                           "type": "frame",
                           "id": "muHfB",
                           "name": "Detail row - RMA ID",
                           "width": "fill_container",
-                          "gap": 24,
+                          "stroke": "#e4e4e7",
+                          "strokeWidth": {
+                            "bottom": 1
+                          },
+                          "strokeAlignment": "inner",
+                          "gap": 12,
+                          "padding": 20,
                           "children": [
                             {
                               "type": "text",
@@ -294,7 +300,7 @@
                               "name": "RMA ID label",
                               "fill": "#71717A",
                               "textGrowth": "fixed-width",
-                              "width": 132,
+                              "width": 150,
                               "content": "RMA ID",
                               "fontFamily": "Geist",
                               "fontSize": 13,
@@ -316,27 +322,33 @@
                         },
                         {
                           "type": "frame",
-                          "id": "nKTFf",
-                          "name": "Detail row - Customer",
+                          "id": "u7BtS",
+                          "name": "Detail row - RMA ID",
                           "width": "fill_container",
-                          "gap": 24,
+                          "stroke": "#e4e4e7",
+                          "strokeWidth": {
+                            "bottom": 1
+                          },
+                          "strokeAlignment": "inner",
+                          "gap": 12,
+                          "padding": 20,
                           "children": [
                             {
                               "type": "text",
-                              "id": "UmPya",
-                              "name": "Customer label",
+                              "id": "LH7aG",
+                              "name": "RMA ID label",
                               "fill": "#71717A",
                               "textGrowth": "fixed-width",
-                              "width": 132,
-                              "content": "Customer",
+                              "width": 150,
+                              "content": "Customer name",
                               "fontFamily": "Geist",
                               "fontSize": 13,
                               "fontWeight": "500"
                             },
                             {
                               "type": "text",
-                              "id": "Y3Wa8",
-                              "name": "Customer value",
+                              "id": "LLjrR",
+                              "name": "RMA ID value",
                               "fill": "#18181B",
                               "textGrowth": "fixed-width",
                               "width": "fill_container",
@@ -349,18 +361,24 @@
                         },
                         {
                           "type": "frame",
-                          "id": "zEQIs",
-                          "name": "Detail row - Product ID",
+                          "id": "X73fMJ",
+                          "name": "Detail row - RMA ID",
                           "width": "fill_container",
-                          "gap": 24,
+                          "stroke": "#e4e4e7",
+                          "strokeWidth": {
+                            "bottom": 1
+                          },
+                          "strokeAlignment": "inner",
+                          "gap": 12,
+                          "padding": 20,
                           "children": [
                             {
                               "type": "text",
-                              "id": "jSSat",
-                              "name": "Product ID label",
+                              "id": "eLfZM",
+                              "name": "RMA ID label",
                               "fill": "#71717A",
                               "textGrowth": "fixed-width",
-                              "width": 132,
+                              "width": 150,
                               "content": "Product ID",
                               "fontFamily": "Geist",
                               "fontSize": 13,
@@ -368,8 +386,8 @@
                             },
                             {
                               "type": "text",
-                              "id": "DHKps",
-                              "name": "Product ID value",
+                              "id": "j43AF",
+                              "name": "RMA ID value",
                               "fill": "#18181B",
                               "textGrowth": "fixed-width",
                               "width": "fill_container",
@@ -382,18 +400,24 @@
                         },
                         {
                           "type": "frame",
-                          "id": "MlKI1",
-                          "name": "Detail row - Reason",
+                          "id": "beVvh",
+                          "name": "Detail row - RMA ID",
                           "width": "fill_container",
-                          "gap": 24,
+                          "stroke": "#e4e4e7",
+                          "strokeWidth": {
+                            "bottom": 1
+                          },
+                          "strokeAlignment": "inner",
+                          "gap": 12,
+                          "padding": 20,
                           "children": [
                             {
                               "type": "text",
-                              "id": "v6zG14",
-                              "name": "Reason label",
+                              "id": "Abcp5",
+                              "name": "RMA ID label",
                               "fill": "#71717A",
                               "textGrowth": "fixed-width",
-                              "width": 132,
+                              "width": 150,
                               "content": "Reason",
                               "fontFamily": "Geist",
                               "fontSize": 13,
@@ -401,8 +425,8 @@
                             },
                             {
                               "type": "text",
-                              "id": "eYQKO",
-                              "name": "Reason value",
+                              "id": "Y7VoM",
+                              "name": "RMA ID value",
                               "fill": "#18181B",
                               "textGrowth": "fixed-width",
                               "width": "fill_container",
@@ -415,18 +439,24 @@
                         },
                         {
                           "type": "frame",
-                          "id": "Proy0",
-                          "name": "Detail row - Date",
+                          "id": "rRdCo",
+                          "name": "Detail row - RMA ID",
                           "width": "fill_container",
-                          "gap": 24,
+                          "stroke": "#e4e4e7",
+                          "strokeWidth": {
+                            "bottom": 1
+                          },
+                          "strokeAlignment": "inner",
+                          "gap": 12,
+                          "padding": 20,
                           "children": [
                             {
                               "type": "text",
-                              "id": "YyPzJ",
-                              "name": "Submitted date label",
+                              "id": "v8sOF",
+                              "name": "RMA ID label",
                               "fill": "#71717A",
                               "textGrowth": "fixed-width",
-                              "width": 132,
+                              "width": 150,
                               "content": "Submitted date",
                               "fontFamily": "Geist",
                               "fontSize": 13,
@@ -434,8 +464,8 @@
                             },
                             {
                               "type": "text",
-                              "id": "WWuOn",
-                              "name": "Date value",
+                              "id": "uxYSW",
+                              "name": "RMA ID value",
                               "fill": "#18181B",
                               "textGrowth": "fixed-width",
                               "width": "fill_container",
@@ -451,16 +481,22 @@
                     {
                       "type": "rectangle",
                       "id": "R7jeo",
+                      "x": 0,
+                      "y": 314,
                       "name": "Separator - Status section",
+                      "enabled": false,
                       "fill": "#E4E4E7",
-                      "width": "fill_container",
+                      "width": "fill_container(724)",
                       "height": 1
                     },
                     {
                       "type": "frame",
                       "id": "YTC44",
+                      "x": 0,
+                      "y": 314,
                       "name": "FieldGroup - Status Update",
-                      "width": "fill_container",
+                      "enabled": false,
+                      "width": "fill_container(724)",
                       "layout": "vertical",
                       "gap": 14,
                       "children": [
@@ -810,13 +846,14 @@
                   "id": "PzNvl",
                   "name": "CardFooter - Update Actions",
                   "width": "fill_container",
+                  "fill": "#f4f4f5",
                   "stroke": "#E4E4E7",
                   "strokeWidth": {
                     "top": 1
                   },
                   "strokeAlignment": "inner",
                   "gap": 12,
-                  "padding": 24,
+                  "padding": 20,
                   "justifyContent": "end",
                   "alignItems": "center",
                   "children": [
@@ -890,740 +927,188 @@
                   ]
                 }
               ]
-            }
-          ]
-        },
-        {
-          "type": "frame",
-          "id": "Ynhtb",
-          "layoutPosition": "absolute",
-          "x": 446,
-          "y": 232,
-          "name": "Popover - Status workflow hover",
-          "width": 560,
-          "fill": "#FFFFFF",
-          "cornerRadius": 12,
-          "stroke": "#E4E4E7",
-          "strokeWidth": 1,
-          "strokeAlignment": "inner",
-          "effect": {
-            "type": "shadow",
-            "shadowType": "outer",
-            "color": "#0000001A",
-            "offset": {
-              "x": 0,
-              "y": 12
-            },
-            "blur": 28
-          },
-          "layout": "vertical",
-          "gap": 16,
-          "padding": 18,
-          "children": [
-            {
-              "type": "frame",
-              "id": "yi3DU",
-              "name": "Popover header",
-              "width": "fill_container",
-              "gap": 10,
-              "alignItems": "center",
-              "children": [
-                {
-                  "type": "icon",
-                  "id": "H8LCFF",
-                  "name": "Popover header icon",
-                  "width": 16,
-                  "height": 16,
-                  "icon": "sparkles",
-                  "library": "lucide",
-                  "fill": "#52525B"
-                },
-                {
-                  "type": "frame",
-                  "id": "DxlY3",
-                  "name": "Popover heading copy",
-                  "width": "fill_container",
-                  "layout": "vertical",
-                  "gap": 2,
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "hSB6W",
-                      "name": "Popover title",
-                      "fill": "#09090B",
-                      "content": "Status workflow",
-                      "fontFamily": "Geist",
-                      "fontSize": 15,
-                      "fontWeight": "600"
-                    },
-                    {
-                      "type": "text",
-                      "id": "jyshY",
-                      "name": "Popover description",
-                      "fill": "#71717A",
-                      "textGrowth": "fixed-width",
-                      "width": "fill_container",
-                      "content": "Hovering the info icon explains the status sequence and available select options.",
-                      "fontFamily": "Geist",
-                      "fontSize": 12,
-                      "fontWeight": "normal"
-                    }
-                  ]
-                }
-              ]
             },
             {
               "type": "frame",
-              "id": "Hzoi7",
-              "name": "Numbered status flow",
-              "width": "fill_container",
-              "gap": 8,
-              "alignItems": "center",
+              "id": "CKcAB",
+              "name": "Aside - Workflow info",
+              "width": 280,
               "children": [
                 {
                   "type": "frame",
-                  "id": "FcQh5",
-                  "name": "Flow step - Pending",
+                  "id": "DrzKF",
+                  "name": "Card - Workflow info",
+                  "clip": true,
                   "width": "fill_container",
-                  "height": 108,
                   "fill": "#FFFFFF",
-                  "cornerRadius": 10,
+                  "cornerRadius": 12,
                   "stroke": "#E4E4E7",
                   "strokeWidth": 1,
                   "strokeAlignment": "inner",
                   "layout": "vertical",
-                  "gap": 6,
-                  "padding": 10,
                   "children": [
                     {
                       "type": "frame",
-                      "id": "apQo6",
-                      "name": "Flow step top - Pending",
-                      "width": "fill_container",
-                      "gap": 6,
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "icon",
-                          "id": "TrIFU",
-                          "name": "Flow step icon - Pending",
-                          "width": 16,
-                          "height": 16,
-                          "icon": "calendar-clock",
-                          "library": "lucide",
-                          "fill": "#71717A"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "text",
-                      "id": "hWuMw",
-                      "name": "Flow step label - Pending",
-                      "fill": "#18181B",
-                      "textGrowth": "fixed-width",
-                      "width": "fill_container",
-                      "content": "Pending",
-                      "fontFamily": "Geist",
-                      "fontSize": 12,
-                      "fontWeight": "600"
-                    },
-                    {
-                      "type": "text",
-                      "id": "DbHQo",
-                      "name": "Flow step description - Pending",
-                      "fill": "#71717A",
-                      "textGrowth": "fixed-width",
-                      "width": "fill_container",
-                      "content": "Awaiting review",
-                      "fontFamily": "Geist",
-                      "fontSize": 11,
-                      "fontWeight": "normal"
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "vfBlQ",
-                  "name": "Flow arrow 1",
-                  "width": 20,
-                  "justifyContent": "center",
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "icon",
-                      "id": "X5FyJ",
-                      "name": "Flow arrow 1 icon",
-                      "width": 16,
-                      "height": 16,
-                      "icon": "arrow-right",
-                      "library": "lucide",
-                      "fill": "#A1A1AA"
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "gye60",
-                  "name": "Flow step - Approved",
-                  "width": "fill_container",
-                  "height": 108,
-                  "fill": "#F4F4F5",
-                  "cornerRadius": 10,
-                  "stroke": "#D4D4D8",
-                  "strokeWidth": 1,
-                  "strokeAlignment": "inner",
-                  "layout": "vertical",
-                  "gap": 6,
-                  "padding": 10,
-                  "children": [
-                    {
-                      "type": "frame",
-                      "id": "G87dJa",
-                      "name": "Flow step top - Approved",
-                      "width": "fill_container",
-                      "gap": 6,
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "icon",
-                          "id": "jeh76",
-                          "name": "Flow step icon - Approved",
-                          "width": 16,
-                          "height": 16,
-                          "icon": "check",
-                          "library": "lucide",
-                          "fill": "#18181B"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "text",
-                      "id": "ovkp4",
-                      "name": "Flow step label - Approved",
-                      "fill": "#18181B",
-                      "textGrowth": "fixed-width",
-                      "width": "fill_container",
-                      "content": "Approved",
-                      "fontFamily": "Geist",
-                      "fontSize": 12,
-                      "fontWeight": "600"
-                    },
-                    {
-                      "type": "text",
-                      "id": "PHzm6",
-                      "name": "Flow step description - Approved",
-                      "fill": "#71717A",
-                      "textGrowth": "fixed-width",
-                      "width": "fill_container",
-                      "content": "Authorized",
-                      "fontFamily": "Geist",
-                      "fontSize": 11,
-                      "fontWeight": "normal"
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "YEvaI",
-                  "name": "Flow arrow 2",
-                  "width": 20,
-                  "justifyContent": "center",
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "icon",
-                      "id": "xkt4z",
-                      "name": "Flow arrow 2 icon",
-                      "width": 16,
-                      "height": 16,
-                      "icon": "arrow-right",
-                      "library": "lucide",
-                      "fill": "#A1A1AA"
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "KeOsx",
-                  "name": "Flow step - Rejected",
-                  "width": "fill_container",
-                  "height": 108,
-                  "fill": "#FFFFFF",
-                  "cornerRadius": 10,
-                  "stroke": "#E4E4E7",
-                  "strokeWidth": 1,
-                  "strokeAlignment": "inner",
-                  "layout": "vertical",
-                  "gap": 6,
-                  "padding": 10,
-                  "children": [
-                    {
-                      "type": "frame",
-                      "id": "fx89C",
-                      "name": "Flow step top - Rejected",
-                      "width": "fill_container",
-                      "gap": 6,
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "icon",
-                          "id": "K0QfMS",
-                          "name": "Flow step icon - Rejected",
-                          "width": 16,
-                          "height": 16,
-                          "icon": "x",
-                          "library": "lucide",
-                          "fill": "#71717A"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "text",
-                      "id": "ApAOg",
-                      "name": "Flow step label - Rejected",
-                      "fill": "#18181B",
-                      "textGrowth": "fixed-width",
-                      "width": "fill_container",
-                      "content": "Rejected",
-                      "fontFamily": "Geist",
-                      "fontSize": 12,
-                      "fontWeight": "600"
-                    },
-                    {
-                      "type": "text",
-                      "id": "Q3pKe9",
-                      "name": "Flow step description - Rejected",
-                      "fill": "#71717A",
-                      "textGrowth": "fixed-width",
-                      "width": "fill_container",
-                      "content": "Declined",
-                      "fontFamily": "Geist",
-                      "fontSize": 11,
-                      "fontWeight": "normal"
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "HHdYa",
-                  "name": "Flow arrow 3",
-                  "width": 20,
-                  "justifyContent": "center",
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "icon",
-                      "id": "QhGuN",
-                      "name": "Flow arrow 3 icon",
-                      "width": 16,
-                      "height": 16,
-                      "icon": "arrow-right",
-                      "library": "lucide",
-                      "fill": "#A1A1AA"
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "aHa1Y",
-                  "name": "Flow step - Completed",
-                  "width": "fill_container",
-                  "height": 108,
-                  "fill": "#FFFFFF",
-                  "cornerRadius": 10,
-                  "stroke": "#E4E4E7",
-                  "strokeWidth": 1,
-                  "strokeAlignment": "inner",
-                  "layout": "vertical",
-                  "gap": 6,
-                  "padding": 10,
-                  "children": [
-                    {
-                      "type": "frame",
-                      "id": "FXjvO",
-                      "name": "Flow step top - Completed",
-                      "width": "fill_container",
-                      "gap": 6,
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "icon",
-                          "id": "jo5AY",
-                          "name": "Flow step icon - Completed",
-                          "width": 16,
-                          "height": 16,
-                          "icon": "package-check",
-                          "library": "lucide",
-                          "fill": "#71717A"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "text",
-                      "id": "ofGAS",
-                      "name": "Flow step label - Completed",
-                      "fill": "#18181B",
-                      "textGrowth": "fixed-width",
-                      "width": "fill_container",
-                      "content": "Completed",
-                      "fontFamily": "Geist",
-                      "fontSize": 12,
-                      "fontWeight": "600"
-                    },
-                    {
-                      "type": "text",
-                      "id": "kNipM",
-                      "name": "Flow step description - Completed",
-                      "fill": "#71717A",
-                      "textGrowth": "fixed-width",
-                      "width": "fill_container",
-                      "content": "Closed",
-                      "fontFamily": "Geist",
-                      "fontSize": 11,
-                      "fontWeight": "normal"
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "type": "frame",
-              "id": "jv3Bq",
-              "name": "Animated dashed status number rail",
-              "width": "fill_container",
-              "height": 42,
-              "gap": 8,
-              "alignItems": "center",
-              "children": [
-                {
-                  "type": "frame",
-                  "id": "VYN3g",
-                  "name": "Rail number column 1",
-                  "width": "fill_container",
-                  "height": 42,
-                  "justifyContent": "center",
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "frame",
-                      "id": "vOS0A",
-                      "name": "Rail number 1",
-                      "width": 24,
-                      "height": 24,
-                      "fill": "#FFFFFF",
-                      "cornerRadius": 999,
-                      "stroke": "#D4D4D8",
-                      "strokeWidth": 1,
+                      "id": "syvlp",
+                      "name": "CardHeader - Workflow info",
+                      "width": 244,
+                      "stroke": "#E4E4E7",
+                      "strokeWidth": {
+                        "bottom": 1
+                      },
                       "strokeAlignment": "inner",
-                      "justifyContent": "center",
-                      "alignItems": "center",
+                      "layout": "vertical",
+                      "gap": 6,
+                      "padding": [
+                        16,
+                        20
+                      ],
                       "children": [
                         {
                           "type": "text",
-                          "id": "TlPY3",
-                          "name": "Rail number label 1",
-                          "fill": "#52525B",
-                          "content": "1",
+                          "id": "FSjZz",
+                          "name": "CardTitle - Create RMA",
+                          "fill": "#09090B",
+                          "content": "Workflow info",
                           "fontFamily": "Geist",
-                          "fontSize": 12,
+                          "fontSize": 14,
                           "fontWeight": "600"
                         }
                       ]
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "gvWrZ",
-                  "name": "Animated centered connector 1",
-                  "width": 34,
-                  "height": 16,
-                  "gap": 4,
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "rectangle",
-                      "cornerRadius": 999,
-                      "id": "VjnH6",
-                      "name": "Animated centered connector 1 dash 1",
-                      "fill": "#A1A1AA",
-                      "width": "fill_container",
-                      "height": 2
                     },
-                    {
-                      "type": "rectangle",
-                      "cornerRadius": 999,
-                      "id": "Y3B15",
-                      "name": "Animated centered connector 1 dash 2",
-                      "fill": "#A1A1AA",
-                      "width": "fill_container",
-                      "height": 2
-                    },
-                    {
-                      "type": "rectangle",
-                      "cornerRadius": 999,
-                      "id": "t8tqv",
-                      "name": "Animated centered connector 1 dash 3",
-                      "fill": "#E4E4E7",
-                      "width": "fill_container",
-                      "height": 2
-                    },
-                    {
-                      "type": "rectangle",
-                      "cornerRadius": 999,
-                      "id": "F3CzWW",
-                      "name": "Animated centered connector 1 dash 4",
-                      "fill": "#E4E4E7",
-                      "width": "fill_container",
-                      "height": 2
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "EwXfG",
-                  "name": "Rail number column 2",
-                  "width": "fill_container",
-                  "height": 42,
-                  "justifyContent": "center",
-                  "alignItems": "center",
-                  "children": [
                     {
                       "type": "frame",
-                      "id": "dk5kw",
-                      "name": "Rail number 2",
-                      "width": 24,
-                      "height": 24,
-                      "fill": "#18181B",
-                      "cornerRadius": 999,
-                      "stroke": "#18181B",
-                      "strokeWidth": 1,
-                      "strokeAlignment": "inner",
-                      "justifyContent": "center",
-                      "alignItems": "center",
+                      "id": "fO3HH",
+                      "name": "CardContent - Workflow info",
+                      "width": "fill_container",
+                      "layout": "vertical",
                       "children": [
                         {
-                          "type": "text",
-                          "id": "IcpQl",
-                          "name": "Rail number label 2",
-                          "fill": "#FAFAFA",
-                          "content": "2",
-                          "fontFamily": "Geist",
-                          "fontSize": 12,
-                          "fontWeight": "600"
+                          "type": "frame",
+                          "id": "W8zLTk",
+                          "name": "RMA ID",
+                          "width": "fill_container",
+                          "stroke": "#e4e4e7",
+                          "strokeWidth": {
+                            "bottom": 1
+                          },
+                          "strokeAlignment": "inner",
+                          "layout": "vertical",
+                          "gap": 2,
+                          "padding": [
+                            14,
+                            20
+                          ],
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "HDBlx",
+                              "name": "RMA ID Label",
+                              "fill": "#737373",
+                              "content": "RMA ID",
+                              "fontFamily": "Geist",
+                              "fontSize": 12,
+                              "fontWeight": "500"
+                            },
+                            {
+                              "type": "text",
+                              "id": "XrznI",
+                              "name": "RMA ID Description",
+                              "fill": "#09090b",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Generated automatically on submission",
+                              "fontFamily": "Geist",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "kHAEe",
+                          "name": "Initial Status",
+                          "width": "fill_container",
+                          "stroke": "#e4e4e7",
+                          "strokeWidth": {
+                            "bottom": 1
+                          },
+                          "strokeAlignment": "inner",
+                          "layout": "vertical",
+                          "gap": 2,
+                          "padding": [
+                            14,
+                            20
+                          ],
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "FhkdG",
+                              "name": "Initial Status Label",
+                              "fill": "#737373",
+                              "content": "INITIAL STATUS",
+                              "fontFamily": "Geist",
+                              "fontSize": 12,
+                              "fontWeight": "500"
+                            },
+                            {
+                              "type": "text",
+                              "id": "dkGC8",
+                              "name": "Initial Status Description",
+                              "fill": "#09090b",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Pending review",
+                              "fontFamily": "Geist",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "il6KU",
+                          "name": "Initial Status",
+                          "width": "fill_container",
+                          "stroke": "#e4e4e7",
+                          "strokeWidth": {
+                            "bottom": 1
+                          },
+                          "strokeAlignment": "inner",
+                          "layout": "vertical",
+                          "gap": 2,
+                          "padding": [
+                            14,
+                            20
+                          ],
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "pdvnD",
+                              "name": "Initial Status Label",
+                              "fill": "#737373",
+                              "content": "TRANSITIONS",
+                              "fontFamily": "Geist",
+                              "fontSize": 12,
+                              "fontWeight": "500"
+                            },
+                            {
+                              "type": "text",
+                              "id": "HSSyv",
+                              "name": "Initial Status Description",
+                              "fill": "#09090b",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Approved, Rejected, or Completed",
+                              "fontFamily": "Geist",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            }
+                          ]
                         }
                       ]
                     }
                   ]
-                },
-                {
-                  "type": "frame",
-                  "id": "Omvpt",
-                  "name": "Animated centered connector 2",
-                  "width": 34,
-                  "height": 16,
-                  "gap": 4,
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "rectangle",
-                      "cornerRadius": 999,
-                      "id": "dkZ06",
-                      "name": "Animated centered connector 2 dash 1",
-                      "fill": "#A1A1AA",
-                      "width": "fill_container",
-                      "height": 2
-                    },
-                    {
-                      "type": "rectangle",
-                      "cornerRadius": 999,
-                      "id": "I4Vb7",
-                      "name": "Animated centered connector 2 dash 2",
-                      "fill": "#A1A1AA",
-                      "width": "fill_container",
-                      "height": 2
-                    },
-                    {
-                      "type": "rectangle",
-                      "cornerRadius": 999,
-                      "id": "l17Tkp",
-                      "name": "Animated centered connector 2 dash 3",
-                      "fill": "#E4E4E7",
-                      "width": "fill_container",
-                      "height": 2
-                    },
-                    {
-                      "type": "rectangle",
-                      "cornerRadius": 999,
-                      "id": "yXtkk",
-                      "name": "Animated centered connector 2 dash 4",
-                      "fill": "#E4E4E7",
-                      "width": "fill_container",
-                      "height": 2
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "hKiwc",
-                  "name": "Rail number column 3",
-                  "width": "fill_container",
-                  "height": 42,
-                  "justifyContent": "center",
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "frame",
-                      "id": "Lq4bW",
-                      "name": "Rail number 3",
-                      "width": 24,
-                      "height": 24,
-                      "fill": "#FFFFFF",
-                      "cornerRadius": 999,
-                      "stroke": "#D4D4D8",
-                      "strokeWidth": 1,
-                      "strokeAlignment": "inner",
-                      "justifyContent": "center",
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "pKtPe",
-                          "name": "Rail number label 3",
-                          "fill": "#52525B",
-                          "content": "3",
-                          "fontFamily": "Geist",
-                          "fontSize": 12,
-                          "fontWeight": "600"
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "jIsuI",
-                  "name": "Animated centered connector 3",
-                  "width": 34,
-                  "height": 16,
-                  "gap": 4,
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "rectangle",
-                      "cornerRadius": 999,
-                      "id": "GsxVO",
-                      "name": "Animated centered connector 3 dash 1",
-                      "fill": "#A1A1AA",
-                      "width": "fill_container",
-                      "height": 2
-                    },
-                    {
-                      "type": "rectangle",
-                      "cornerRadius": 999,
-                      "id": "Whlil",
-                      "name": "Animated centered connector 3 dash 2",
-                      "fill": "#A1A1AA",
-                      "width": "fill_container",
-                      "height": 2
-                    },
-                    {
-                      "type": "rectangle",
-                      "cornerRadius": 999,
-                      "id": "efy5Y",
-                      "name": "Animated centered connector 3 dash 3",
-                      "fill": "#E4E4E7",
-                      "width": "fill_container",
-                      "height": 2
-                    },
-                    {
-                      "type": "rectangle",
-                      "cornerRadius": 999,
-                      "id": "i7M3go",
-                      "name": "Animated centered connector 3 dash 4",
-                      "fill": "#E4E4E7",
-                      "width": "fill_container",
-                      "height": 2
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "Kp6Oq",
-                  "name": "Rail number column 4",
-                  "width": "fill_container",
-                  "height": 42,
-                  "justifyContent": "center",
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "frame",
-                      "id": "dRR1m",
-                      "name": "Rail number 4",
-                      "width": 24,
-                      "height": 24,
-                      "fill": "#FFFFFF",
-                      "cornerRadius": 999,
-                      "stroke": "#D4D4D8",
-                      "strokeWidth": 1,
-                      "strokeAlignment": "inner",
-                      "justifyContent": "center",
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "kKOf3",
-                          "name": "Rail number label 4",
-                          "fill": "#52525B",
-                          "content": "4",
-                          "fontFamily": "Geist",
-                          "fontSize": 12,
-                          "fontWeight": "600"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "type": "frame",
-              "id": "znwen",
-              "name": "Popover micro-interactions",
-              "width": "fill_container",
-              "fill": "#FAFAFA",
-              "cornerRadius": 8,
-              "stroke": "#F4F4F5",
-              "strokeWidth": 1,
-              "strokeAlignment": "inner",
-              "gap": 8,
-              "padding": [
-                10,
-                12
-              ],
-              "alignItems": "center",
-              "children": [
-                {
-                  "type": "icon",
-                  "id": "w5cYy",
-                  "name": "Micro interaction icon",
-                  "width": 16,
-                  "height": 16,
-                  "icon": "mouse-pointer-2",
-                  "library": "lucide",
-                  "fill": "#71717A"
-                },
-                {
-                  "type": "text",
-                  "id": "Q24CD",
-                  "name": "Micro interaction text",
-                  "fill": "#52525B",
-                  "textGrowth": "fixed-width",
-                  "width": "fill_container",
-                  "content": "Hover state: info icon glow, popover fades in, active card lifts subtly, dashed rail animates infinitely left to right.",
-                  "fontFamily": "Geist",
-                  "fontSize": 12,
-                  "fontWeight": "normal"
                 }
               ]
             }
@@ -1644,12 +1129,13 @@
       "layout": "vertical",
       "gap": 28,
       "padding": 32,
+      "alignItems": "center",
       "children": [
         {
           "type": "frame",
           "id": "uoHUe",
           "name": "Create Header",
-          "width": "fill_container",
+          "width": 1024,
           "justifyContent": "space_between",
           "alignItems": "center",
           "children": [
@@ -1741,16 +1227,15 @@
           "type": "frame",
           "id": "OUnqk",
           "name": "Create Screen Body",
-          "width": "fill_container",
-          "gap": 24,
-          "justifyContent": "center",
+          "width": 1024,
+          "gap": 20,
           "children": [
             {
               "type": "frame",
               "id": "b0AFJm",
               "name": "Card - Create RMA",
               "clip": true,
-              "width": 760,
+              "width": "fill_container",
               "fill": "#FFFFFF",
               "cornerRadius": 12,
               "stroke": "#E4E4E7",
@@ -1770,7 +1255,7 @@
                   "strokeAlignment": "inner",
                   "layout": "vertical",
                   "gap": 6,
-                  "padding": 24,
+                  "padding": 20,
                   "children": [
                     {
                       "type": "text",
@@ -1779,7 +1264,7 @@
                       "fill": "#09090B",
                       "content": "Request details",
                       "fontFamily": "Geist",
-                      "fontSize": 22,
+                      "fontSize": 20,
                       "fontWeight": "600"
                     },
                     {
@@ -1803,7 +1288,6 @@
                   "width": "fill_container",
                   "layout": "vertical",
                   "gap": 20,
-                  "padding": 24,
                   "children": [
                     {
                       "type": "frame",
@@ -1811,30 +1295,35 @@
                       "name": "FieldGroup - Create RMA",
                       "width": "fill_container",
                       "layout": "vertical",
-                      "gap": 18,
                       "children": [
                         {
                           "type": "frame",
-                          "id": "mmZc8",
-                          "name": "Field row - RMA ID Status",
+                          "id": "SiPOF",
+                          "name": "RMA ID Field Row",
                           "width": "fill_container",
-                          "gap": 16,
+                          "stroke": "#e4e4e7",
+                          "strokeWidth": {
+                            "bottom": 1
+                          },
+                          "strokeAlignment": "inner",
+                          "padding": 20,
                           "children": [
                             {
                               "type": "frame",
                               "id": "P0SfiQ",
                               "name": "RMA ID Field",
                               "width": "fill_container",
-                              "layout": "vertical",
-                              "gap": 8,
+                              "gap": 12,
+                              "alignItems": "center",
                               "children": [
                                 {
                                   "type": "frame",
                                   "id": "qk0A7",
                                   "name": "RMA ID Field header",
-                                  "width": "fill_container",
-                                  "justifyContent": "space_between",
-                                  "alignItems": "center",
+                                  "width": 180,
+                                  "layout": "vertical",
+                                  "gap": 4,
+                                  "justifyContent": "center",
                                   "children": [
                                     {
                                       "type": "text",
@@ -1907,24 +1396,29 @@
                         },
                         {
                           "type": "frame",
-                          "id": "QZe4G",
-                          "name": "Field row - Customer Product",
+                          "id": "TRkNX",
+                          "name": "Customer Name Field Row",
                           "width": "fill_container",
-                          "gap": 16,
+                          "stroke": "#e4e4e7",
+                          "strokeWidth": {
+                            "bottom": 1
+                          },
+                          "strokeAlignment": "inner",
+                          "padding": 20,
                           "children": [
                             {
                               "type": "frame",
                               "id": "gFrCM",
                               "name": "Customer Name Field",
                               "width": "fill_container",
-                              "layout": "vertical",
-                              "gap": 8,
+                              "gap": 12,
+                              "alignItems": "center",
                               "children": [
                                 {
                                   "type": "frame",
                                   "id": "JsdHp",
                                   "name": "Customer Name Field header",
-                                  "width": "fill_container",
+                                  "width": 180,
                                   "justifyContent": "space_between",
                                   "alignItems": "center",
                                   "children": [
@@ -1983,20 +1477,34 @@
                                   ]
                                 }
                               ]
-                            },
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "w7wKh",
+                          "name": "Product ID Field Row",
+                          "width": "fill_container",
+                          "stroke": "#e4e4e7",
+                          "strokeWidth": {
+                            "bottom": 1
+                          },
+                          "strokeAlignment": "inner",
+                          "padding": 20,
+                          "children": [
                             {
                               "type": "frame",
                               "id": "CxUaP",
                               "name": "Product ID Field",
                               "width": "fill_container",
-                              "layout": "vertical",
-                              "gap": 8,
+                              "gap": 12,
+                              "alignItems": "center",
                               "children": [
                                 {
                                   "type": "frame",
                                   "id": "EFiDC",
                                   "name": "Product ID Field header",
-                                  "width": "fill_container",
+                                  "width": 180,
                                   "justifyContent": "space_between",
                                   "alignItems": "center",
                                   "children": [
@@ -2060,61 +1568,81 @@
                         },
                         {
                           "type": "frame",
-                          "id": "ZYOxw",
-                          "name": "Reason Field",
+                          "id": "Y05NQ",
+                          "name": "Reason Field Row",
                           "width": "fill_container",
-                          "layout": "vertical",
-                          "gap": 8,
+                          "gap": 12,
+                          "padding": 20,
                           "children": [
                             {
-                              "type": "text",
-                              "id": "dOAk0",
-                              "name": "Reason FieldLabel",
-                              "fill": "#18181B",
-                              "content": "Reason",
-                              "fontFamily": "Geist",
-                              "fontSize": 13,
-                              "fontWeight": "500"
-                            },
-                            {
                               "type": "frame",
-                              "id": "HvafQ",
-                              "name": "Reason Textarea",
+                              "id": "ZYOxw",
+                              "name": "Reason Field",
                               "width": "fill_container",
-                              "height": 132,
-                              "fill": "#FFFFFF",
-                              "cornerRadius": 8,
-                              "stroke": "#D4D4D8",
-                              "strokeWidth": 1,
-                              "strokeAlignment": "inner",
-                              "layout": "vertical",
-                              "padding": 12,
+                              "gap": 12,
                               "children": [
                                 {
-                                  "type": "text",
-                                  "id": "Zg7Fk",
-                                  "name": "Reason Textarea placeholder",
-                                  "fill": "#71717A",
-                                  "textGrowth": "fixed-width",
+                                  "type": "frame",
+                                  "id": "M6fgGT",
+                                  "name": "Reason Field header",
+                                  "width": 180,
+                                  "layout": "vertical",
+                                  "gap": 4,
+                                  "justifyContent": "center",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "dOAk0",
+                                      "name": "Reason FieldLabel",
+                                      "fill": "#18181B",
+                                      "content": "Reason",
+                                      "fontFamily": "Geist",
+                                      "fontSize": 13,
+                                      "fontWeight": "500"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "hoZNl",
+                                      "name": "Reason FieldDescription",
+                                      "fill": "#71717A",
+                                      "textGrowth": "fixed-width",
+                                      "width": "fill_container",
+                                      "content": "Include condition, defect details, and customer-provided notes.",
+                                      "fontFamily": "Geist",
+                                      "fontSize": 12,
+                                      "fontWeight": "normal"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "HvafQ",
+                                  "name": "Reason Textarea",
                                   "width": "fill_container",
-                                  "content": "Describe why the customer is requesting a return.",
-                                  "fontFamily": "Geist",
-                                  "fontSize": 14,
-                                  "fontWeight": "normal"
+                                  "height": 132,
+                                  "fill": "#FFFFFF",
+                                  "cornerRadius": 8,
+                                  "stroke": "#D4D4D8",
+                                  "strokeWidth": 1,
+                                  "strokeAlignment": "inner",
+                                  "layout": "vertical",
+                                  "padding": 12,
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "Zg7Fk",
+                                      "name": "Reason Textarea placeholder",
+                                      "fill": "#71717A",
+                                      "textGrowth": "fixed-width",
+                                      "width": "fill_container",
+                                      "content": "Describe why the customer is requesting a return.",
+                                      "fontFamily": "Geist",
+                                      "fontSize": 14,
+                                      "fontWeight": "normal"
+                                    }
+                                  ]
                                 }
                               ]
-                            },
-                            {
-                              "type": "text",
-                              "id": "hoZNl",
-                              "name": "Reason FieldDescription",
-                              "fill": "#71717A",
-                              "textGrowth": "fixed-width",
-                              "width": "fill_container",
-                              "content": "Include condition, defect details, and customer-provided notes.",
-                              "fontFamily": "Geist",
-                              "fontSize": 12,
-                              "fontWeight": "normal"
                             }
                           ]
                         }
@@ -2127,13 +1655,14 @@
                   "id": "A8Wo7",
                   "name": "CardFooter - Create RMA Actions",
                   "width": "fill_container",
+                  "fill": "#f4f4f5",
                   "stroke": "#E4E4E7",
                   "strokeWidth": {
                     "top": 1
                   },
                   "strokeAlignment": "inner",
                   "gap": 12,
-                  "padding": 24,
+                  "padding": 20,
                   "justifyContent": "end",
                   "alignItems": "center",
                   "children": [
@@ -2207,6 +1736,190 @@
                   ]
                 }
               ]
+            },
+            {
+              "type": "frame",
+              "id": "qhkXx",
+              "name": "Aside - Workflow info",
+              "width": 280,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "wa4ih",
+                  "name": "Card - Workflow info",
+                  "clip": true,
+                  "width": "fill_container",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 12,
+                  "stroke": "#E4E4E7",
+                  "strokeWidth": 1,
+                  "strokeAlignment": "inner",
+                  "layout": "vertical",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "tbFIc",
+                      "name": "CardHeader - Workflow info",
+                      "width": 244,
+                      "stroke": "#E4E4E7",
+                      "strokeWidth": {
+                        "bottom": 1
+                      },
+                      "strokeAlignment": "inner",
+                      "layout": "vertical",
+                      "gap": 6,
+                      "padding": [
+                        16,
+                        20
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "g5tgl",
+                          "name": "CardTitle - Create RMA",
+                          "fill": "#09090B",
+                          "content": "Workflow info",
+                          "fontFamily": "Geist",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "nCAAi",
+                      "name": "CardContent - Workflow info",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "aa2gz",
+                          "name": "RMA ID",
+                          "width": "fill_container",
+                          "stroke": "#e4e4e7",
+                          "strokeWidth": {
+                            "bottom": 1
+                          },
+                          "strokeAlignment": "inner",
+                          "layout": "vertical",
+                          "gap": 2,
+                          "padding": [
+                            14,
+                            20
+                          ],
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "pluMP",
+                              "name": "RMA ID Label",
+                              "fill": "#737373",
+                              "content": "RMA ID",
+                              "fontFamily": "Geist",
+                              "fontSize": 12,
+                              "fontWeight": "500"
+                            },
+                            {
+                              "type": "text",
+                              "id": "p5CCh",
+                              "name": "RMA ID Description",
+                              "fill": "#09090b",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Generated automatically on submission",
+                              "fontFamily": "Geist",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "spmMd",
+                          "name": "Initial Status",
+                          "width": "fill_container",
+                          "stroke": "#e4e4e7",
+                          "strokeWidth": {
+                            "bottom": 1
+                          },
+                          "strokeAlignment": "inner",
+                          "layout": "vertical",
+                          "gap": 2,
+                          "padding": [
+                            14,
+                            20
+                          ],
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "k9gnA",
+                              "name": "Initial Status Label",
+                              "fill": "#737373",
+                              "content": "INITIAL STATUS",
+                              "fontFamily": "Geist",
+                              "fontSize": 12,
+                              "fontWeight": "500"
+                            },
+                            {
+                              "type": "text",
+                              "id": "xqdAK",
+                              "name": "Initial Status Description",
+                              "fill": "#09090b",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Pending review",
+                              "fontFamily": "Geist",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "E7iMB",
+                          "name": "Initial Status",
+                          "width": "fill_container",
+                          "stroke": "#e4e4e7",
+                          "strokeWidth": {
+                            "bottom": 1
+                          },
+                          "strokeAlignment": "inner",
+                          "layout": "vertical",
+                          "gap": 2,
+                          "padding": [
+                            14,
+                            20
+                          ],
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "uO1nk",
+                              "name": "Initial Status Label",
+                              "fill": "#737373",
+                              "content": "TRANSITIONS",
+                              "fontFamily": "Geist",
+                              "fontSize": 12,
+                              "fontWeight": "500"
+                            },
+                            {
+                              "type": "text",
+                              "id": "MSCsf",
+                              "name": "Initial Status Description",
+                              "fill": "#09090b",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Approved, Rejected, or Completed",
+                              "fontFamily": "Geist",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
             }
           ]
         }
@@ -2254,7 +1967,7 @@
                       "id": "l79E7",
                       "name": "Breadcrumb root",
                       "fill": "#71717A",
-                      "content": "Operations",
+                      "content": "RMA",
                       "fontFamily": "Geist",
                       "fontSize": 13,
                       "fontWeight": "500"
@@ -2274,7 +1987,7 @@
                       "id": "rct7F",
                       "name": "Breadcrumb current",
                       "fill": "#18181B",
-                      "content": "RMA",
+                      "content": "Requests",
                       "fontFamily": "Geist",
                       "fontSize": 13,
                       "fontWeight": "500"
@@ -2860,7 +2573,7 @@
                       "type": "frame",
                       "id": "gf59a",
                       "name": "TableHead - RMA ID",
-                      "width": 132,
+                      "width": 148,
                       "height": "fill_container",
                       "padding": [
                         0,
@@ -2873,8 +2586,6 @@
                           "id": "wYLvo",
                           "name": "TableHead - RMA ID text",
                           "fill": "#71717A",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
                           "content": "RMA ID",
                           "fontFamily": "Geist",
                           "fontSize": 13,
@@ -2886,7 +2597,7 @@
                       "type": "frame",
                       "id": "QcI6u",
                       "name": "TableHead - Customer Name",
-                      "width": 190,
+                      "width": 180,
                       "height": "fill_container",
                       "padding": [
                         0,
@@ -2899,9 +2610,7 @@
                           "id": "teVsv",
                           "name": "TableHead - Customer name text",
                           "fill": "#71717A",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "Customer name",
+                          "content": "CUSTOMER",
                           "fontFamily": "Geist",
                           "fontSize": 13,
                           "fontWeight": "600"
@@ -2925,9 +2634,7 @@
                           "id": "PdVs0",
                           "name": "TableHead - Product ID text",
                           "fill": "#71717A",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "Product ID",
+                          "content": "PRODUCT ID",
                           "fontFamily": "Geist",
                           "fontSize": 13,
                           "fontWeight": "600"
@@ -2944,6 +2651,7 @@
                         0,
                         12
                       ],
+                      "justifyContent": "end",
                       "alignItems": "center",
                       "children": [
                         {
@@ -2951,9 +2659,7 @@
                           "id": "RHd8O",
                           "name": "TableHead - Reason text",
                           "fill": "#71717A",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "Reason",
+                          "content": "REASON",
                           "fontFamily": "Geist",
                           "fontSize": 13,
                           "fontWeight": "600"
@@ -2964,12 +2670,13 @@
                       "type": "frame",
                       "id": "KKbpT",
                       "name": "TableHead - Status",
-                      "width": 148,
+                      "width": 130,
                       "height": "fill_container",
                       "padding": [
                         0,
                         12
                       ],
+                      "justifyContent": "end",
                       "alignItems": "center",
                       "children": [
                         {
@@ -2977,9 +2684,7 @@
                           "id": "bH6TJ",
                           "name": "TableHead - Status text",
                           "fill": "#71717A",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "Status",
+                          "content": "STATUS",
                           "fontFamily": "Geist",
                           "fontSize": 13,
                           "fontWeight": "600"
@@ -2990,12 +2695,13 @@
                       "type": "frame",
                       "id": "O1h15",
                       "name": "TableHead - Date",
-                      "width": 138,
+                      "width": 160,
                       "height": "fill_container",
                       "padding": [
                         0,
                         12
                       ],
+                      "justifyContent": "end",
                       "alignItems": "center",
                       "children": [
                         {
@@ -3003,9 +2709,7 @@
                           "id": "hRGSZ",
                           "name": "TableHead - Submitted date text",
                           "fill": "#71717A",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "Submitted date",
+                          "content": "SUBMITTED DATE",
                           "fontFamily": "Geist",
                           "fontSize": 13,
                           "fontWeight": "600"
@@ -3016,12 +2720,13 @@
                       "type": "frame",
                       "id": "nr5rc",
                       "name": "TableHead - ",
-                      "width": 54,
+                      "width": "fill_container",
                       "height": "fill_container",
                       "padding": [
                         0,
                         12
                       ],
+                      "justifyContent": "end",
                       "alignItems": "center",
                       "children": [
                         {
@@ -3029,8 +2734,7 @@
                           "id": "XfSKZ",
                           "name": "TableHead -  text",
                           "fill": "#71717A",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
+                          "content": "ACTIONS",
                           "fontFamily": "Geist",
                           "fontSize": 13,
                           "fontWeight": "600"
@@ -3055,7 +2759,7 @@
                       "type": "frame",
                       "id": "o9FBo",
                       "name": "TableCell RMA ID",
-                      "width": 132,
+                      "width": 148,
                       "height": "fill_container",
                       "padding": [
                         0,
@@ -3068,12 +2772,9 @@
                           "id": "YYoGb",
                           "name": "TableCell RMA ID text",
                           "fill": "#09090B",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
                           "content": "RMA-2026-1048",
                           "fontFamily": "Geist",
-                          "fontSize": 13,
-                          "fontWeight": "600"
+                          "fontSize": 13
                         }
                       ]
                     },
@@ -3081,7 +2782,7 @@
                       "type": "frame",
                       "id": "t4RoLG",
                       "name": "TableCell Customer",
-                      "width": 190,
+                      "width": 180,
                       "height": "fill_container",
                       "padding": [
                         0,
@@ -3094,8 +2795,6 @@
                           "id": "IO6Xp",
                           "name": "TableCell Customer text",
                           "fill": "#18181B",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
                           "content": "Amelia Torres",
                           "fontFamily": "Geist",
                           "fontSize": 13,
@@ -3120,8 +2819,6 @@
                           "id": "EdpYz",
                           "name": "TableCell Product text",
                           "fill": "#3F3F46",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
                           "content": "PRD-8K21",
                           "fontFamily": "Geist",
                           "fontSize": 13,
@@ -3139,6 +2836,7 @@
                         0,
                         12
                       ],
+                      "justifyContent": "end",
                       "alignItems": "center",
                       "children": [
                         {
@@ -3146,8 +2844,6 @@
                           "id": "tWDdU",
                           "name": "TableCell Reason text",
                           "fill": "#3F3F46",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
                           "content": "Wrong item shipped",
                           "fontFamily": "Geist",
                           "fontSize": 13,
@@ -3159,12 +2855,13 @@
                       "type": "frame",
                       "id": "PS5wb",
                       "name": "TableCell Status",
-                      "width": 148,
+                      "width": 130,
                       "height": "fill_container",
                       "padding": [
                         0,
                         12
                       ],
+                      "justifyContent": "end",
                       "alignItems": "center",
                       "children": [
                         {
@@ -3201,12 +2898,13 @@
                       "type": "frame",
                       "id": "MOZdl",
                       "name": "TableCell Date",
-                      "width": 138,
+                      "width": 160,
                       "height": "fill_container",
                       "padding": [
                         0,
                         12
                       ],
+                      "justifyContent": "end",
                       "alignItems": "center",
                       "children": [
                         {
@@ -3214,8 +2912,6 @@
                           "id": "TQfSy",
                           "name": "TableCell Date text",
                           "fill": "#3F3F46",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
                           "content": "Jan 28, 2026",
                           "fontFamily": "Geist",
                           "fontSize": 13,
@@ -3227,7 +2923,7 @@
                       "type": "frame",
                       "id": "FNSic",
                       "name": "TableCell Row Actions",
-                      "width": 54,
+                      "width": "fill_container",
                       "height": "fill_container",
                       "padding": [
                         0,
@@ -3266,7 +2962,7 @@
                       "type": "frame",
                       "id": "z7LXr",
                       "name": "TableCell RMA ID",
-                      "width": 132,
+                      "width": 148,
                       "height": "fill_container",
                       "padding": [
                         0,
@@ -3279,12 +2975,9 @@
                           "id": "qc8rz",
                           "name": "TableCell RMA ID text",
                           "fill": "#09090B",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
                           "content": "RMA-2026-1047",
                           "fontFamily": "Geist",
-                          "fontSize": 13,
-                          "fontWeight": "600"
+                          "fontSize": 13
                         }
                       ]
                     },
@@ -3292,7 +2985,7 @@
                       "type": "frame",
                       "id": "a9BVH",
                       "name": "TableCell Customer",
-                      "width": 190,
+                      "width": 180,
                       "height": "fill_container",
                       "padding": [
                         0,
@@ -3305,8 +2998,6 @@
                           "id": "p8Pw0",
                           "name": "TableCell Customer text",
                           "fill": "#18181B",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
                           "content": "Marcus Lee",
                           "fontFamily": "Geist",
                           "fontSize": 13,
@@ -3331,8 +3022,6 @@
                           "id": "d792B6",
                           "name": "TableCell Product text",
                           "fill": "#3F3F46",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
                           "content": "PRD-4B19",
                           "fontFamily": "Geist",
                           "fontSize": 13,
@@ -3350,6 +3039,7 @@
                         0,
                         12
                       ],
+                      "justifyContent": "end",
                       "alignItems": "center",
                       "children": [
                         {
@@ -3357,8 +3047,6 @@
                           "id": "uaOF3",
                           "name": "TableCell Reason text",
                           "fill": "#3F3F46",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
                           "content": "Defective screen",
                           "fontFamily": "Geist",
                           "fontSize": 13,
@@ -3370,12 +3058,13 @@
                       "type": "frame",
                       "id": "ctHc1",
                       "name": "TableCell Status",
-                      "width": 148,
+                      "width": 130,
                       "height": "fill_container",
                       "padding": [
                         0,
                         12
                       ],
+                      "justifyContent": "end",
                       "alignItems": "center",
                       "children": [
                         {
@@ -3412,12 +3101,13 @@
                       "type": "frame",
                       "id": "Iahbc",
                       "name": "TableCell Date",
-                      "width": 138,
+                      "width": 160,
                       "height": "fill_container",
                       "padding": [
                         0,
                         12
                       ],
+                      "justifyContent": "end",
                       "alignItems": "center",
                       "children": [
                         {
@@ -3425,8 +3115,6 @@
                           "id": "Hit6w",
                           "name": "TableCell Date text",
                           "fill": "#3F3F46",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
                           "content": "Jan 27, 2026",
                           "fontFamily": "Geist",
                           "fontSize": 13,
@@ -3438,7 +3126,7 @@
                       "type": "frame",
                       "id": "AbjRW",
                       "name": "TableCell Row Actions",
-                      "width": 54,
+                      "width": "fill_container",
                       "height": "fill_container",
                       "padding": [
                         0,
@@ -3477,7 +3165,7 @@
                       "type": "frame",
                       "id": "MAfuX",
                       "name": "TableCell RMA ID",
-                      "width": 132,
+                      "width": 148,
                       "height": "fill_container",
                       "padding": [
                         0,
@@ -3490,12 +3178,9 @@
                           "id": "VfTZx",
                           "name": "TableCell RMA ID text",
                           "fill": "#09090B",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
                           "content": "RMA-2026-1046",
                           "fontFamily": "Geist",
-                          "fontSize": 13,
-                          "fontWeight": "600"
+                          "fontSize": 13
                         }
                       ]
                     },
@@ -3503,7 +3188,7 @@
                       "type": "frame",
                       "id": "LOipE",
                       "name": "TableCell Customer",
-                      "width": 190,
+                      "width": 180,
                       "height": "fill_container",
                       "padding": [
                         0,
@@ -3516,8 +3201,6 @@
                           "id": "HjqQV",
                           "name": "TableCell Customer text",
                           "fill": "#18181B",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
                           "content": "Nora Patel",
                           "fontFamily": "Geist",
                           "fontSize": 13,
@@ -3542,8 +3225,6 @@
                           "id": "U2gph",
                           "name": "TableCell Product text",
                           "fill": "#3F3F46",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
                           "content": "PRD-2Q77",
                           "fontFamily": "Geist",
                           "fontSize": 13,
@@ -3561,6 +3242,7 @@
                         0,
                         12
                       ],
+                      "justifyContent": "end",
                       "alignItems": "center",
                       "children": [
                         {
@@ -3568,8 +3250,6 @@
                           "id": "MDvkP",
                           "name": "TableCell Reason text",
                           "fill": "#3F3F46",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
                           "content": "Customer changed mind",
                           "fontFamily": "Geist",
                           "fontSize": 13,
@@ -3581,12 +3261,13 @@
                       "type": "frame",
                       "id": "QDBPl",
                       "name": "TableCell Status",
-                      "width": 148,
+                      "width": 130,
                       "height": "fill_container",
                       "padding": [
                         0,
                         12
                       ],
+                      "justifyContent": "end",
                       "alignItems": "center",
                       "children": [
                         {
@@ -3623,12 +3304,13 @@
                       "type": "frame",
                       "id": "gsJy0",
                       "name": "TableCell Date",
-                      "width": 138,
+                      "width": 160,
                       "height": "fill_container",
                       "padding": [
                         0,
                         12
                       ],
+                      "justifyContent": "end",
                       "alignItems": "center",
                       "children": [
                         {
@@ -3636,8 +3318,6 @@
                           "id": "k29rKz",
                           "name": "TableCell Date text",
                           "fill": "#3F3F46",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
                           "content": "Jan 25, 2026",
                           "fontFamily": "Geist",
                           "fontSize": 13,
@@ -3649,7 +3329,7 @@
                       "type": "frame",
                       "id": "Ygj3K",
                       "name": "TableCell Row Actions",
-                      "width": 54,
+                      "width": "fill_container",
                       "height": "fill_container",
                       "padding": [
                         0,
@@ -3688,7 +3368,7 @@
                       "type": "frame",
                       "id": "QFdT7",
                       "name": "TableCell RMA ID",
-                      "width": 132,
+                      "width": 148,
                       "height": "fill_container",
                       "padding": [
                         0,
@@ -3701,12 +3381,9 @@
                           "id": "UZvUT",
                           "name": "TableCell RMA ID text",
                           "fill": "#09090B",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
                           "content": "RMA-2026-1045",
                           "fontFamily": "Geist",
-                          "fontSize": 13,
-                          "fontWeight": "600"
+                          "fontSize": 13
                         }
                       ]
                     },
@@ -3714,7 +3391,7 @@
                       "type": "frame",
                       "id": "mxqkC",
                       "name": "TableCell Customer",
-                      "width": 190,
+                      "width": 180,
                       "height": "fill_container",
                       "padding": [
                         0,
@@ -3727,8 +3404,6 @@
                           "id": "g2omOT",
                           "name": "TableCell Customer text",
                           "fill": "#18181B",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
                           "content": "Evan Brooks",
                           "fontFamily": "Geist",
                           "fontSize": 13,
@@ -3753,8 +3428,6 @@
                           "id": "wdFxi",
                           "name": "TableCell Product text",
                           "fill": "#3F3F46",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
                           "content": "PRD-9A03",
                           "fontFamily": "Geist",
                           "fontSize": 13,
@@ -3772,6 +3445,7 @@
                         0,
                         12
                       ],
+                      "justifyContent": "end",
                       "alignItems": "center",
                       "children": [
                         {
@@ -3779,8 +3453,6 @@
                           "id": "cpOhx",
                           "name": "TableCell Reason text",
                           "fill": "#3F3F46",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
                           "content": "Missing accessories",
                           "fontFamily": "Geist",
                           "fontSize": 13,
@@ -3792,12 +3464,13 @@
                       "type": "frame",
                       "id": "zqWQg",
                       "name": "TableCell Status",
-                      "width": 148,
+                      "width": 130,
                       "height": "fill_container",
                       "padding": [
                         0,
                         12
                       ],
+                      "justifyContent": "end",
                       "alignItems": "center",
                       "children": [
                         {
@@ -3834,12 +3507,13 @@
                       "type": "frame",
                       "id": "IrZ1k",
                       "name": "TableCell Date",
-                      "width": 138,
+                      "width": 160,
                       "height": "fill_container",
                       "padding": [
                         0,
                         12
                       ],
+                      "justifyContent": "end",
                       "alignItems": "center",
                       "children": [
                         {
@@ -3847,8 +3521,6 @@
                           "id": "lTPwj",
                           "name": "TableCell Date text",
                           "fill": "#3F3F46",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
                           "content": "Jan 22, 2026",
                           "fontFamily": "Geist",
                           "fontSize": 13,
@@ -3860,7 +3532,7 @@
                       "type": "frame",
                       "id": "HUprq",
                       "name": "TableCell Row Actions",
-                      "width": 54,
+                      "width": "fill_container",
                       "height": "fill_container",
                       "padding": [
                         0,
@@ -3899,7 +3571,7 @@
                       "type": "frame",
                       "id": "T0Lmus",
                       "name": "TableCell RMA ID",
-                      "width": 132,
+                      "width": 148,
                       "height": "fill_container",
                       "padding": [
                         0,
@@ -3912,12 +3584,9 @@
                           "id": "v4cJdf",
                           "name": "TableCell RMA ID text",
                           "fill": "#09090B",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
                           "content": "RMA-2026-1044",
                           "fontFamily": "Geist",
-                          "fontSize": 13,
-                          "fontWeight": "600"
+                          "fontSize": 13
                         }
                       ]
                     },
@@ -3925,7 +3594,7 @@
                       "type": "frame",
                       "id": "X6AgC",
                       "name": "TableCell Customer",
-                      "width": 190,
+                      "width": 180,
                       "height": "fill_container",
                       "padding": [
                         0,
@@ -3938,8 +3607,6 @@
                           "id": "RcWwM",
                           "name": "TableCell Customer text",
                           "fill": "#18181B",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
                           "content": "Lina Chen",
                           "fontFamily": "Geist",
                           "fontSize": 13,
@@ -3964,8 +3631,6 @@
                           "id": "kAj4k",
                           "name": "TableCell Product text",
                           "fill": "#3F3F46",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
                           "content": "PRD-5C44",
                           "fontFamily": "Geist",
                           "fontSize": 13,
@@ -3983,6 +3648,7 @@
                         0,
                         12
                       ],
+                      "justifyContent": "end",
                       "alignItems": "center",
                       "children": [
                         {
@@ -3990,8 +3656,6 @@
                           "id": "j8vSc",
                           "name": "TableCell Reason text",
                           "fill": "#3F3F46",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
                           "content": "Arrived damaged",
                           "fontFamily": "Geist",
                           "fontSize": 13,
@@ -4003,12 +3667,13 @@
                       "type": "frame",
                       "id": "KGlje",
                       "name": "TableCell Status",
-                      "width": 148,
+                      "width": 130,
                       "height": "fill_container",
                       "padding": [
                         0,
                         12
                       ],
+                      "justifyContent": "end",
                       "alignItems": "center",
                       "children": [
                         {
@@ -4045,12 +3710,13 @@
                       "type": "frame",
                       "id": "J6VeYI",
                       "name": "TableCell Date",
-                      "width": 138,
+                      "width": 160,
                       "height": "fill_container",
                       "padding": [
                         0,
                         12
                       ],
+                      "justifyContent": "end",
                       "alignItems": "center",
                       "children": [
                         {
@@ -4058,8 +3724,6 @@
                           "id": "g7TvU8",
                           "name": "TableCell Date text",
                           "fill": "#3F3F46",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
                           "content": "Jan 21, 2026",
                           "fontFamily": "Geist",
                           "fontSize": 13,
@@ -4071,7 +3735,7 @@
                       "type": "frame",
                       "id": "U0avO",
                       "name": "TableCell Row Actions",
-                      "width": 54,
+                      "width": "fill_container",
                       "height": "fill_container",
                       "padding": [
                         0,
@@ -5312,6 +4976,742 @@
                   "fill": "#18181B"
                 }
               ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "Ynhtb",
+      "layoutPosition": "absolute",
+      "x": 3244,
+      "y": -185,
+      "name": "Popover - Status workflow hover",
+      "width": 560,
+      "fill": "#FFFFFF",
+      "cornerRadius": 12,
+      "stroke": "#E4E4E7",
+      "strokeWidth": 1,
+      "strokeAlignment": "inner",
+      "effect": {
+        "type": "shadow",
+        "shadowType": "outer",
+        "color": "#0000001A",
+        "offset": {
+          "x": 0,
+          "y": 12
+        },
+        "blur": 28
+      },
+      "layout": "vertical",
+      "gap": 16,
+      "padding": 18,
+      "children": [
+        {
+          "type": "frame",
+          "id": "yi3DU",
+          "name": "Popover header",
+          "width": "fill_container",
+          "gap": 10,
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "icon",
+              "id": "H8LCFF",
+              "name": "Popover header icon",
+              "width": 16,
+              "height": 16,
+              "icon": "sparkles",
+              "library": "lucide",
+              "fill": "#52525B"
+            },
+            {
+              "type": "frame",
+              "id": "DxlY3",
+              "name": "Popover heading copy",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 2,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "hSB6W",
+                  "name": "Popover title",
+                  "fill": "#09090B",
+                  "content": "Status workflow",
+                  "fontFamily": "Geist",
+                  "fontSize": 15,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "jyshY",
+                  "name": "Popover description",
+                  "fill": "#71717A",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Hovering the info icon explains the status sequence and available select options.",
+                  "fontFamily": "Geist",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "Hzoi7",
+          "name": "Numbered status flow",
+          "width": "fill_container",
+          "gap": 8,
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "FcQh5",
+              "name": "Flow step - Pending",
+              "width": "fill_container",
+              "height": 108,
+              "fill": "#FFFFFF",
+              "cornerRadius": 10,
+              "stroke": "#E4E4E7",
+              "strokeWidth": 1,
+              "strokeAlignment": "inner",
+              "layout": "vertical",
+              "gap": 6,
+              "padding": 10,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "apQo6",
+                  "name": "Flow step top - Pending",
+                  "width": "fill_container",
+                  "gap": 6,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "TrIFU",
+                      "name": "Flow step icon - Pending",
+                      "width": 16,
+                      "height": 16,
+                      "icon": "calendar-clock",
+                      "library": "lucide",
+                      "fill": "#71717A"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "hWuMw",
+                  "name": "Flow step label - Pending",
+                  "fill": "#18181B",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Pending",
+                  "fontFamily": "Geist",
+                  "fontSize": 12,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "DbHQo",
+                  "name": "Flow step description - Pending",
+                  "fill": "#71717A",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Awaiting review",
+                  "fontFamily": "Geist",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "vfBlQ",
+              "name": "Flow arrow 1",
+              "width": 20,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "X5FyJ",
+                  "name": "Flow arrow 1 icon",
+                  "width": 16,
+                  "height": 16,
+                  "icon": "arrow-right",
+                  "library": "lucide",
+                  "fill": "#A1A1AA"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "gye60",
+              "name": "Flow step - Approved",
+              "width": "fill_container",
+              "height": 108,
+              "fill": "#F4F4F5",
+              "cornerRadius": 10,
+              "stroke": "#D4D4D8",
+              "strokeWidth": 1,
+              "strokeAlignment": "inner",
+              "layout": "vertical",
+              "gap": 6,
+              "padding": 10,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "G87dJa",
+                  "name": "Flow step top - Approved",
+                  "width": "fill_container",
+                  "gap": 6,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "jeh76",
+                      "name": "Flow step icon - Approved",
+                      "width": 16,
+                      "height": 16,
+                      "icon": "check",
+                      "library": "lucide",
+                      "fill": "#18181B"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "ovkp4",
+                  "name": "Flow step label - Approved",
+                  "fill": "#18181B",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Approved",
+                  "fontFamily": "Geist",
+                  "fontSize": 12,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "PHzm6",
+                  "name": "Flow step description - Approved",
+                  "fill": "#71717A",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Authorized",
+                  "fontFamily": "Geist",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "YEvaI",
+              "name": "Flow arrow 2",
+              "width": 20,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "xkt4z",
+                  "name": "Flow arrow 2 icon",
+                  "width": 16,
+                  "height": 16,
+                  "icon": "arrow-right",
+                  "library": "lucide",
+                  "fill": "#A1A1AA"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "KeOsx",
+              "name": "Flow step - Rejected",
+              "width": "fill_container",
+              "height": 108,
+              "fill": "#FFFFFF",
+              "cornerRadius": 10,
+              "stroke": "#E4E4E7",
+              "strokeWidth": 1,
+              "strokeAlignment": "inner",
+              "layout": "vertical",
+              "gap": 6,
+              "padding": 10,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "fx89C",
+                  "name": "Flow step top - Rejected",
+                  "width": "fill_container",
+                  "gap": 6,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "K0QfMS",
+                      "name": "Flow step icon - Rejected",
+                      "width": 16,
+                      "height": 16,
+                      "icon": "x",
+                      "library": "lucide",
+                      "fill": "#71717A"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "ApAOg",
+                  "name": "Flow step label - Rejected",
+                  "fill": "#18181B",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Rejected",
+                  "fontFamily": "Geist",
+                  "fontSize": 12,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "Q3pKe9",
+                  "name": "Flow step description - Rejected",
+                  "fill": "#71717A",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Declined",
+                  "fontFamily": "Geist",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "HHdYa",
+              "name": "Flow arrow 3",
+              "width": 20,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "QhGuN",
+                  "name": "Flow arrow 3 icon",
+                  "width": 16,
+                  "height": 16,
+                  "icon": "arrow-right",
+                  "library": "lucide",
+                  "fill": "#A1A1AA"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "aHa1Y",
+              "name": "Flow step - Completed",
+              "width": "fill_container",
+              "height": 108,
+              "fill": "#FFFFFF",
+              "cornerRadius": 10,
+              "stroke": "#E4E4E7",
+              "strokeWidth": 1,
+              "strokeAlignment": "inner",
+              "layout": "vertical",
+              "gap": 6,
+              "padding": 10,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "FXjvO",
+                  "name": "Flow step top - Completed",
+                  "width": "fill_container",
+                  "gap": 6,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "jo5AY",
+                      "name": "Flow step icon - Completed",
+                      "width": 16,
+                      "height": 16,
+                      "icon": "package-check",
+                      "library": "lucide",
+                      "fill": "#71717A"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "ofGAS",
+                  "name": "Flow step label - Completed",
+                  "fill": "#18181B",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Completed",
+                  "fontFamily": "Geist",
+                  "fontSize": 12,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "kNipM",
+                  "name": "Flow step description - Completed",
+                  "fill": "#71717A",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Closed",
+                  "fontFamily": "Geist",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "jv3Bq",
+          "name": "Animated dashed status number rail",
+          "width": "fill_container",
+          "height": 42,
+          "gap": 8,
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "VYN3g",
+              "name": "Rail number column 1",
+              "width": "fill_container",
+              "height": 42,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "vOS0A",
+                  "name": "Rail number 1",
+                  "width": 24,
+                  "height": 24,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 999,
+                  "stroke": "#D4D4D8",
+                  "strokeWidth": 1,
+                  "strokeAlignment": "inner",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "TlPY3",
+                      "name": "Rail number label 1",
+                      "fill": "#52525B",
+                      "content": "1",
+                      "fontFamily": "Geist",
+                      "fontSize": 12,
+                      "fontWeight": "600"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "gvWrZ",
+              "name": "Animated centered connector 1",
+              "width": 34,
+              "height": 16,
+              "gap": 4,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "rectangle",
+                  "cornerRadius": 999,
+                  "id": "VjnH6",
+                  "name": "Animated centered connector 1 dash 1",
+                  "fill": "#A1A1AA",
+                  "width": "fill_container",
+                  "height": 2
+                },
+                {
+                  "type": "rectangle",
+                  "cornerRadius": 999,
+                  "id": "Y3B15",
+                  "name": "Animated centered connector 1 dash 2",
+                  "fill": "#A1A1AA",
+                  "width": "fill_container",
+                  "height": 2
+                },
+                {
+                  "type": "rectangle",
+                  "cornerRadius": 999,
+                  "id": "t8tqv",
+                  "name": "Animated centered connector 1 dash 3",
+                  "fill": "#E4E4E7",
+                  "width": "fill_container",
+                  "height": 2
+                },
+                {
+                  "type": "rectangle",
+                  "cornerRadius": 999,
+                  "id": "F3CzWW",
+                  "name": "Animated centered connector 1 dash 4",
+                  "fill": "#E4E4E7",
+                  "width": "fill_container",
+                  "height": 2
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "EwXfG",
+              "name": "Rail number column 2",
+              "width": "fill_container",
+              "height": 42,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "dk5kw",
+                  "name": "Rail number 2",
+                  "width": 24,
+                  "height": 24,
+                  "fill": "#18181B",
+                  "cornerRadius": 999,
+                  "stroke": "#18181B",
+                  "strokeWidth": 1,
+                  "strokeAlignment": "inner",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "IcpQl",
+                      "name": "Rail number label 2",
+                      "fill": "#FAFAFA",
+                      "content": "2",
+                      "fontFamily": "Geist",
+                      "fontSize": 12,
+                      "fontWeight": "600"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "Omvpt",
+              "name": "Animated centered connector 2",
+              "width": 34,
+              "height": 16,
+              "gap": 4,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "rectangle",
+                  "cornerRadius": 999,
+                  "id": "dkZ06",
+                  "name": "Animated centered connector 2 dash 1",
+                  "fill": "#A1A1AA",
+                  "width": "fill_container",
+                  "height": 2
+                },
+                {
+                  "type": "rectangle",
+                  "cornerRadius": 999,
+                  "id": "I4Vb7",
+                  "name": "Animated centered connector 2 dash 2",
+                  "fill": "#A1A1AA",
+                  "width": "fill_container",
+                  "height": 2
+                },
+                {
+                  "type": "rectangle",
+                  "cornerRadius": 999,
+                  "id": "l17Tkp",
+                  "name": "Animated centered connector 2 dash 3",
+                  "fill": "#E4E4E7",
+                  "width": "fill_container",
+                  "height": 2
+                },
+                {
+                  "type": "rectangle",
+                  "cornerRadius": 999,
+                  "id": "yXtkk",
+                  "name": "Animated centered connector 2 dash 4",
+                  "fill": "#E4E4E7",
+                  "width": "fill_container",
+                  "height": 2
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "hKiwc",
+              "name": "Rail number column 3",
+              "width": "fill_container",
+              "height": 42,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "Lq4bW",
+                  "name": "Rail number 3",
+                  "width": 24,
+                  "height": 24,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 999,
+                  "stroke": "#D4D4D8",
+                  "strokeWidth": 1,
+                  "strokeAlignment": "inner",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "pKtPe",
+                      "name": "Rail number label 3",
+                      "fill": "#52525B",
+                      "content": "3",
+                      "fontFamily": "Geist",
+                      "fontSize": 12,
+                      "fontWeight": "600"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "jIsuI",
+              "name": "Animated centered connector 3",
+              "width": 34,
+              "height": 16,
+              "gap": 4,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "rectangle",
+                  "cornerRadius": 999,
+                  "id": "GsxVO",
+                  "name": "Animated centered connector 3 dash 1",
+                  "fill": "#A1A1AA",
+                  "width": "fill_container",
+                  "height": 2
+                },
+                {
+                  "type": "rectangle",
+                  "cornerRadius": 999,
+                  "id": "Whlil",
+                  "name": "Animated centered connector 3 dash 2",
+                  "fill": "#A1A1AA",
+                  "width": "fill_container",
+                  "height": 2
+                },
+                {
+                  "type": "rectangle",
+                  "cornerRadius": 999,
+                  "id": "efy5Y",
+                  "name": "Animated centered connector 3 dash 3",
+                  "fill": "#E4E4E7",
+                  "width": "fill_container",
+                  "height": 2
+                },
+                {
+                  "type": "rectangle",
+                  "cornerRadius": 999,
+                  "id": "i7M3go",
+                  "name": "Animated centered connector 3 dash 4",
+                  "fill": "#E4E4E7",
+                  "width": "fill_container",
+                  "height": 2
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "Kp6Oq",
+              "name": "Rail number column 4",
+              "width": "fill_container",
+              "height": 42,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "dRR1m",
+                  "name": "Rail number 4",
+                  "width": 24,
+                  "height": 24,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 999,
+                  "stroke": "#D4D4D8",
+                  "strokeWidth": 1,
+                  "strokeAlignment": "inner",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "kKOf3",
+                      "name": "Rail number label 4",
+                      "fill": "#52525B",
+                      "content": "4",
+                      "fontFamily": "Geist",
+                      "fontSize": 12,
+                      "fontWeight": "600"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "znwen",
+          "name": "Popover micro-interactions",
+          "width": "fill_container",
+          "fill": "#FAFAFA",
+          "cornerRadius": 8,
+          "stroke": "#F4F4F5",
+          "strokeWidth": 1,
+          "strokeAlignment": "inner",
+          "gap": 8,
+          "padding": [
+            10,
+            12
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "icon",
+              "id": "w5cYy",
+              "name": "Micro interaction icon",
+              "width": 16,
+              "height": 16,
+              "icon": "mouse-pointer-2",
+              "library": "lucide",
+              "fill": "#71717A"
+            },
+            {
+              "type": "text",
+              "id": "Q24CD",
+              "name": "Micro interaction text",
+              "fill": "#52525B",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Hover state: info icon glow, popover fades in, active card lifts subtly, dashed rail animates infinitely left to right.",
+              "fontFamily": "Geist",
+              "fontSize": 12,
+              "fontWeight": "normal"
             }
           ]
         }
