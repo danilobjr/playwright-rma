@@ -1,2 +1,3 @@
-export type { ButtonProps } from './button.ui'
-export { Button } from './button.ui'
+export type * from './button.ui'
+
+export * from './button.ui'

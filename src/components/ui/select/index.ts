@@ -1,18 +1,3 @@
-export type {
-  SelectProps,
-  SelectTriggerProps,
-  SelectItemProps,
-} from './select.ui'
+export type * from './select.ui'
 
-export {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectScrollDownButton,
-  SelectScrollUpButton,
-  SelectSeparator,
-  SelectTrigger,
-  SelectValue,
-} from './select.ui'
+export * from './select.ui'
