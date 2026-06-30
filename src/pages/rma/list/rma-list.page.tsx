@@ -51,7 +51,7 @@ import {
 import type { RmaRequest } from '@/models/rma-request.model'
 import { formatDate } from '@/utils/date-time/format-date.util'
 
-import { rmaListDefaultFormFilterValues } from './components/form/rma-list-filters-default'
+import { rmaListDefaultFormFilterValues } from './components/form/rma-list-default-form-filters-values'
 import { RmaListFiltersForm } from './components/form/rma-list-filters-form.component'
 
 const tableLinkClassName =

@@ -1,6 +1,6 @@
 import { keepPreviousData, queryOptions, useQuery } from '@tanstack/react-query'
 
-import { rmaListDefaultFormFilterValues } from '@/pages/rma/list/components/form/rma-list-filters-default'
+import { rmaListDefaultFormFilterValues } from '@/pages/rma/list/components/form/rma-list-default-form-filters-values'
 import {
   getRmaRequestById,
   listRmaRequests,

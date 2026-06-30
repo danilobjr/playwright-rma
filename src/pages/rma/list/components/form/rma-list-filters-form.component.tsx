@@ -27,7 +27,7 @@ import type { RmaStatus } from '@/models/rma-request.model'
 import { formatDate } from '@/utils/date-time/format-date.util'
 import { cn } from '@/utils/styles/cn.util'
 
-import { rmaListDefaultFormFilterValues } from './rma-list-filters-default'
+import { rmaListDefaultFormFilterValues } from './rma-list-default-form-filters-values'
 
 type FilterProp = keyof RmaListFilters
 

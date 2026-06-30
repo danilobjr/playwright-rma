@@ -9,7 +9,7 @@ import { useDeleteRmaRequest } from '@/hooks/api/rma/use-delete-rma-request.hook
 import { useRmaRequests } from '@/hooks/api/rma/use-rma-requests.hook'
 import { type RmaListPagination } from '@/services/api/rma/rma-request.service'
 
-import { rmaListDefaultFormFilterValues } from './components/form/rma-list-filters-default'
+import { rmaListDefaultFormFilterValues } from './components/form/rma-list-default-form-filters-values'
 import { RmaListPage, type RmaListFilters } from './rma-list.page'
 
 function RmaListContainer() {
