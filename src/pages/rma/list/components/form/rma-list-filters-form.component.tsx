@@ -46,9 +46,9 @@ function RmaListFiltersForm({
 
   function handleInputChange(
     field: FilterProp,
-    value: RmaListFilters[typeof field],
+    newValue: RmaListFilters[typeof field],
   ) {
-    setInnerValues({ ...values, [field]: value })
+    setInnerValues((prevValues) => ({ ...prevValues, [field]: newValue }))
   }
 
   function submit() {
@@ -56,7 +56,9 @@ function RmaListFiltersForm({
   }
 
   function reset() {
-    onSubmit({ ...rmaListDefaultFormFilterValues })
+    const defaultValues = { ...rmaListDefaultFormFilterValues }
+    setInnerValues(defaultValues)
+    onSubmit(defaultValues)
   }
 
   return (
