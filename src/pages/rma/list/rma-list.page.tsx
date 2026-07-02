@@ -19,7 +19,13 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import { DataTablePagination } from '@/components/ui/data-table'
 import {
   Empty,
@@ -267,117 +273,103 @@ function RmaListPage({
             </EmptyContent>
           </Empty>
         ) : (
-          <>
-            <RmaListFiltersForm
-              values={filters}
-              onSubmit={onFiltersFormSubmit}
-            />
+          <Card>
+            <CardHeader className="border-b">
+              <CardTitle className="text-xl">Requests</CardTitle>
+              <CardDescription>
+                Component model: DataTable toolbar, Table, Badge, row actions,
+                Pagination.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="grid gap-4 p-0">
+              <RmaListFiltersForm
+                className="px-(--card-spacing)"
+                values={filters}
+                onSubmit={onFiltersFormSubmit}
+              />
 
-            <Card className="gap-0 p-0">
-              <CardContent className="grid gap-4 p-0">
-                <div>
-                  <Table aria-label="RMA Requests">
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead className="bg-muted/50 pl-(--card-spacing) text-[0.8125rem] text-muted-foreground">
-                          RMA ID
-                        </TableHead>
-                        <TableHead className="bg-muted/50 text-[0.8125rem] text-muted-foreground">
-                          Customer name
-                        </TableHead>
-                        <TableHead className="bg-muted/50 text-[0.8125rem] text-muted-foreground">
-                          Product ID
-                        </TableHead>
-                        <TableHead className="bg-muted/50 text-[0.8125rem] text-muted-foreground">
-                          Reason
-                        </TableHead>
-                        <TableHead className="bg-muted/50 text-[0.8125rem] text-muted-foreground">
-                          Status
-                        </TableHead>
-                        <TableHead className="bg-muted/50 text-[0.8125rem] text-muted-foreground">
-                          Submitted date
-                        </TableHead>
-                        <TableHead className="bg-muted/50 pr-(--card-spacing) text-[0.8125rem] text-muted-foreground">
-                          Actions
-                        </TableHead>
+              <Table className="border-y" aria-label="RMA Requests">
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="bg-muted/50 pl-(--card-spacing) text-[0.8125rem] text-muted-foreground">
+                      RMA ID
+                    </TableHead>
+                    <TableHead className="bg-muted/50 text-[0.8125rem] text-muted-foreground">
+                      Customer name
+                    </TableHead>
+                    <TableHead className="bg-muted/50 text-[0.8125rem] text-muted-foreground">
+                      Product ID
+                    </TableHead>
+                    <TableHead className="bg-muted/50 text-[0.8125rem] text-muted-foreground">
+                      Reason
+                    </TableHead>
+                    <TableHead className="bg-muted/50 text-[0.8125rem] text-muted-foreground">
+                      Status
+                    </TableHead>
+                    <TableHead className="bg-muted/50 text-[0.8125rem] text-muted-foreground">
+                      Submitted date
+                    </TableHead>
+                    <TableHead className="bg-muted/50 pr-(--card-spacing) text-[0.8125rem] text-muted-foreground">
+                      Actions
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {requests.map((request) => {
+                    const presentation = RMA_STATUS_DISPLAY[request.status]
+                    const updateLink = {
+                      params: { rmaId: request.rmaId },
+                      to: '/rma/$rmaId' as const,
+                    }
+                    return (
+                      <TableRow key={request.rmaId}>
+                        <TableCell className="pl-(--card-spacing)">
+                          <Link className={tableLinkClassName} {...updateLink}>
+                            {request.rmaId}
+                          </Link>
+                        </TableCell>
+                        <TableCell>
+                          <Link className={tableLinkClassName} {...updateLink}>
+                            {request.customerName}
+                          </Link>
+                        </TableCell>
+                        <TableCell>
+                          <Link className={tableLinkClassName} {...updateLink}>
+                            {request.productId}
+                          </Link>
+                        </TableCell>
+                        <TableCell className="max-w-80 whitespace-normal">
+                          <Link className={tableLinkClassName} {...updateLink}>
+                            {request.reason}
+                          </Link>
+                        </TableCell>
+                        <TableCell>
+                          <Link className={tableLinkClassName} {...updateLink}>
+                            <Badge
+                              className={presentation.className}
+                              variant="outline"
+                            >
+                              {presentation.label}
+                            </Badge>
+                          </Link>
+                        </TableCell>
+                        <TableCell>
+                          <Link className={tableLinkClassName} {...updateLink}>
+                            {formatDate(new Date(request.createdAt))}
+                          </Link>
+                        </TableCell>
+                        <TableCell className="pr-(--card-spacing)">
+                          {renderDeleteAction(request)}
+                        </TableCell>
                       </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {requests.map((request) => {
-                        const presentation = RMA_STATUS_DISPLAY[request.status]
-                        const updateLink = {
-                          params: { rmaId: request.rmaId },
-                          to: '/rma/$rmaId' as const,
-                        }
-
-                        return (
-                          <TableRow key={request.rmaId}>
-                            <TableCell className="pl-(--card-spacing)">
-                              <Link
-                                className={tableLinkClassName}
-                                {...updateLink}
-                              >
-                                {request.rmaId}
-                              </Link>
-                            </TableCell>
-                            <TableCell>
-                              <Link
-                                className={tableLinkClassName}
-                                {...updateLink}
-                              >
-                                {request.customerName}
-                              </Link>
-                            </TableCell>
-                            <TableCell>
-                              <Link
-                                className={tableLinkClassName}
-                                {...updateLink}
-                              >
-                                {request.productId}
-                              </Link>
-                            </TableCell>
-                            <TableCell className="max-w-80 whitespace-normal">
-                              <Link
-                                className={tableLinkClassName}
-                                {...updateLink}
-                              >
-                                {request.reason}
-                              </Link>
-                            </TableCell>
-                            <TableCell>
-                              <Link
-                                className={tableLinkClassName}
-                                {...updateLink}
-                              >
-                                <Badge
-                                  className={presentation.className}
-                                  variant="outline"
-                                >
-                                  {presentation.label}
-                                </Badge>
-                              </Link>
-                            </TableCell>
-                            <TableCell>
-                              <Link
-                                className={tableLinkClassName}
-                                {...updateLink}
-                              >
-                                {formatDate(new Date(request.createdAt))}
-                              </Link>
-                            </TableCell>
-                            <TableCell className="pr-(--card-spacing)">
-                              {renderDeleteAction(request)}
-                            </TableCell>
-                          </TableRow>
-                        )
-                      })}
-                    </TableBody>
-                  </Table>
-                </div>
-              </CardContent>
-            </Card>
+                    )
+                  })}
+                </TableBody>
+              </Table>
+            </CardContent>
 
             <DataTablePagination
+              className="px-(--card-spacing)"
               pageIndex={pagination.pageIndex}
               pageSize={pagination.pageSize}
               totalRows={pagination.totalRows}
@@ -385,7 +377,7 @@ function RmaListPage({
                 onPaginationChange({ ...pagination, ...value })
               }
             />
-          </>
+          </Card>
         )}
       </div>
       <AlertDialog

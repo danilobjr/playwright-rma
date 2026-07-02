@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, type ComponentProps } from 'react'
 import { CalendarIcon, RotateCcwIcon, SearchIcon } from 'lucide-react'
 
 import {
@@ -31,7 +31,10 @@ import { rmaListDefaultFormFilterValues } from './rma-list-default-form-filters-
 
 type FilterProp = keyof RmaListFilters
 
-type RmaListFiltersFormProps = {
+type RmaListFiltersFormProps = Omit<
+  ComponentProps<typeof FieldGroup>,
+  'onSubmit'
+> & {
   values?: RmaListFilters
   onSubmit?: (values: RmaListFilters) => void
 }
@@ -41,6 +44,7 @@ const STATUS_FILTER_OPTIONS = RMA_STATUS_ORDER
 function RmaListFiltersForm({
   values = rmaListDefaultFormFilterValues,
   onSubmit = () => {},
+  ...otherProps
 }: RmaListFiltersFormProps) {
   const [innerValues, setInnerValues] = useState<RmaListFilters>(() => values)
 
@@ -62,144 +66,139 @@ function RmaListFiltersForm({
   }
 
   return (
-    <div className="p-(--card-spacing)">
-      <FieldGroup>
-        <div className="grid grid-cols-4 items-end gap-3">
-          <Field>
-            <FieldLabel htmlFor="rma-search">Search</FieldLabel>
-            <div className="relative">
-              <SearchIcon
-                aria-hidden="true"
-                className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
-              />
-              <Input
-                className="bg-card pl-9"
-                id="rma-search"
-                placeholder="Search RMA Requests"
-                value={innerValues.search}
-                onChange={(e) =>
-                  handleInputChange('search', e.currentTarget.value)
-                }
-              />
-            </div>
-          </Field>
-          <Field>
-            <FieldLabel htmlFor="rma-status-filter">Status</FieldLabel>
-            {/* // TODO replace this with a AppInputSelectRmaRequestStatus */}
-            <Select
-              value={innerValues.status}
-              onValueChange={(status: RmaStatus) =>
-                handleInputChange('status', status)
+    <FieldGroup {...otherProps}>
+      <div className="grid grid-cols-4 items-end gap-3">
+        <Field>
+          <FieldLabel htmlFor="rma-search">Search</FieldLabel>
+          <div className="relative">
+            <SearchIcon
+              aria-hidden="true"
+              className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
+            />
+            <Input
+              className="bg-card pl-9"
+              id="rma-search"
+              placeholder="Search RMA Requests"
+              value={innerValues.search}
+              onChange={(e) =>
+                handleInputChange('search', e.currentTarget.value)
               }
+            />
+          </div>
+        </Field>
+        <Field>
+          <FieldLabel htmlFor="rma-status-filter">Status</FieldLabel>
+          {/* // TODO replace this with a AppInputSelectRmaRequestStatus */}
+          <Select
+            value={innerValues.status}
+            onValueChange={(status: RmaStatus) =>
+              handleInputChange('status', status)
+            }
+          >
+            <SelectTrigger
+              id="rma-status-filter"
+              aria-label="Status"
+              className="w-full bg-card"
             >
-              <SelectTrigger
-                id="rma-status-filter"
-                aria-label="Status"
-                className="w-full bg-card"
-              >
-                {innerValues.status ? (
-                  <span className="flex items-center gap-2">
-                    {(() => {
-                      const presentation =
-                        RMA_STATUS_DISPLAY[innerValues.status]
-                      const Icon = presentation.icon
-
-                      return (
-                        <>
-                          <Icon
-                            aria-hidden="true"
-                            className="size-4 text-muted-foreground"
-                          />
-                          <span>{presentation.label}</span>
-                        </>
-                      )
-                    })()}
-                  </span>
-                ) : (
-                  <SelectValue placeholder="All" />
-                )}
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  {STATUS_FILTER_OPTIONS.map((status) => {
-                    const presentation = RMA_STATUS_DISPLAY[status]
+              {innerValues.status ? (
+                <span className="flex items-center gap-2">
+                  {(() => {
+                    const presentation = RMA_STATUS_DISPLAY[innerValues.status]
                     const Icon = presentation.icon
 
                     return (
-                      <SelectItem
-                        key={status}
-                        textValue={presentation.label}
-                        value={status}
-                      >
-                        <div className="flex gap-2">
-                          <Icon className="mt-0.5" aria-hidden="true" />
-                          <span className="grid gap-0.5">
-                            <span>{presentation.label}</span>
-                            <span className="text-xs text-muted-foreground">
-                              {presentation.description}
-                            </span>
-                          </span>
-                        </div>
-                      </SelectItem>
+                      <>
+                        <Icon
+                          aria-hidden="true"
+                          className="size-4 text-muted-foreground"
+                        />
+                        <span>{presentation.label}</span>
+                      </>
                     )
-                  })}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </Field>
-          <Field>
-            <FieldLabel>Submitted date</FieldLabel>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  aria-label="Submitted date"
-                  className={cn(
-                    'w-full justify-start bg-card text-left font-normal hover:bg-card aria-expanded:bg-card',
-                  )}
-                  variant="outline"
-                >
-                  <CalendarIcon
-                    className="text-muted-foreground"
-                    aria-hidden="true"
-                  />
-                  {innerValues.submittedDate ? (
-                    formatDate(innerValues.submittedDate)
-                  ) : (
-                    <span className="text-muted-foreground">All</span>
-                  )}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
-                  mode="single"
-                  selected={innerValues.submittedDate}
-                  onSelect={(value) =>
-                    handleInputChange('submittedDate', value)
-                  }
-                />
-              </PopoverContent>
-            </Popover>
-          </Field>
-          <div className="flex justify-end gap-2">
-            <Button
-              aria-label="Reset"
-              className="gap-2 bg-card"
-              type="button"
-              variant="outline"
-              onClick={reset}
-            >
-              <RotateCcwIcon aria-hidden="true" />
-              <span>Reset</span>
-            </Button>
+                  })()}
+                </span>
+              ) : (
+                <SelectValue placeholder="All" />
+              )}
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {STATUS_FILTER_OPTIONS.map((status) => {
+                  const presentation = RMA_STATUS_DISPLAY[status]
+                  const Icon = presentation.icon
 
-            <Button aria-label="Search" type="button" onClick={submit}>
-              <SearchIcon aria-hidden="true" />
-              <span>Search</span>
-            </Button>
-          </div>
+                  return (
+                    <SelectItem
+                      key={status}
+                      textValue={presentation.label}
+                      value={status}
+                    >
+                      <div className="flex gap-2">
+                        <Icon className="mt-0.5" aria-hidden="true" />
+                        <span className="grid gap-0.5">
+                          <span>{presentation.label}</span>
+                          <span className="text-xs text-muted-foreground">
+                            {presentation.description}
+                          </span>
+                        </span>
+                      </div>
+                    </SelectItem>
+                  )
+                })}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </Field>
+        <Field>
+          <FieldLabel>Submitted date</FieldLabel>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                aria-label="Submitted date"
+                className={cn(
+                  'w-full justify-start bg-card text-left font-normal hover:bg-card aria-expanded:bg-card',
+                )}
+                variant="outline"
+              >
+                <CalendarIcon
+                  className="text-muted-foreground"
+                  aria-hidden="true"
+                />
+                {innerValues.submittedDate ? (
+                  formatDate(innerValues.submittedDate)
+                ) : (
+                  <span className="text-muted-foreground">All</span>
+                )}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                mode="single"
+                selected={innerValues.submittedDate}
+                onSelect={(value) => handleInputChange('submittedDate', value)}
+              />
+            </PopoverContent>
+          </Popover>
+        </Field>
+        <div className="flex justify-end gap-2">
+          <Button
+            aria-label="Reset"
+            className="gap-2 bg-card"
+            type="button"
+            variant="outline"
+            onClick={reset}
+          >
+            <RotateCcwIcon aria-hidden="true" />
+            <span>Reset</span>
+          </Button>
+
+          <Button aria-label="Search" type="button" onClick={submit}>
+            <SearchIcon aria-hidden="true" />
+            <span>Search</span>
+          </Button>
         </div>
-      </FieldGroup>
-    </div>
+      </div>
+    </FieldGroup>
   )
 }
 
