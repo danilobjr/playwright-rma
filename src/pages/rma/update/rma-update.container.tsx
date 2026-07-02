@@ -29,7 +29,7 @@ function RmaUpdateContainer({ rmaId }: RmaUpdateContainerProps) {
       title: 'Update RMA Status',
       description: 'Review the request and choose the next workflow status.',
       topRightAction: (
-        <Button asChild variant="outline">
+        <Button className="bg-white" variant="outline" asChild>
           <Link to="/rma">
             <ArrowLeft aria-hidden="true" />
             Back to requests

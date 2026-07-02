@@ -32,7 +32,7 @@ function RmaCreateContainer() {
       description:
         'Use a compact FieldGroup form layout that matches shadcn form composition.',
       topRightAction: (
-        <Button asChild variant="outline">
+        <Button className="bg-white" variant="outline" asChild>
           <Link to="/rma">
             <ArrowLeftIcon aria-hidden="true" />
             Back to list
@@ -75,7 +75,7 @@ function RmaCreateContainer() {
   return (
     <RmaCreatePage
       cancelAction={
-        <Button asChild type="button" variant="outline">
+        <Button className="bg-white" type="button" variant="outline" asChild>
           <Link to="/rma">Cancel</Link>
         </Button>
       }

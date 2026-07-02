@@ -277,7 +277,7 @@ function RmaUpdatePage({
         </FieldGroup>
       </RmaPageCardContent>
       <RmaPageCardFooter>
-        <Button variant="outline" onClick={onCancel}>
+        <Button className="bg-white" variant="outline" onClick={onCancel}>
           Cancel
         </Button>
         <Button disabled={saveDisabled || isSaving} onClick={onSave}>
