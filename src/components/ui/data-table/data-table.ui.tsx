@@ -12,9 +12,9 @@ import {
   PaginationButtonPrevious,
   PaginationDots,
   PaginationItem,
+  PaginationItemCount,
   PaginationPageSelector,
   PaginationPageSizeSelector,
-  PaginationRowCount,
   PaginationSeparator,
 } from '@/components/ui/pagination'
 import { cn } from '@/utils/styles/cn.util'
@@ -72,7 +72,7 @@ function DataTablePagination<SortingProp = unknown>({
 
       <PaginationSeparator orientation="vertical" />
 
-      <PaginationRowCount
+      <PaginationItemCount
         firstRowNumberOnCurrentPage={firstRowNumberOnCurrentPage}
         lastRowNumberOnCurrentPage={lastRowNumberOnCurrentPage}
         totalRows={totalRows}

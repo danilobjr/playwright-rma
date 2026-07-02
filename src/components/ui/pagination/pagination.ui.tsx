@@ -199,35 +199,35 @@ function PaginationEllipsis({
   )
 }
 
-type PaginationRowCountProps = ComponentProps<'div'> & {
+type PaginationItemCountProps = ComponentProps<'div'> & {
   firstRowNumberOnCurrentPage: string | number
   lastRowNumberOnCurrentPage: string | number
   totalRows: number
 }
-function PaginationRowCount({
+function PaginationItemCount({
   className = '',
   firstRowNumberOnCurrentPage,
   lastRowNumberOnCurrentPage,
   totalRows,
   ...otherProps
-}: PaginationRowCountProps) {
+}: PaginationItemCountProps) {
   return (
     <div
-      className={cn(styles.rowCount.root(), className)}
-      data-slot="pagination-row-count"
+      className={cn(styles.itemCount.root(), className)}
+      data-slot="pagination-item-count"
       {...otherProps}
     >
       <span
         className={cn(
-          styles.rowCount.words.base(),
-          styles.rowCount.words.first(),
+          styles.itemCount.words.base(),
+          styles.itemCount.words.first(),
         )}
       >
         Showing
       </span>{' '}
       {firstRowNumberOnCurrentPage}-{lastRowNumberOnCurrentPage}{' '}
-      <span className={styles.rowCount.words.base()}>of</span> {totalRows}{' '}
-      <span className={styles.rowCount.words.base()}>items</span>
+      <span className={styles.itemCount.words.base()}>of</span> {totalRows}{' '}
+      <span className={styles.itemCount.words.base()}>items</span>
     </div>
   )
 }
@@ -271,6 +271,8 @@ function PaginationSeparator({
   )
 }
 
+export type { PaginationItemCountProps }
+
 export {
   Pagination,
   PaginationPageSelector,
@@ -282,7 +284,7 @@ export {
   PaginationButtonPrevious,
   PaginationButtonNext,
   PaginationEllipsis,
-  PaginationRowCount,
+  PaginationItemCount,
   PaginationPageSizeSelector,
   PaginationSeparator,
   type PaginationProps,
