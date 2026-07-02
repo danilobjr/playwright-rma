@@ -135,3 +135,9 @@
     cursor: pointer;
   }
 }
+
+@layer components {
+  .lucide {
+    @apply size-4 shrink-0;
+  }
+}
