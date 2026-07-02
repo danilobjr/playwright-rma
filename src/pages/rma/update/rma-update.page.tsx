@@ -1,10 +1,8 @@
 import { Link } from '@tanstack/react-router'
 import { SaveIcon } from 'lucide-react'
 
-import {
-  RMA_STATUS_DISPLAY,
-  RMA_STATUS_ORDER,
-} from '@/pages/rma/rma-status-presentation.model'
+import { RMA_STATUS_DISPLAY } from '@/pages/rma/rma-status-presentation.model'
+import { AppStatusSwitcher } from '@/components/app/app-status-switcher.app'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -20,14 +18,7 @@ import {
   type CardHeaderProps,
   type CardProps,
 } from '@/components/ui/card'
-import { Field, FieldGroup, FieldLabel } from '@/components/ui/field'
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-} from '@/components/ui/select'
+import { Field, FieldGroup } from '@/components/ui/field'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 import type { RmaRequest, RmaStatus } from '@/models/rma-request.model'
@@ -56,7 +47,7 @@ function formatSubmittedDate(date: Date) {
   }).format(date)
 }
 
-function RmaPageCard(props: CardProps) {
+function RmaInfoCard(props: CardProps) {
   return (
     <Card
       className="mx-auto w-full max-w-190 gap-6 overflow-hidden rounded-xl p-0"
@@ -66,15 +57,15 @@ function RmaPageCard(props: CardProps) {
   )
 }
 
-function RmaPageCardHeader(props: CardHeaderProps) {
+function RmaInfoCardHeader(props: CardHeaderProps) {
   return <CardHeader className="border-b p-6" {...props} />
 }
 
-function RmaPageCardContent(props: CardContentProps) {
+function RmaInfoCardContent(props: CardContentProps) {
   return <CardContent className="grid gap-6 px-6" {...props} />
 }
 
-function RmaPageCardFooter(props: CardFooterProps) {
+function RmaInfoCardFooter(props: CardFooterProps) {
   return (
     <CardFooter
       className="flex-col-reverse items-stretch justify-end gap-3 border-t p-6 sm:flex-row sm:items-center sm:gap-4"
@@ -85,8 +76,8 @@ function RmaPageCardFooter(props: CardFooterProps) {
 
 function RmaUpdateSkeleton() {
   return (
-    <RmaPageCard aria-label="Loading RMA Request">
-      <RmaPageCardHeader>
+    <RmaInfoCard aria-label="Loading RMA Request">
+      <RmaInfoCardHeader>
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="grid gap-2">
             <Skeleton className="h-7 w-44" data-testid="rma-update-skeleton" />
@@ -94,8 +85,8 @@ function RmaUpdateSkeleton() {
           </div>
           <Skeleton className="h-5 w-20" />
         </div>
-      </RmaPageCardHeader>
-      <RmaPageCardContent>
+      </RmaInfoCardHeader>
+      <RmaInfoCardContent>
         <div className="grid gap-4">
           {Array.from({ length: 5 }).map((_, index) => (
             <div
@@ -114,12 +105,12 @@ function RmaUpdateSkeleton() {
             <Skeleton className="h-10 w-full" />
           </Field>
         </FieldGroup>
-      </RmaPageCardContent>
-      <RmaPageCardFooter>
+      </RmaInfoCardContent>
+      <RmaInfoCardFooter>
         <Skeleton className="h-10 w-20" />
         <Skeleton className="h-10 w-20" />
-      </RmaPageCardFooter>
-    </RmaPageCard>
+      </RmaInfoCardFooter>
+    </RmaInfoCard>
   )
 }
 
@@ -151,7 +142,7 @@ function RmaUpdatePage({
 
   if (isError) {
     return (
-      <RmaPageCard aria-label="Unable to load RMA request">
+      <RmaInfoCard aria-label="Unable to load RMA request">
         <CardContent className="flex flex-col items-center gap-4 py-16 text-center">
           <h2 className="font-heading text-sm font-medium tracking-tight">
             Unable to load RMA request
@@ -166,13 +157,13 @@ function RmaUpdatePage({
             </Button>
           </div>
         </CardContent>
-      </RmaPageCard>
+      </RmaInfoCard>
     )
   }
 
   if (!request) {
     return (
-      <RmaPageCard aria-label="RMA request not found">
+      <RmaInfoCard aria-label="RMA request not found">
         <CardContent className="flex flex-col items-center gap-4 py-16 text-center">
           <h2 className="font-heading text-sm font-medium tracking-tight">
             RMA request not found
@@ -184,99 +175,59 @@ function RmaUpdatePage({
             <Link to="/rma">Back to requests</Link>
           </Button>
         </CardContent>
-      </RmaPageCard>
+      </RmaInfoCard>
     )
   }
 
   const currentDraft = draftStatus ?? request.status
   const submittedDate = formatSubmittedDate(new Date(request.createdAt))
   const persistedPresentation = RMA_STATUS_DISPLAY[request.status]
-  const draftPresentation = RMA_STATUS_DISPLAY[currentDraft]
-  const DraftIcon = draftPresentation.icon
 
   return (
-    <RmaPageCard aria-label={`RMA Request ${request.rmaId}`}>
-      <RmaPageCardHeader className="border-b p-6">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-          <div className="grid gap-1.5">
-            <CardTitle>
-              <h2>{request.rmaId}</h2>
-            </CardTitle>
-            <CardDescription>Submitted {submittedDate}</CardDescription>
-          </div>
-          <Badge
-            className={cn('border', persistedPresentation.className)}
-            variant="outline"
-          >
-            {persistedPresentation.label}
-          </Badge>
-        </div>
-      </RmaPageCardHeader>
-      <RmaPageCardContent>
-        {saveError && (
-          <Alert variant="destructive">
-            <AlertDescription>{saveError}</AlertDescription>
-          </Alert>
-        )}
-        <dl className="grid gap-4">
-          <DetailRow label="RMA ID" value={request.rmaId} />
-          <DetailRow label="Customer name" value={request.customerName} />
-          <DetailRow label="Product ID" value={request.productId} />
-          <DetailRow label="Reason" value={request.reason} />
-          <DetailRow label="Submitted date" value={submittedDate} />
-        </dl>
-        <Separator />
-        <FieldGroup>
-          <Field>
-            <FieldLabel htmlFor="rma-status">Status</FieldLabel>
-            <Select
-              value={currentDraft}
-              onValueChange={(value) => onStatusChange?.(value as RmaStatus)}
-            >
-              <SelectTrigger
-                id="rma-status"
-                aria-label="Status"
-                className="w-full"
+    <div className="mx-auto flex max-w-5xl flex-col gap-5">
+      <div className="grid grid-cols-3 gap-5">
+        <RmaInfoCard
+          className="col-span-2"
+          aria-label={`RMA Request ${request.rmaId}`}
+        >
+          <RmaInfoCardHeader className="border-b p-6">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+              <div className="grid gap-1.5">
+                <CardTitle>
+                  <h2>{request.rmaId}</h2>
+                </CardTitle>
+                <CardDescription>Submitted {submittedDate}</CardDescription>
+              </div>
+              <Badge
+                className={cn('border', persistedPresentation.className)}
+                variant="outline"
               >
-                <span className="flex items-center gap-2">
-                  <DraftIcon
-                    aria-hidden="true"
-                    className="size-4 text-muted-foreground"
-                  />
-                  <span>{draftPresentation.label}</span>
-                </span>
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  {RMA_STATUS_ORDER.map((status) => {
-                    const presentation = RMA_STATUS_DISPLAY[status]
-                    const Icon = presentation.icon
+                {persistedPresentation.label}
+              </Badge>
+            </div>
+          </RmaInfoCardHeader>
+          <RmaInfoCardContent>
+            {saveError && (
+              <Alert variant="destructive">
+                <AlertDescription>{saveError}</AlertDescription>
+              </Alert>
+            )}
+            <dl className="grid gap-4">
+              <DetailRow label="RMA ID" value={request.rmaId} />
+              <DetailRow label="Customer name" value={request.customerName} />
+              <DetailRow label="Product ID" value={request.productId} />
+              <DetailRow label="Reason" value={request.reason} />
+              <DetailRow label="Submitted date" value={submittedDate} />
+            </dl>
+          </RmaInfoCardContent>
+        </RmaInfoCard>
 
-                    return (
-                      <SelectItem
-                        key={status}
-                        textValue={presentation.label}
-                        value={status}
-                      >
-                        <div className="flex gap-2">
-                          <Icon className="mt-0.5" aria-hidden="true" />
-                          <span className="grid gap-0.5">
-                            <span>{presentation.label}</span>
-                            <span className="text-xs text-muted-foreground">
-                              {presentation.description}
-                            </span>
-                          </span>
-                        </div>
-                      </SelectItem>
-                    )
-                  })}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </Field>
-        </FieldGroup>
-      </RmaPageCardContent>
-      <RmaPageCardFooter>
+        <div>
+          <AppStatusSwitcher status={currentDraft} onChange={onStatusChange} />
+        </div>
+      </div>
+
+      <div className="flex justify-end gap-3">
         <Button className="bg-white" variant="outline" onClick={onCancel}>
           Cancel
         </Button>
@@ -284,8 +235,8 @@ function RmaUpdatePage({
           <SaveIcon aria-hidden="true" />
           Save
         </Button>
-      </RmaPageCardFooter>
-    </RmaPageCard>
+      </div>
+    </div>
   )
 }
 
