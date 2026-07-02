@@ -271,7 +271,21 @@ function PaginationSeparator({
   )
 }
 
-export type { PaginationItemCountProps }
+export type {
+  PaginationProps,
+  PaginationPageSelectorProps,
+  PaginationItemProps,
+  PaginationDotsProps,
+  PaginationButtonProps,
+  PaginationButtonFirstProps,
+  PaginationButtonLastProps,
+  PaginationButtonPreviousProps,
+  PaginationButtonNextProps,
+  PaginationEllipsisProps,
+  PaginationItemCountProps,
+  PaginationPageSizeSelectorProps,
+  PaginationSeparatorProps,
+}
 
 export {
   Pagination,
@@ -287,17 +301,4 @@ export {
   PaginationItemCount,
   PaginationPageSizeSelector,
   PaginationSeparator,
-  type PaginationProps,
-  type PaginationPageSelectorProps,
-  type PaginationItemProps,
-  type PaginationDotsProps,
-  type PaginationButtonProps,
-  type PaginationButtonFirstProps,
-  type PaginationButtonLastProps,
-  type PaginationButtonPreviousProps,
-  type PaginationButtonNextProps,
-  type PaginationEllipsisProps,
-  type PaginationRowCountProps,
-  type PaginationPageSizeSelectorProps,
-  type PaginationSeparatorProps,
 }
