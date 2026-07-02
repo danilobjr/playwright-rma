@@ -870,7 +870,7 @@
                       "gap": 8,
                       "padding": [
                         8,
-                        12
+                        16
                       ],
                       "justifyContent": "center",
                       "alignItems": "center",
@@ -1679,7 +1679,7 @@
                       "gap": 8,
                       "padding": [
                         8,
-                        12
+                        16
                       ],
                       "justifyContent": "center",
                       "alignItems": "center",
@@ -2774,7 +2774,8 @@
                           "fill": "#09090B",
                           "content": "RMA-2026-1048",
                           "fontFamily": "Geist",
-                          "fontSize": 13
+                          "fontSize": 13,
+                          "fontWeight": "normal"
                         }
                       ]
                     },
@@ -2938,7 +2939,7 @@
                           "name": "Trash row action",
                           "width": 18,
                           "height": 18,
-                          "icon": "trash-2",
+                          "icon": "trash",
                           "library": "lucide",
                           "fill": "#71717A"
                         }
@@ -2977,7 +2978,8 @@
                           "fill": "#09090B",
                           "content": "RMA-2026-1047",
                           "fontFamily": "Geist",
-                          "fontSize": 13
+                          "fontSize": 13,
+                          "fontWeight": "normal"
                         }
                       ]
                     },
@@ -3141,7 +3143,7 @@
                           "name": "Trash row action",
                           "width": 18,
                           "height": 18,
-                          "icon": "trash-2",
+                          "icon": "trash",
                           "library": "lucide",
                           "fill": "#71717A"
                         }
@@ -3180,7 +3182,8 @@
                           "fill": "#09090B",
                           "content": "RMA-2026-1046",
                           "fontFamily": "Geist",
-                          "fontSize": 13
+                          "fontSize": 13,
+                          "fontWeight": "normal"
                         }
                       ]
                     },
@@ -3344,7 +3347,7 @@
                           "name": "Trash row action",
                           "width": 18,
                           "height": 18,
-                          "icon": "trash-2",
+                          "icon": "trash",
                           "library": "lucide",
                           "fill": "#71717A"
                         }
@@ -3383,7 +3386,8 @@
                           "fill": "#09090B",
                           "content": "RMA-2026-1045",
                           "fontFamily": "Geist",
-                          "fontSize": 13
+                          "fontSize": 13,
+                          "fontWeight": "normal"
                         }
                       ]
                     },
@@ -3547,7 +3551,7 @@
                           "name": "Trash row action",
                           "width": 18,
                           "height": 18,
-                          "icon": "trash-2",
+                          "icon": "trash",
                           "library": "lucide",
                           "fill": "#71717A"
                         }
@@ -3586,7 +3590,8 @@
                           "fill": "#09090B",
                           "content": "RMA-2026-1044",
                           "fontFamily": "Geist",
-                          "fontSize": 13
+                          "fontSize": 13,
+                          "fontWeight": "normal"
                         }
                       ]
                     },
@@ -3750,7 +3755,7 @@
                           "name": "Trash row action",
                           "width": 18,
                           "height": 18,
-                          "icon": "trash-2",
+                          "icon": "trash",
                           "library": "lucide",
                           "fill": "#71717A"
                         }
@@ -4749,7 +4754,7 @@
               "id": "iygzy",
               "name": "Row count unit",
               "fill": "#71717A",
-              "content": "pages",
+              "content": "items",
               "fontFamily": "Geist",
               "fontSize": 13,
               "fontWeight": "normal"
@@ -5716,6 +5721,991 @@
           ]
         }
       ]
+    },
+    {
+      "type": "frame",
+      "id": "gzMHT",
+      "x": 0,
+      "y": 1352,
+      "name": "Component - Button",
+      "clip": true,
+      "width": 1280,
+      "fill": "$--background",
+      "layout": "vertical",
+      "gap": 24,
+      "padding": 32,
+      "children": [
+        {
+          "type": "frame",
+          "id": "M9cJDk",
+          "name": "Button component header",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 8,
+          "children": [
+            {
+              "type": "text",
+              "id": "vGSqS",
+              "name": "Button component title",
+              "fill": "$--foreground",
+              "content": "Button",
+              "fontFamily": "Geist",
+              "fontSize": 28,
+              "fontWeight": "600"
+            },
+            {
+              "type": "text",
+              "id": "kkmnS",
+              "name": "Button component subtitle",
+              "fill": "$--muted-foreground",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Recreated from src/components/ui/button/button.ui.tsx and button.styles.ts variants, sizes, icon handling, disabled, invalid, focus, hover, active, and aria-expanded states.",
+              "fontFamily": "Geist",
+              "fontSize": 14,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "i4ugVR",
+          "name": "Button component work zones",
+          "width": "fill_container",
+          "layout": "vertical",
+          "children": [
+            {
+              "type": "frame",
+              "id": "u3ed8",
+              "name": "Button reusable symbols",
+              "width": "fill_container",
+              "fill": "$--card",
+              "cornerRadius": 12,
+              "stroke": "$--border",
+              "strokeWidth": 1,
+              "strokeAlignment": "inner",
+              "layout": "vertical",
+              "gap": 20,
+              "padding": 24,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "hxVma",
+                  "name": "Reusable Button content grid",
+                  "width": "fill_container",
+                  "gap": 32,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "Sd377",
+                      "name": "Reusable Button symbols column",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 14,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "Gx0en",
+                          "name": "Reusable Button symbols title",
+                          "fill": "$--foreground",
+                          "content": "Reusable symbols",
+                          "fontFamily": "Geist",
+                          "fontSize": 16,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "hBn4T",
+                          "name": "Reusable Button symbols note",
+                          "fill": "$--muted-foreground",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Each symbol mirrors the Button variant shape: inline-flex, centered content, rounded-lg, border, text-sm, font-medium, and overridable icon/label descendants.",
+                          "fontFamily": "Geist",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "k1GT4m",
+                          "name": "Reusable Button symbol list",
+                          "width": "fill_container",
+                          "layout": "vertical",
+                          "gap": 12,
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "G374yM",
+                              "name": "Button/default row",
+                              "width": "fill_container",
+                              "gap": 16,
+                              "justifyContent": "space_between",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "RHHoO",
+                                  "name": "Button/default name",
+                                  "fill": "$--muted-foreground",
+                                  "content": "Button/default",
+                                  "fontFamily": "Geist Mono",
+                                  "fontSize": 12,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "Vdf2E",
+                                  "name": "Button/default",
+                                  "reusable": true,
+                                  "height": 36,
+                                  "fill": "$--primary",
+                                  "cornerRadius": 8,
+                                  "stroke": "#FFFFFF00",
+                                  "strokeWidth": 1,
+                                  "strokeAlignment": "inner",
+                                  "gap": 8,
+                                  "padding": [
+                                    8,
+                                    16
+                                  ],
+                                  "justifyContent": "center",
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "icon",
+                                      "id": "MJtV5",
+                                      "name": "Icon start",
+                                      "width": 16,
+                                      "height": 16,
+                                      "icon": "plus",
+                                      "library": "lucide",
+                                      "fill": "$--primary-foreground"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "V3YAT",
+                                      "name": "Label",
+                                      "fill": "$--primary-foreground",
+                                      "content": "Create",
+                                      "fontFamily": "Geist",
+                                      "fontSize": 14,
+                                      "fontWeight": "500"
+                                    },
+                                    {
+                                      "type": "icon",
+                                      "id": "in7Nr",
+                                      "name": "Icon end",
+                                      "width": 16,
+                                      "height": 16,
+                                      "icon": "chevron-right",
+                                      "library": "lucide",
+                                      "fill": "$--primary-foreground"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "M9NZpK",
+                              "name": "Button/outline row",
+                              "width": "fill_container",
+                              "gap": 16,
+                              "justifyContent": "space_between",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "K7VP0X",
+                                  "name": "Button/outline name",
+                                  "fill": "$--muted-foreground",
+                                  "content": "Button/outline",
+                                  "fontFamily": "Geist Mono",
+                                  "fontSize": 12,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "YcX7P",
+                                  "name": "Button/outline",
+                                  "reusable": true,
+                                  "height": 36,
+                                  "fill": "$--background",
+                                  "cornerRadius": 8,
+                                  "stroke": "$--border",
+                                  "strokeWidth": 1,
+                                  "strokeAlignment": "inner",
+                                  "gap": 8,
+                                  "padding": [
+                                    8,
+                                    16
+                                  ],
+                                  "justifyContent": "center",
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "icon",
+                                      "id": "DlnW2",
+                                      "name": "Icon start",
+                                      "width": 16,
+                                      "height": 16,
+                                      "icon": "x",
+                                      "library": "lucide",
+                                      "fill": "$--foreground"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "z3088n",
+                                      "name": "Label",
+                                      "fill": "$--foreground",
+                                      "content": "Cancel",
+                                      "fontFamily": "Geist",
+                                      "fontSize": 14,
+                                      "fontWeight": "500"
+                                    },
+                                    {
+                                      "type": "icon",
+                                      "id": "Yhdkd",
+                                      "name": "Icon end",
+                                      "width": 16,
+                                      "height": 16,
+                                      "icon": "chevron-right",
+                                      "library": "lucide",
+                                      "fill": "$--foreground"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "UuAdQ",
+                              "name": "Button/secondary row",
+                              "width": "fill_container",
+                              "gap": 16,
+                              "justifyContent": "space_between",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "GEQQR",
+                                  "name": "Button/secondary name",
+                                  "fill": "$--muted-foreground",
+                                  "content": "Button/secondary",
+                                  "fontFamily": "Geist Mono",
+                                  "fontSize": 12,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "VAmcZ",
+                                  "name": "Button/secondary",
+                                  "reusable": true,
+                                  "height": 36,
+                                  "fill": "$--secondary",
+                                  "cornerRadius": 8,
+                                  "stroke": "#FFFFFF00",
+                                  "strokeWidth": 1,
+                                  "strokeAlignment": "inner",
+                                  "gap": 8,
+                                  "padding": [
+                                    8,
+                                    16
+                                  ],
+                                  "justifyContent": "center",
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "icon",
+                                      "id": "YYXJF",
+                                      "name": "Icon start",
+                                      "width": 16,
+                                      "height": 16,
+                                      "icon": "check",
+                                      "library": "lucide",
+                                      "fill": "$--secondary-foreground"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "CxcUg",
+                                      "name": "Label",
+                                      "fill": "$--secondary-foreground",
+                                      "content": "Review",
+                                      "fontFamily": "Geist",
+                                      "fontSize": 14,
+                                      "fontWeight": "500"
+                                    },
+                                    {
+                                      "type": "icon",
+                                      "id": "xmwpj",
+                                      "name": "Icon end",
+                                      "width": 16,
+                                      "height": 16,
+                                      "icon": "chevron-right",
+                                      "library": "lucide",
+                                      "fill": "$--secondary-foreground"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "Br6mc",
+                              "name": "Button/ghost row",
+                              "width": "fill_container",
+                              "gap": 16,
+                              "justifyContent": "space_between",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "RnXsO",
+                                  "name": "Button/ghost name",
+                                  "fill": "$--muted-foreground",
+                                  "content": "Button/ghost",
+                                  "fontFamily": "Geist Mono",
+                                  "fontSize": 12,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "r1jR0",
+                                  "name": "Button/ghost",
+                                  "reusable": true,
+                                  "height": 36,
+                                  "fill": "#FFFFFF00",
+                                  "cornerRadius": 8,
+                                  "stroke": "#FFFFFF00",
+                                  "strokeWidth": 1,
+                                  "strokeAlignment": "inner",
+                                  "gap": 8,
+                                  "padding": [
+                                    8,
+                                    16
+                                  ],
+                                  "justifyContent": "center",
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "icon",
+                                      "id": "IURKc",
+                                      "name": "Icon start",
+                                      "width": 16,
+                                      "height": 16,
+                                      "icon": "ellipsis",
+                                      "library": "lucide",
+                                      "fill": "$--foreground"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "lKzDH",
+                                      "name": "Label",
+                                      "fill": "$--foreground",
+                                      "content": "More",
+                                      "fontFamily": "Geist",
+                                      "fontSize": 14,
+                                      "fontWeight": "500"
+                                    },
+                                    {
+                                      "type": "icon",
+                                      "id": "rdNvH",
+                                      "name": "Icon end",
+                                      "width": 16,
+                                      "height": 16,
+                                      "icon": "chevron-right",
+                                      "library": "lucide",
+                                      "fill": "$--foreground"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "tz3Mm",
+                              "name": "Button/destructive row",
+                              "width": "fill_container",
+                              "gap": 16,
+                              "justifyContent": "space_between",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "du8Rd",
+                                  "name": "Button/destructive name",
+                                  "fill": "$--muted-foreground",
+                                  "content": "Button/destructive",
+                                  "fontFamily": "Geist Mono",
+                                  "fontSize": 12,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "B7cNJ",
+                                  "name": "Button/destructive",
+                                  "reusable": true,
+                                  "height": 36,
+                                  "fill": "#E7000B1A",
+                                  "cornerRadius": 8,
+                                  "stroke": "#FFFFFF00",
+                                  "strokeWidth": 1,
+                                  "strokeAlignment": "inner",
+                                  "gap": 8,
+                                  "padding": [
+                                    8,
+                                    16
+                                  ],
+                                  "justifyContent": "center",
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "icon",
+                                      "id": "C4284",
+                                      "name": "Icon start",
+                                      "width": 16,
+                                      "height": 16,
+                                      "icon": "trash-2",
+                                      "library": "lucide",
+                                      "fill": "$--destructive"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "j0meq",
+                                      "name": "Label",
+                                      "fill": "$--destructive",
+                                      "content": "Delete",
+                                      "fontFamily": "Geist",
+                                      "fontSize": 14,
+                                      "fontWeight": "500"
+                                    },
+                                    {
+                                      "type": "icon",
+                                      "id": "fADF3",
+                                      "name": "Icon end",
+                                      "width": 16,
+                                      "height": 16,
+                                      "icon": "chevron-right",
+                                      "library": "lucide",
+                                      "fill": "$--destructive"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "cxZJP",
+                              "name": "Button/link row",
+                              "width": "fill_container",
+                              "gap": 16,
+                              "justifyContent": "space_between",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "egkVU",
+                                  "name": "Button/link name",
+                                  "fill": "$--muted-foreground",
+                                  "content": "Button/link",
+                                  "fontFamily": "Geist Mono",
+                                  "fontSize": 12,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "V4JVXY",
+                                  "name": "Button/link",
+                                  "reusable": true,
+                                  "height": 36,
+                                  "fill": "#FFFFFF00",
+                                  "cornerRadius": 8,
+                                  "stroke": "#FFFFFF00",
+                                  "strokeWidth": 1,
+                                  "strokeAlignment": "inner",
+                                  "gap": 8,
+                                  "padding": [
+                                    8,
+                                    16
+                                  ],
+                                  "justifyContent": "center",
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "icon",
+                                      "id": "iecG4",
+                                      "name": "Icon start",
+                                      "width": 16,
+                                      "height": 16,
+                                      "icon": "arrow-right",
+                                      "library": "lucide",
+                                      "fill": "$--primary"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "NitdL",
+                                      "name": "Label",
+                                      "fill": "$--primary",
+                                      "content": "Open link",
+                                      "fontFamily": "Geist",
+                                      "fontSize": 14,
+                                      "fontWeight": "500"
+                                    },
+                                    {
+                                      "type": "icon",
+                                      "id": "fqQeJ",
+                                      "name": "Icon end",
+                                      "width": 16,
+                                      "height": 16,
+                                      "icon": "chevron-right",
+                                      "library": "lucide",
+                                      "fill": "$--primary"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "f7Cm4K",
+                      "name": "Reusable Button sizes column",
+                      "width": 360,
+                      "layout": "vertical",
+                      "gap": 14,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "KoXWs",
+                          "name": "Button size symbols title",
+                          "fill": "$--foreground",
+                          "content": "Size references",
+                          "fontFamily": "Geist",
+                          "fontSize": 16,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "PI67P",
+                          "name": "Button size reference stack",
+                          "width": "fill_container",
+                          "layout": "vertical",
+                          "gap": 8,
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "sgn0z",
+                              "name": "Button size 2xs line",
+                              "width": "fill_container",
+                              "justifyContent": "space_between",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "OTcYl",
+                                  "name": "Button size 2xs label",
+                                  "fill": "$--muted-foreground",
+                                  "content": "2xs",
+                                  "fontFamily": "Geist Mono",
+                                  "fontSize": 12,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "c7D8Cp",
+                                  "name": "Button size 2xs",
+                                  "height": 24,
+                                  "fill": "$--primary",
+                                  "cornerRadius": 6,
+                                  "gap": 6,
+                                  "padding": [
+                                    0,
+                                    8
+                                  ],
+                                  "justifyContent": "center",
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "icon",
+                                      "id": "LxElK",
+                                      "name": "Button size 2xs icon",
+                                      "width": 16,
+                                      "height": 16,
+                                      "icon": "plus",
+                                      "library": "lucide",
+                                      "fill": "$--primary-foreground"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "UNaDP",
+                                      "name": "Button size 2xs text",
+                                      "fill": "$--primary-foreground",
+                                      "content": "Button",
+                                      "fontFamily": "Geist",
+                                      "fontSize": 12,
+                                      "fontWeight": "500"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "I3QC6",
+                              "name": "Button size xs line",
+                              "width": "fill_container",
+                              "justifyContent": "space_between",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "xQwl2",
+                                  "name": "Button size xs label",
+                                  "fill": "$--muted-foreground",
+                                  "content": "xs",
+                                  "fontFamily": "Geist Mono",
+                                  "fontSize": 12,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "Zjm1c",
+                                  "name": "Button size xs",
+                                  "height": 28,
+                                  "fill": "$--primary",
+                                  "cornerRadius": 7,
+                                  "gap": 6,
+                                  "padding": [
+                                    0,
+                                    12
+                                  ],
+                                  "justifyContent": "center",
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "icon",
+                                      "id": "K8oGK",
+                                      "name": "Button size xs icon",
+                                      "width": 16,
+                                      "height": 16,
+                                      "icon": "plus",
+                                      "library": "lucide",
+                                      "fill": "$--primary-foreground"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "tUiBf",
+                                      "name": "Button size xs text",
+                                      "fill": "$--primary-foreground",
+                                      "content": "Button",
+                                      "fontFamily": "Geist",
+                                      "fontSize": 13,
+                                      "fontWeight": "500"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "FxPq5",
+                              "name": "Button size sm line",
+                              "width": "fill_container",
+                              "justifyContent": "space_between",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "ybmB2",
+                                  "name": "Button size sm label",
+                                  "fill": "$--muted-foreground",
+                                  "content": "sm",
+                                  "fontFamily": "Geist Mono",
+                                  "fontSize": 12,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "h9WkX",
+                                  "name": "Button size sm",
+                                  "height": 32,
+                                  "fill": "$--primary",
+                                  "cornerRadius": 7,
+                                  "gap": 6,
+                                  "padding": [
+                                    0,
+                                    12
+                                  ],
+                                  "justifyContent": "center",
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "icon",
+                                      "id": "TF2TT",
+                                      "name": "Button size sm icon",
+                                      "width": 16,
+                                      "height": 16,
+                                      "icon": "plus",
+                                      "library": "lucide",
+                                      "fill": "$--primary-foreground"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "PrZu8",
+                                      "name": "Button size sm text",
+                                      "fill": "$--primary-foreground",
+                                      "content": "Button",
+                                      "fontFamily": "Geist",
+                                      "fontSize": 13,
+                                      "fontWeight": "500"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "jGg11",
+                              "name": "Button size default line",
+                              "width": "fill_container",
+                              "justifyContent": "space_between",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "YpYhv",
+                                  "name": "Button size default label",
+                                  "fill": "$--muted-foreground",
+                                  "content": "default",
+                                  "fontFamily": "Geist Mono",
+                                  "fontSize": 12,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "jWAPn",
+                                  "name": "Button size default",
+                                  "height": 36,
+                                  "fill": "$--primary",
+                                  "cornerRadius": 8,
+                                  "gap": 8,
+                                  "padding": [
+                                    0,
+                                    16
+                                  ],
+                                  "justifyContent": "center",
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "icon",
+                                      "id": "Pn0ZG",
+                                      "name": "Button size default icon",
+                                      "width": 16,
+                                      "height": 16,
+                                      "icon": "plus",
+                                      "library": "lucide",
+                                      "fill": "$--primary-foreground"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "vnGyS",
+                                      "name": "Button size default text",
+                                      "fill": "$--primary-foreground",
+                                      "content": "Button",
+                                      "fontFamily": "Geist",
+                                      "fontSize": 14,
+                                      "fontWeight": "500"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "sLhJP",
+                              "name": "Button size lg line",
+                              "width": "fill_container",
+                              "justifyContent": "space_between",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "E3NgYX",
+                                  "name": "Button size lg label",
+                                  "fill": "$--muted-foreground",
+                                  "content": "lg",
+                                  "fontFamily": "Geist Mono",
+                                  "fontSize": 12,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "Vcrj0",
+                                  "name": "Button size lg",
+                                  "height": 40,
+                                  "fill": "$--primary",
+                                  "cornerRadius": 8,
+                                  "gap": 8,
+                                  "padding": [
+                                    0,
+                                    24
+                                  ],
+                                  "justifyContent": "center",
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "icon",
+                                      "id": "dXxYD",
+                                      "name": "Button size lg icon",
+                                      "width": 16,
+                                      "height": 16,
+                                      "icon": "plus",
+                                      "library": "lucide",
+                                      "fill": "$--primary-foreground"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "ZgKLD",
+                                      "name": "Button size lg text",
+                                      "fill": "$--primary-foreground",
+                                      "content": "Button",
+                                      "fontFamily": "Geist",
+                                      "fontSize": 14,
+                                      "fontWeight": "500"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "lj56Q",
+                              "name": "Icon button size row",
+                              "width": "fill_container",
+                              "justifyContent": "space_between",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "TJGdO",
+                                  "name": "Icon button size label",
+                                  "fill": "$--muted-foreground",
+                                  "content": "icon",
+                                  "fontFamily": "Geist Mono",
+                                  "fontSize": 12,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "c4bPQ",
+                                  "name": "Icon button sizes",
+                                  "gap": 8,
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "frame",
+                                      "id": "WKQj8",
+                                      "name": "Button size icon-xs",
+                                      "width": 28,
+                                      "height": 28,
+                                      "fill": "$--primary",
+                                      "cornerRadius": 8,
+                                      "justifyContent": "center",
+                                      "alignItems": "center",
+                                      "children": [
+                                        {
+                                          "type": "icon",
+                                          "id": "kGAC0",
+                                          "name": "Button size icon-xs icon",
+                                          "width": 16,
+                                          "height": 16,
+                                          "icon": "settings",
+                                          "library": "lucide",
+                                          "fill": "$--primary-foreground"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "frame",
+                                      "id": "S1mazb",
+                                      "name": "Button size icon-sm",
+                                      "width": 32,
+                                      "height": 32,
+                                      "fill": "$--primary",
+                                      "cornerRadius": 8,
+                                      "justifyContent": "center",
+                                      "alignItems": "center",
+                                      "children": [
+                                        {
+                                          "type": "icon",
+                                          "id": "BqY9n",
+                                          "name": "Button size icon-sm icon",
+                                          "width": 16,
+                                          "height": 16,
+                                          "icon": "settings",
+                                          "library": "lucide",
+                                          "fill": "$--primary-foreground"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "frame",
+                                      "id": "L4q9v",
+                                      "name": "Button size icon",
+                                      "width": 36,
+                                      "height": 36,
+                                      "fill": "$--primary",
+                                      "cornerRadius": 8,
+                                      "justifyContent": "center",
+                                      "alignItems": "center",
+                                      "children": [
+                                        {
+                                          "type": "icon",
+                                          "id": "eAXiQ",
+                                          "name": "Button size icon icon",
+                                          "width": 16,
+                                          "height": 16,
+                                          "icon": "settings",
+                                          "library": "lucide",
+                                          "fill": "$--primary-foreground"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T8jiam",
+      "type": "ref",
+      "ref": "Vdf2E",
+      "x": 653.6427445730653,
+      "y": 1977.8834785837469,
+      "context": "",
+      "descendants": {
+        "MJtV5": {
+          "library": "lucide",
+          "icon": "search"
+        },
+        "in7Nr": {
+          "enabled": false
+        }
+      }
     }
   ],
   "themes": {
