@@ -227,6 +227,7 @@ function PaginationRowCount({
       </span>{' '}
       {firstRowNumberOnCurrentPage}-{lastRowNumberOnCurrentPage}{' '}
       <span className={styles.rowCount.words.base()}>of</span> {totalRows}{' '}
+      <span className={styles.rowCount.words.base()}>items</span>
     </div>
   )
 }
