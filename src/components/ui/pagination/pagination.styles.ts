@@ -1,13 +1,13 @@
 import { tw } from '@/utils/styles/tw.util'
 
-export const root = tw(`
+const root = tw(`
   flex
   w-full
   items-center
   gap-4
 `)
 
-export const pageSelector = {
+const pageSelector = {
   list: tw(`
     flex
     flex-row
@@ -16,14 +16,14 @@ export const pageSelector = {
   `),
 }
 
-export const dots = tw(`
+const dots = tw(`
   flex
   size-8
   items-center
   justify-center
 `)
 
-export const button = tw(`
+const button = tw(`
   font-medium
   data-[active=true]:cursor-default
   data-[active=true]:border-none
@@ -31,7 +31,7 @@ export const button = tw(`
   data-[active=true]:text-primary
 `)
 
-export const buttonWithText = {
+const buttonWithText = {
   root: tw(`
     group/button-with-text
     data-[has-text=true]:gap-1
@@ -44,14 +44,14 @@ export const buttonWithText = {
   `),
 }
 
-export const ellipsis = tw(`
+const ellipsis = tw(`
   flex
   size-9
   items-center
   justify-center
 `)
 
-export const rowCount = {
+const itemCount = {
   root: tw(`
     text-[0.8125rem]
     text-nowrap
@@ -68,7 +68,7 @@ export const rowCount = {
   },
 }
 
-export const pageSizeSelector = {
+const pageSizeSelector = {
   root: tw(`
     w-fit
     bg-card
@@ -83,7 +83,19 @@ export const pageSizeSelector = {
   `),
 }
 
-export const separator = tw(`
+const separator = tw(`
   data-[orientation=vertical]:h-4
   data-[orientation=vertical]:self-auto
 `)
+
+export {
+  root,
+  pageSelector,
+  dots,
+  button,
+  buttonWithText,
+  ellipsis,
+  itemCount,
+  pageSizeSelector,
+  separator,
+}
